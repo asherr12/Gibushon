@@ -399,7 +399,7 @@ for(j in 1:nrow(gibushon_civil)){
 gibushon_civil_test<-gibushon_civil
   
   library(foreach)
-  foreach(j=1:nrow(gibushon_civil_test), k = (ncol_before_zscores+1):ncol_zscores, l = (ncol_zscores+1):ncol(gibushon_civil_test)) %do% {
+  foreach(j=nrow(gibushon_civil_test), k = ncol_zscores-(ncol_before_zscores), l = ncol(gibushon_civil_test)-ncol_zscores) %do% {
     if (!is.na(gibushon_civil_test[j,][k]))
       gibushon_civil_test[j,][l] <-
         ifelse(abs(gibushon_civil_test[j,][k])>3.29,gibushon_civil_test[j,][k],NA)
