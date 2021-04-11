@@ -281,8 +281,6 @@ gibushon_civil<-as.data.frame(gibushon_civil)
 
 colnames(gibushon_civil)
 
-#arrived here*********
-
 # Remove Checkmark form dplyr package, because it's in conflict with plyr.*********
 # With complicated packages that load S4 classes & methods, detach command is not 
 # guaranteed to restore everything to exactly the state before the package was loaded.
@@ -301,7 +299,7 @@ gibushon_civil<-rename(gibushon_civil,c("Mazav0"="power",
 # guaranteed to restore everything to exactly the state before the package was loaded.
 
 
-nacol_before_zscores<-ncol(gibushon_civil)
+ncol_before_zscores<-ncol(gibushon_civil)
 
 # Create z-scores.
 
@@ -355,33 +353,66 @@ for(i in gibushon_civil_zscore_relevant_columns) {
     as.data.frame(scale(as.numeric(unlist(gibushon_civil[i]))))
 }
 
-nacol_zscores<-ncol(gibushon_civil)
+ncol_zscores<-ncol(gibushon_civil)
 
 # Locating and handling outliers.
 
 Start_time<-Sys.time()
 
-gibushon_civil_outliers_relevant_columns<-colnames(gibushon_civil[c((nacol_before_zscores+1):nacol_zscores)])
+gibushon_civil_outliers_relevant_columns<-colnames(gibushon_civil[c((ncol_before_zscores+1):ncol_zscores)])
 
 #replace the next commands by plyr and dplyr commands*******
-#maybe seperating the loops will save time
+#maybe separating the loops will save time
+
+# for(i in gibushon_civil_outliers_relevant_columns) {
+#   gibushon_civil[ncol(gibushon_civil)+1]<-NA
+#   names(gibushon_civil)[ncol(gibushon_civil)]<-paste(i,"outlier",sep = "_")
+#   gibushon_civil[ncol(gibushon_civil)]<-as.numeric(unlist(gibushon_civil[ncol(gibushon_civil)]))
+#   for(j in 1:nrow(gibushon_civil)){
+#     if (!is.na(gibushon_civil[j,][i])) {
+#       gibushon_civil[j,][ncol(gibushon_civil)] <-
+#         ifelse(abs(gibushon_civil[j,][i])>3.29,gibushon_civil[j,][i],NA)
+#     }
+#   }
+#   if (all(is.na(gibushon_civil[ncol(gibushon_civil)]))) {
+#     gibushon_civil<-gibushon_civil[,-ncol(gibushon_civil)]
+#   }
+# }
+
 
 for(i in gibushon_civil_outliers_relevant_columns) {
   gibushon_civil[ncol(gibushon_civil)+1]<-NA
   names(gibushon_civil)[ncol(gibushon_civil)]<-paste(i,"outlier",sep = "_")
   gibushon_civil[ncol(gibushon_civil)]<-as.numeric(unlist(gibushon_civil[ncol(gibushon_civil)]))
-  for(j in 1:nrow(gibushon_civil)){
-    if (!is.na(gibushon_civil[j,][i])) {
-      gibushon_civil[j,][ncol(gibushon_civil)] <-
-        ifelse(abs(gibushon_civil[j,][i])>3.29,gibushon_civil[j,][i],NA)
+}
+
+#outliers_relevant_columns<-colnames(gibushon_civil[c((ncol_zscores+1):ncol(gibushon_civil))])
+
+for(j in 1:nrow(gibushon_civil)){
+  for(l in (ncol_zscores+1):ncol(gibushon_civil) & for k in (ncol_before_zscores+1):ncol_zscores){
+    if (!is.na(gibushon_civil[j,][k])) {
+      gibushon_civil[j,][l] <-
+        ifelse(abs(gibushon_civil[j,][k])>3.29,gibushon_civil[j,][i],NA)
     }
   }
+  
+gibushon_civil_test<-gibushon_civil
+  
+  library(foreach)
+  foreach(j=1:nrow(gibushon_civil_test), k = (ncol_before_zscores+1):ncol_zscores, l = (ncol_zscores+1):ncol(gibushon_civil_test)) %do% {
+    if (!is.na(gibushon_civil_test[j,][k]))
+      gibushon_civil_test[j,][l] <-
+        ifelse(abs(gibushon_civil_test[j,][k])>3.29,gibushon_civil_test[j,][k],NA)
+  }
+  
+  
+  
+  
   if (all(is.na(gibushon_civil[ncol(gibushon_civil)]))) {
     gibushon_civil<-gibushon_civil[,-ncol(gibushon_civil)]
   }
-}
 
-nacol_outliers<-ncol(gibushon_civil)
+ncol_outliers<-ncol(gibushon_civil)
 
 End_time<-Sys.time()
 Total_time<- round(End_time-Start_time, digits = 2)
@@ -399,7 +430,7 @@ mode<-function(X)
 }
 options(width = 71,max.print=30000)
 # The 2 commands after the first command, are for cleaning the output file.
-gibushon_civil_freq_relevant_columns<-colnames(gibushon_civil[c((nacol_zscores+1):nacol_outliers)])
+gibushon_civil_freq_relevant_columns<-colnames(gibushon_civil[c((ncol_zscores+1):ncol_outliers)])
 out<-""
 cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_outliers.txt", sep="", append=F,fill = T)
 suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
