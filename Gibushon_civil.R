@@ -408,7 +408,7 @@ for(j in 1:nrow(gibushon_civil_test)){
 End_time<-Sys.time()
 Total_time<- round(End_time-Start_time, digits = 2)
 Total_time
-# Total_time = 43.38 minuets (08.02.2021. Dell)
+# Total_time = ~12 hrs. minuets (13.04.2021. Dell)
 
 outliers_relevant_columns<-colnames(gibushon_civil_test[c((ncol_zscores+1):ncol(gibushon_civil_test))])
 
