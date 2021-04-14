@@ -413,7 +413,7 @@ Total_time
 library(dplyr)
 gibushon_civil_test_outliers = gibushon_civil_test[(ncol_before_zscores+1):ncol_zscores] %>%
   rowwise() %>%
-  mutate(date.tkufatit_14_diff = date.tkufatit_14-ac_date)
+  mutate(gibushon_civil_test_outliers, outlier = ifelse(grade > 60, "Pass", "Fail")))
          
   
 
