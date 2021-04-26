@@ -1,6 +1,5 @@
 
 library(readr)
-eadr)
 locale("he")
 
 # Before the next column, split the file (in the file itself-not by code) to columns by: Data, Text to Columns...
