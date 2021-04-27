@@ -679,6 +679,7 @@ colnames(gibushon_civil_outliers)<-paste(colnames(gibushon_civil_outliers),"outl
 
 gibushon_civil_outliers <- gibushon_civil_outliers[,colSums(is.na(gibushon_civil_outliers))<nrow(gibushon_civil_outliers)]
 
+class(gibushon_civil_outliers)
 
 # freq of main outliers.
 library(descr)
@@ -691,19 +692,18 @@ mode<-function(X)
 }
 options(width = 71,max.print=30000)
 # The 2 commands after the first command, are for cleaning the output file.
-gibushon_civil_freq_relevant_columns<-colnames(gibushon_civil[c((ncol_zscores+1):ncol_outliers)])
 out<-""
 cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_outliers.txt", sep="", append=F,fill = T)
-suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
-  newresult1<-round(freq(ordered(as.numeric(unlist(gibushon_civil[[i]]))), plot = F,main=colnames(gibushon_civil[i]),font=2),2)
-  newresult2<-round(describe(as.numeric(unlist(gibushon_civil[[i]]))),2)
+suppressWarnings(for(i in 1:ncol(gibushon_civil_outliers)) {
+  newresult1<-round(freq(ordered(as.numeric(unlist(gibushon_civil_outliers[[i]]))), plot = F,main=colnames(gibushon_civil_outliers[i]),font=2),2)
+  newresult2<-round(describe(as.numeric(unlist(gibushon_civil_outliers[[i]]))),2)
   newresult3<-"mode="
-  newresult4<-mode(gibushon_civil[[i]])
+  newresult4<-mode(gibushon_civil_outliers[[i]])
   newresult5<- "                                                                                               "
   newresult6<- "----------------------------------------------------------------------------"
   out <- capture.output(newresult1,newresult5,newresult2,newresult3,newresult4,newresult5,newresult6)
   out[1]<-""
-  cat(colnames(gibushon_civil[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_outliers.txt", append=T,fill = T)
+  cat(colnames(gibushon_civil_outliers[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_outliers.txt", append=T,fill = T)
 })
 
 gibushon_civil[gibushon_civil_outliers_relevant_columns][abs(gibushon_civil[gibushon_civil_outliers_relevant_columns])>4]<-NA
@@ -711,6 +711,9 @@ gibushon_civil[gibushon_civil_outliers_relevant_columns][abs(gibushon_civil[gibu
 colnames(gibushon_civil)
 
 write_csv(gibushon_civil,file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_without_outliers.csv")
+
+
+
 
 # Criteria.
 
