@@ -1,4 +1,5 @@
 
+
 library(readr)
 locale("he")
 
@@ -518,19 +519,6 @@ colnames(decision)[4] <- "decision_test_date"
 colnames(decision)[5] <- "decision"
 
 class (decision$decision_test_date)
-decision<-data.frame(lapply(decision,function(x) {gsub("ינו","01",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("פבר","02",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("מרץ","03",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("אפר","04",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("מאי","05",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("יונ","06",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("יול","07",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("אוג","08",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("ספט","09",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("אוק","10",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("נוב","11",x)}))
-decision<-data.frame(lapply(decision,function(x) {gsub("דצמ","12",x)}))
-
 library(data.table)
 decision$decision_test_date<-as.Date(as.character(decision$decision_test_date),format="%d-%m-%y")
 class (decision$decision_test_date)
@@ -551,7 +539,32 @@ gibushon_mamda_criteria_rama_eq_colors_decision <- merge(gibushon_mamda_criteria
 nrow(gibushon_mamda_criteria_rama_eq_colors_decision)
 sum(!is.na(gibushon_mamda_criteria_rama_eq_colors_decision$decision))
 
-gibushon<-gibushon_mamda_criteria_rama_eq_colors_decision
+#EichutGrade_components
+EichutGrade_components<-read_csv("Q:/04_Mehkar/18_asher/Gibushon/EichutGrade_components.csv",locale = locale(date_names = "he", encoding = "ISO-8859-8"))
+colnames(EichutGrade_components)[1] <- "id"
+colnames(EichutGrade_components)[2] <- "EichutGrade_components_GibDate"
+colnames(EichutGrade_components)[3] <- "commander"
+colnames(EichutGrade_components)[4] <- "behavior_old"
+colnames(EichutGrade_components)[5] <- "behavior_new"
+colnames(EichutGrade_components)[6] <- "combat"
+
+n_occur<-data.frame(table(EichutGrade_components$id))
+n_occur[n_occur$Freq>1,]
+EichutGrade_components<-EichutGrade_components[!duplicated(EichutGrade_components$id),]
+n_occur<-data.frame(table(EichutGrade_components$id))
+n_occur[n_occur$Freq>1,]
+
+library(dplyr)
+EichutGrade_components_filtered=EichutGrade_components%>%
+  select(id,commander,behavior_old,behavior_new,combat)
+
+class(EichutGrade_components_filtered$id)
+EichutGrade_components_filtered$id<-as.numeric(EichutGrade_components_filtered$id)
+class(gibushon_mamda_criteria_rama_eq_colors_decision$id)
+gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components <- merge(gibushon_mamda_criteria_rama_eq_colors_decision, EichutGrade_components_filtered,by=c("id"), all.x=T, all.y=F,sort = FALSE)
+gibushon_mamda_criteria_rama<-as.data.frame(gibushon_mamda_criteria_rama)
+
+gibushon<-gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components
 
 #check candidates that don't have rama_score
 # library(dplyr)
