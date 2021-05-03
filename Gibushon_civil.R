@@ -755,14 +755,13 @@ suppressWarnings(for(i in 1:ncol(gibushon_civil_outliers)) {
   cat(colnames(gibushon_civil_outliers[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_outliers.txt", append=T,fill = T)
 })
 
-gibushon_civil[gibushon_civil_outliers_relevant_columns][abs(gibushon_civil[gibushon_civil_outliers_relevant_columns])>4]<-NA
+colnames(gibushon_civil[(ncol_before_zscores+1):ncol_zscores])
+
+gibushon_civil[(ncol_before_zscores+1):ncol_zscores][gibushon_civil[(ncol_before_zscores+1):ncol_zscores]>4]<-NA
 
 colnames(gibushon_civil)
 
 write_csv(gibushon_civil,file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_without_outliers.csv")
-
-
-
 
 # Criteria.
 
@@ -1015,14 +1014,6 @@ filtered_gibushon_civil_diff[sapply(filtered_gibushon_civil_diff, is.nan)] <- NA
 
 nrow(filtered_gibushon_civil_diff)
 
-#mini_sociometry indexes
-filtered_gibushon_civil_diff$mini_sociometry_group_size_relevant<-ifelse(filtered_gibushon_civil_diff$mini_sociometry_group_size>=6,filtered_gibushon_civil_diff$mini_sociometry_group_size,NA)
-filtered_gibushon_civil_diff$mini_sociometry_positive_percent<-round((filtered_gibushon_civil_diff$mini_sociometry_positive/
-                                                                        filtered_gibushon_civil_diff$mini_sociometry_group_size_relevant)*100)
-filtered_gibushon_civil_diff$mini_sociometry_negative_percent<-round((filtered_gibushon_civil_diff$mini_sociometry_negative/
-                                                                        filtered_gibushon_civil_diff$mini_sociometry_group_size_relevant)*100)
-filtered_gibushon_civil_diff$mini_sociometry_success_percent<-round((filtered_gibushon_civil_diff$mini_sociometry_success/
-                                                                       filtered_gibushon_civil_diff$mini_sociometry_group_size_relevant)*100)
 # Criteria_count
 
 filtered_gibushon_civil_diff$critria_count <- 
@@ -1101,7 +1092,19 @@ mode<-function(X)
 }
 options(width = 71,max.print=30000)
 # # The 2 commands after the first command, are for cleaning the output file.
-gibushon_civil_freq_relevant_columns<-colnames(gibushon_final[c(4:ncol(gibushon_final))])
+gibushon_civil_freq_relevant_columns<-colnames(gibushon_final[c(21:22,24:31,35,44,48:49,52,78,104,106,107,122,129,131,138,
+                                                                   140,147,149,156,158,165,167,171,175,192,199,201,208,210,
+                                                                   217,219,226,228,235,237,241,245,263,265,269,271,275,277,
+                                                                   281,283,287,289,293,299,305,326,328,332,334,338,340,344,
+                                                                   346,350,352,356,362,368,392,396,400,404,408,412,416,420,
+                                                                   424,428,432,436,440,444,448,452,456,460,464,468,472,476,
+                                                                   480,484,490,492,498,500,506,508,514,516,522,524,530,532,
+                                                                   538,551,555,559,563,567,571,575,697,706,579,583,587,591,
+                                                                   595,599,603,607,611,615,619,623,627,631,635,639,643,649,
+                                                                   651,657,659,665,667,673,675,681,683,689,691,708,710,712,
+                                                                   714,716,718,720,722,724,726,728,730,732,750,752,754,756,
+                                                                   758,760,762,764,766,768,770,772,774,776,794,795,827:830,
+                                                                   832,833,834,835)])
 out<-""
 cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies.txt", sep="", append=F,fill = T)
 suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
@@ -1115,17 +1118,6 @@ suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
   out[1]<-""
   cat(colnames(gibushon_final[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies.txt", append=T,fill = T)
 })
-
-gibushon_final$mini_sociometry_negative_percent_opposite<-100-gibushon_final$mini_sociometry_negative_percent
-
-gibushon_final = gibushon_final %>%
-  rowwise() %>%
-  mutate(ac_final_grade_computed = mean(c(maturity_and_values,self_confidence,service_approach,
-                                          practical_thinking,expression_ability,performance_ability,
-                                          final_impression),na.rm = T),
-         mini_sociometry_computed = mean(c(mini_sociometry_positive_percent,
-                                           mini_sociometry_negative_percent_opposite,
-                                           mini_sociometry_success_percent),na.rm = T))
 
 colnames(gibushon_final)[1:1000]
 colnames(gibushon_final)[1001:ncol(gibushon_final)]
@@ -1551,6 +1543,9 @@ library(psych)
 options(width = 71,max.print=30000)
 round(freq(ordered(as.numeric(unlist(gibushon_civil$decision))), plot = F,main=colnames(gibushon_civil$decision),font=2),2)
 round(describe(as.numeric(unlist(gibushon$ac_final_grade))),2)
+freq(gibushon_civil$action_reason, plot = F,main=colnames(gibushon_civil$action_reason),font=2)
+table2matrix(gibushon_civil$action_reason)
+
 
 colnames(gibushon_civil)
 
@@ -1579,5 +1574,5 @@ suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
   cat(colnames(gibushon_civil[i]),out, file="C:\Users\USER\Documents\MAMDA\Gibushon\gibushon_civil_frequencies.txt", append=T,fill = T)
 })
 
-
+prop.table(gibushon_civil$action_reason)
 
