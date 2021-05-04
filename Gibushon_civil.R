@@ -674,6 +674,10 @@ gibushon_civil$job[grep("מפקד", gibushon_civil$job)] <- "commander"
 gibushon_civil$job[grep("ראש", gibushon_civil$job)] <- "commander"
 gibushon_civil$job[grep("קצין", gibushon_civil$job)] <- "officer"
 gibushon_civil$job[grep("עובד", gibushon_civil$job)] <- "worker"
+gibushon_civil$job[grep("רכז", gibushon_civil$job)] <- "worker"
+gibushon_civil$job[grep("מש'ק", gibushon_civil$job)] <- "worker"
+gibushon_civil$job<-str_replace_all(gibushon_civil$job, "[[:punct:]]", " ")
+gibushon_civil$job[grep("מש ק", gibushon_civil$job)] <- "worker"
 
 freq(gibushon_civil$job, plot = F,main=colnames(gibushon_civil$job),font=2)
 
