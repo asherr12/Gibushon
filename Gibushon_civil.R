@@ -688,10 +688,42 @@ gibushon_civil$job[grep("שוטר", gibushon_civil$job)] <- "other"
 gibushon_civil$job[grep("סמל", gibushon_civil$job)] <- "other"
 gibushon_civil$job[grep("טכנאי", gibushon_civil$job)] <- "other"
 gibushon_civil$job[grep("מחסנאי", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("חבלן", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("חשמלאי מבנים", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("טבח", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("טוען מעצרים", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("טירון חובה", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("מאבחן", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("מזכירה כתבנית", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("מטפל בע ח", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("מנהל מערכת", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("נגד", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("נהג", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("נוהג", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("עו ס", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("פקיד", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("צוערי", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("שולט", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("שומר", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("שח ם", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("שת מ", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("תחקירן", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("ארוך", gibushon_civil$job)] <- "other"
+gibushon_civil$rama_religion[grep("אחר", gibushon_civil$rama_religion)] <- "other"
+gibushon_civil$rama_religion[grep("בדואי", gibushon_civil$rama_religion)] <- "Bedouin"
+gibushon_civil$rama_religion[grep("דרוזי", gibushon_civil$rama_religion)] <- "Druze"
+gibushon_civil$rama_religion[grep("יהודי", gibushon_civil$rama_religion)] <- "Jewish"
+gibushon_civil$rama_religion[grep("מוסלמי", gibushon_civil$rama_religion)] <- "Moslem"
+gibushon_civil$rama_religion[grep("נוצרי", gibushon_civil$rama_religion)] <- "Christian"
+gibushon_civil$rama_religion[grep("צ'רקסי", gibushon_civil$rama_religion)] <- "Circassian"
+gibushon_civil$commander <- str_replace_all(gibushon_civil$commander, c("לא ידוע" = "unknown", "לא מפקד" = "not commander", "מפקד" = "commander"))
 
 library(descr)
+freq(gibushon_civil$behavior_old, plot = F,main=colnames(gibushon_civil$behavior_old),font=2)
+freq(gibushon_civil$behavior_new, plot = F,main=colnames(gibushon_civil$behavior_new),font=2)
+# compare the new and old - verify
 
-freq(gibushon_civil$job, plot = F,main=colnames(gibushon_civil$job),font=2)
+# gibushon_civil$behavior_new<-ifelse(!is.na(gibushon_civil$behavior_new),gibushon_civil$behavior_new,gibushon_civil$behavior_old)
 
 # Remove Checkmark form plyr package, because it's in conflict with dplyr.*********
 # With complicated packages that load S4 classes & methods, detach command is not 
