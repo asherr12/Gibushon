@@ -649,6 +649,7 @@ gibushon_civil<-rename(gibushon_civil,c("Mazav0"="power",
                                         "Mazav7"= "thinking",
                                         "Mazav8"="execution"))
 
+library(stringr)
 
 gibushon_civil$gender <- str_replace_all(gibushon_civil$gender, c("זכר" = "male", "נקבה" = "female"))
 gibushon_civil$rama_gender <- str_replace_all(gibushon_civil$rama_gender, c("זכר" = "male", "נקבה" = "female"))
@@ -687,6 +688,8 @@ gibushon_civil$job[grep("שוטר", gibushon_civil$job)] <- "other"
 gibushon_civil$job[grep("סמל", gibushon_civil$job)] <- "other"
 gibushon_civil$job[grep("טכנאי", gibushon_civil$job)] <- "other"
 gibushon_civil$job[grep("מחסנאי", gibushon_civil$job)] <- "other"
+
+library(descr)
 
 freq(gibushon_civil$job, plot = F,main=colnames(gibushon_civil$job),font=2)
 
