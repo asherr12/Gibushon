@@ -747,6 +747,7 @@ gibushon_civil$behavior_old<-as.numeric(gibushon_civil$behavior_old)
 
 class(gibushon_civil$behavior_new)
 gibushon_civil$behavior_new<-as.numeric(gibushon_civil$behavior_new)
+#use ahead only gibushon_civil$behavior_new*******************
 
 gibushon_civil$action_reason<-str_replace_all(gibushon_civil$action_reason, "[[:punct:]]", " ")
 
@@ -766,15 +767,10 @@ gibushon_civil$action_reason <- str_replace_all(gibushon_civil$action_reason, c(
                                                                                  "פיטורין סעיף 12  פחות משנתיים" = "article 12",
                                                                                  "פיטורין" = "dismissal"))
 
-library(descr)
-freq(gibushon_civil$action_reason, plot = F,main=colnames(gibushon_civil$action_reason),font=2)
-
 gibushon_civil$combat <- str_replace_all(gibushon_civil$combat, c("לא ידוע" = NA, "לא קרבי" = "not fighting", "קרבי" = "fighting"))
 
-
-
-#use only gibushon_civil$behavior_new*******************
-
+class(gibushon_civil)
+      
 # gibushon_civil<-as.data.frame(gibushon_civil)
 
 colnames(gibushon_civil)
