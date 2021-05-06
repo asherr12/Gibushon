@@ -716,7 +716,7 @@ gibushon_civil$rama_religion[grep("יהודי", gibushon_civil$rama_religion)] <- "Je
 gibushon_civil$rama_religion[grep("מוסלמי", gibushon_civil$rama_religion)] <- "Moslem"
 gibushon_civil$rama_religion[grep("נוצרי", gibushon_civil$rama_religion)] <- "Christian"
 gibushon_civil$rama_religion[grep("צ'רקסי", gibushon_civil$rama_religion)] <- "Circassian"
-gibushon_civil$commander <- str_replace_all(gibushon_civil$commander, c("לא ידוע" = "unknown", "לא מפקד" = "not commander", "מפקד" = "commander"))
+gibushon_civil$commander <- str_replace_all(gibushon_civil$commander, c("לא ידוע" = NA, "לא מפקד" = "not commander", "מפקד" = "commander"))
 gibushon_civil$behavior_old<-str_replace_all(gibushon_civil$behavior_old, "[[:punct:]]", " ")
 gibushon_civil$behavior_new<-str_replace_all(gibushon_civil$behavior_new, "[[:punct:]]", " ")
 gibushon_civil$behavior_old <- str_replace_all(gibushon_civil$behavior_old, c("אינה מניחה את הדעת" = "1",
@@ -730,28 +730,52 @@ gibushon_civil$behavior_old <- str_replace_all(gibushon_civil$behavior_old, c("א
                                                                                "מניחה את הדעת" = "2",
                                                                                "שירתתתי בקבע קצין" = "7"))
 
-library(descr)
-freq(gibushon_civil$behavior_old, plot = F,main=colnames(gibushon_civil$behavior_old),font=2)
-
-gibushon_civil$behavior_new2 <- str_replace_all(gibushon_civil$behavior_new, c("אינה מניחה את הדעת" = "1",
-                                                                              "כט מ" = "5",
-                                                                              "ט מ" = "6",
-                                                                              "כמעט טובה מאוד" = "5",
-                                                                              "טובה מאוד" = "6",
-                                                                              "כמעט טובה" = "3",
+gibushon_civil$behavior_new <- str_replace_all(gibushon_civil$behavior_new, c("אינה מניחה את הדעת" = "1",
+                                                                              "ט מ" = "5",
+                                                                              "טובה מאוד" = "5",
+                                                                              "מספקת" = "3",
                                                                               "טובה" = "4",
+                                                                              "ראויה לציון" = "6",
                                                                               "לא ידוע" = NA,
-                                                                              "מניחה את הדעת" = "2",
+                                                                              "ראויה לשיפור" = "2",
                                                                               "שירתתתי בקבע קצין" = "7"))
 
+gibushon_civil$behavior_new<-ifelse(!is.na(gibushon_civil$behavior_new),gibushon_civil$behavior_new,gibushon_civil$behavior_old)
 
-freq(gibushon_civil$behavior_new2, plot = F,main=colnames(gibushon_civil$behavior_new2),font=2)
-# compare the new and old - verify
-# gibushon_civil$behavior_new<-ifelse(!is.na(gibushon_civil$behavior_new),gibushon_civil$behavior_new,gibushon_civil$behavior_old)
+class(gibushon_civil$behavior_old)
+gibushon_civil$behavior_old<-as.numeric(gibushon_civil$behavior_old)
 
-# Remove Checkmark form plyr package, because it's in conflict with dplyr.*********
-# With complicated packages that load S4 classes & methods, detach command is not 
-# guaranteed to restore everything to exactly the state before the package was loaded.
+class(gibushon_civil$behavior_new)
+gibushon_civil$behavior_new<-as.numeric(gibushon_civil$behavior_new)
+
+gibushon_civil$action_reason<-str_replace_all(gibushon_civil$action_reason, "[[:punct:]]", " ")
+
+gibushon_civil$action_reason <- str_replace_all(gibushon_civil$action_reason, c("החזרה לצה ל   משמעת" = "return to IDF-discipline",
+                                                                                 "החזרה לצה ל  אי התאמה" = "return to IDF-misfit",
+                                                                                 "החזרה לצה ל  הפסקת סיפוח מקורס" = "return to IDF-misfit-termination of annexation from a course",
+                                                                                 "החזרה לצהל מגבלה רפואית" = "return to IDF-medical limitation",
+                                                                                 "החזרה לצהל ע פ בקשת השוטר" = "return to IDF-policeman wish",
+                                                                                 "החזרה לצהל תפקוד לקוי" = "return to IDF-malfunction",
+                                                                                 "התפטרות בהקפאת זכויות   10 2" = "resignation - rights freezing 2 10",
+                                                                                 "התפטרות בהעברת זכויות" = "resignation - rights passing",
+                                                                                 "התפטרות" = "resignation",
+                                                                                 "חוסר  תקן מתאים אישור" = "lack of job",
+                                                                                 "לפי סעיף 20 פיצויי פיטורין" = "article 20",
+                                                                                 "ס 17 תק התקש הפסקת עבודה" = "article 17",
+                                                                                 "סיום שרות חובה לאומי" = "return to IDF-misfit",
+                                                                                 "פיטורין סעיף 12  פחות משנתיים" = "article 12",
+                                                                                 "פיטורין" = "dismissal"))
+
+library(descr)
+freq(gibushon_civil$action_reason, plot = F,main=colnames(gibushon_civil$action_reason),font=2)
+
+gibushon_civil$combat <- str_replace_all(gibushon_civil$combat, c("לא ידוע" = NA, "לא קרבי" = "not fighting", "קרבי" = "fighting"))
+
+
+
+#use only gibushon_civil$behavior_new*******************
+
+# gibushon_civil<-as.data.frame(gibushon_civil)
 
 colnames(gibushon_civil)
 
@@ -814,6 +838,10 @@ for(i in gibushon_civil_zscore_relevant_columns) {
 ncol_zscores<-ncol(gibushon_civil)
 
 # Locating and handling outliers.
+
+# Remove Checkmark form plyr package, because it's in conflict with dplyr.*********
+# With complicated packages that load S4 classes & methods, detach command is not 
+# guaranteed to restore everything to exactly the state before the package was loaded.
 
 library(dplyr)
 
