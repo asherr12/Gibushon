@@ -858,23 +858,24 @@ class(gibushon_civil_outliers)
 library(descr)
 library(psych)
 
-mode<-function(X)
-{
-  temp<-table (as.vector(X))
-  names (temp)[temp==max(temp)]
-}
+# mode<-function(X)
+# {
+#   temp<-table (as.vector(X))
+#   names (temp)[temp==max(temp)]
+# }
 options(width = 71,max.print=30000)
 # The 2 commands after the first command, are for cleaning the output file.
 out<-""
 cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_outliers.txt", sep="", append=F,fill = T)
 suppressWarnings(for(i in 1:ncol(gibushon_civil_outliers)) {
   newresult1<-round(freq(ordered(as.numeric(unlist(gibushon_civil_outliers[[i]]))), plot = F,main=colnames(gibushon_civil_outliers[i]),font=2),2)
-  newresult2<-round(describe(as.numeric(unlist(gibushon_civil_outliers[[i]]))),2)
-  newresult3<-"mode="
-  newresult4<-mode(gibushon_civil_outliers[[i]])
-  newresult5<- "                                                                                               "
+# newresult2<-round(describe(as.numeric(unlist(gibushon_civil_outliers[[i]]))),2)
+# newresult3<-"mode="
+# newresult4<-mode(gibushon_civil_outliers[[i]])
+# newresult5<- "                                                                                               "
   newresult6<- "----------------------------------------------------------------------------"
-  out <- capture.output(newresult1,newresult5,newresult2,newresult3,newresult4,newresult5,newresult6)
+# out <- capture.output(newresult1,newresult5,newresult2,newresult3,newresult4,newresult5,newresult6)
+  out <- capture.output(newresult1,newresult6)
   out[1]<-""
   cat(colnames(gibushon_civil_outliers[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_outliers.txt", append=T,fill = T)
 })
