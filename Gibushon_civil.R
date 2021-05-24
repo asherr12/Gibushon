@@ -884,7 +884,9 @@ write_excel_csv(gibushon_civil,file="C:/Users/USER/Documents/MAMDA/gibushon/gibu
 
 colnames(gibushon_civil[(ncol_before_zscores+1):ncol_zscores])
 
-gibushon_civil[(ncol_before_zscores+1):ncol_zscores][gibushon_civil[(ncol_before_zscores+1):ncol_zscores]>4]<-NA
+# gibushon_civil[(ncol_before_zscores+1):ncol_zscores][gibushon_civil[(ncol_before_zscores+1):ncol_zscores]>4]<-NA
+
+gibushon_civil[(ncol_before_zscores+1):ncol_zscores][gibushon_civil[(ncol_before_zscores+1):ncol_zscores]>6]<-NA
 
 colnames(gibushon_civil)
 
