@@ -709,6 +709,7 @@ gibushon_civil$job[grep("שח ם", gibushon_civil$job)] <- "other"
 gibushon_civil$job[grep("שת מ", gibushon_civil$job)] <- "other"
 gibushon_civil$job[grep("תחקירן", gibushon_civil$job)] <- "other"
 gibushon_civil$job[grep("ארוך", gibushon_civil$job)] <- "other"
+gibushon_civil$job[grep("סופרוויזר", gibushon_civil$job)] <- "other"
 gibushon_civil$rama_religion[grep("אחר", gibushon_civil$rama_religion)] <- "other"
 gibushon_civil$rama_religion[grep("בדואי", gibushon_civil$rama_religion)] <- "Bedouin"
 gibushon_civil$rama_religion[grep("דרוזי", gibushon_civil$rama_religion)] <- "Druze"
@@ -1232,10 +1233,10 @@ gibushon_civil_freq_relevant_columns<-colnames(gibushon_final[c(21:22,24:31,35,4
                                                                    595,599,603,607,611,615,619,623,627,631,635,639,643,649,
                                                                    651,657,659,665,667,673,675,681,683,689,691,708,710,712,
                                                                    714,716,718,720,722,724,726,728,730,732,750,752,754,756,
-                                                                   758,760,762,764,766,768,770,772,774,776,794,795,797:798,
-                                                                   821:822,824,827:834,1066)])
+                                                                   758,760,762,764,766,768,770,772,774,776,794,795,824,
+                                                                   827:830,832:833,1067)])
 out<-""
-cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies.txt", sep="", append=F,fill = T)
+cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_1.txt", sep="", append=F,fill = T)
 suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
   newresult1<-round(freq(ordered(as.numeric(unlist(gibushon_final[[i]]))), plot = F,main=colnames(gibushon_final[i]),font=2),2)
   newresult2<-round(describe(as.numeric(unlist(gibushon_final[[i]]))),2)
@@ -1245,7 +1246,18 @@ suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
   newresult6<- "----------------------------------------------------------------------------"
   out <- capture.output(newresult1,newresult5,newresult2,newresult3,newresult4,newresult5,newresult6)
   out[1]<-""
-  cat(colnames(gibushon_final[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies.txt", append=T,fill = T)
+  cat(colnames(gibushon_final[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_1.txt", append=T,fill = T)
+})
+
+gibushon_civil_freq_relevant_columns<-colnames(gibushon_final[c(797:798,821:822,831,834,835)])
+out<-""
+cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_2.txt", sep="", append=F,fill = T)
+suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
+  newresult1<-freq(ordered(gibushon_final[[i]]), plot = F,main=colnames(gibushon_final[i]),font=2)
+  newresult6<- "----------------------------------------------------------------------------"
+  out <- capture.output(newresult1,newresult6)
+  out[1]<-""
+  cat(colnames(gibushon_final[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_2.txt", append=T,fill = T)
 })
 
 colnames(gibushon_final)[1:1000]
@@ -1674,7 +1686,7 @@ library(psych)
 options(width = 71,max.print=30000)
 round(freq(ordered(as.numeric(unlist(gibushon_civil$decision))), plot = F,main=colnames(gibushon_civil$decision),font=2),2)
 round(describe(as.numeric(unlist(gibushon$ac_final_grade))),2)
-freq(gibushon_civil$gender, plot = F,main=colnames(gibushon_civil$gender),font=2)
+freq(gibushon_civil$job, plot = F,main=colnames(gibushon_civil$job),font=2)
 freq(gibushon_civil$rama_gender, plot = F,main=colnames(gibushon_civil$rama_gender),font=2)
 freq(gibushon_civil$gender, plot = F,main=colnames(gibushon_civil$gender),font=2)
 freq(gibushon_civil$general_gender, plot = F,main=colnames(gibushon_civil$general_gender),font=2)
