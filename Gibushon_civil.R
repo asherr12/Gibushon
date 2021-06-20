@@ -1,4 +1,5 @@
 
+
 library(readr)
 locale("he")
 
@@ -274,36 +275,39 @@ n_occur<-data.frame(table(criteria_merged$personal_number))
 n_occur[n_occur$Freq>1,]
 
 # Merge predictors and criteria
-all_policemen_07.04.2021<-read_csv("Q:/04_Mehkar/18_asher/all_policemen_07.04.2021.csv",locale = locale(date_names = "he", encoding = "ISO-8859-8"))
-colnames(all_policemen_07.04.2021)[1] <- "personal_number"
-colnames(all_policemen_07.04.2021)[2] <- "id"
-colnames(all_policemen_07.04.2021)[6] <- "job"
-colnames(all_policemen_07.04.2021)[8] <- "gender"
-colnames(all_policemen_07.04.2021)[30] <- "job_date"
+all_policemen_03.06.2021<-read_csv("Q:/04_Mehkar/18_asher/all_policemen_03.06.2021.csv",locale = locale(date_names = "he", encoding = "ISO-8859-8"))
+colnames(all_policemen_03.06.2021)[1] <- "personal_number"
+colnames(all_policemen_03.06.2021)[2] <- "id"
+colnames(all_policemen_03.06.2021)[7] <- "age"
+colnames(all_policemen_03.06.2021)[8] <- "gender"
+colnames(all_policemen_03.06.2021)[10] <- "sector"
+colnames(all_policemen_03.06.2021)[15] <- "tifkud"
+colnames(all_policemen_03.06.2021)[16] <- "job"
+colnames(all_policemen_03.06.2021)[17] <- "job_date"
 
 # The next change was done manually in the file because it takes very long time.
-# for(i in 1:nrow(all_policemen_07.04.2021)){
-#   all_policemen_07.04.2021[i,]$job_date<-gsub("9999","2020",all_policemen_07.04.2021[i,]$job_date)}
+# for(i in 1:nrow(all_policemen_03.06.2021)){
+#   all_policemen_03.06.2021[i,]$job_date<-gsub("9999","2020",all_policemen_03.06.2021[i,]$job_date)}
 
-n_occur<-data.frame(table(all_policemen_07.04.2021$id))
+n_occur<-data.frame(table(all_policemen_03.06.2021$id))
 n_occur[n_occur$Freq>1,]
-class(all_policemen_07.04.2021$job_date)
-all_policemen_07.04.2021$job_date<-as.Date(as.character(all_policemen_07.04.2021$job_date),format="%d/%m/%Y")
+class(all_policemen_03.06.2021$job_date)
+all_policemen_03.06.2021$job_date<-as.Date(as.character(all_policemen_03.06.2021$job_date),format="%d/%m/%Y")
 library (data.table)
-all_policemen_07.04.2021<-setDT(all_policemen_07.04.2021)[,.SD[which.max(job_date)],keyby=id]
-n_occur<-data.frame(table(all_policemen_07.04.2021$id))
+all_policemen_03.06.2021<-setDT(all_policemen_03.06.2021)[,.SD[which.max(job_date)],keyby=id]
+n_occur<-data.frame(table(all_policemen_03.06.2021$id))
 n_occur[n_occur$Freq>1,]
 
 library(dplyr)
-filtered_all_policemen_07.04.2021 <- all_policemen_07.04.2021 %>%
-  select (personal_number,id,gender,job)
+filtered_all_policemen_03.06.2021 <- all_policemen_03.06.2021 %>%
+  select (personal_number,id,age,job,gender,sector,tifkud,job,job_date)
 
 sum(is.na(criteria_merged$personal_number))
 
 filtered_criteria_merged=criteria_merged%>%
   filter(!is.na(personal_number))
 
-criteria_merged_all_policemen<-merge(filtered_criteria_merged,filtered_all_policemen_07.04.2021,by=c("personal_number"), all.x=T, all.y=F,sort = FALSE)
+criteria_merged_all_policemen<-merge(filtered_criteria_merged,filtered_all_policemen_03.06.2021,by=c("personal_number"), all.x=T, all.y=F,sort = FALSE)
 nrow(criteria_merged_all_policemen)
 sum(!is.na(criteria_merged_all_policemen$id))
 class(criteria_merged_all_policemen$id)
@@ -390,10 +394,10 @@ colnames(rama_2012_2019)[7] <- "rama_age"
 colnames(rama_2012_2019)[8] <- "rama_date"
 colnames(rama_2012_2019)[10] <- "rama_score"
 
-class(gibushon$rama_age)
-gibushon$rama_age<-as.numeric(gibushon$rama_age)
-class(gibushon$rama_score)
-gibushon$rama_score<-as.numeric(gibushon$rama_score)
+class(rama_2012_2019$rama_age)
+rama_2012_2019$rama_age<-as.numeric(rama_2012_2019$rama_age)
+class(rama_2012_2019$rama_score)
+rama_2012_2019$rama_score<-as.numeric(rama_2012_2019$rama_score)
 
 n_occur<-data.frame(table(rama_2012_2019$id))
 n_occur[n_occur$Freq>1,]
@@ -593,7 +597,7 @@ n_occur[n_occur$Freq>1,]
 library (data.table)
 quit<-setDT(quit)[,.SD[which.max(action_start_date)],keyby=id]
 n_occur<-data.frame(table(quit$id))
-n_occur[n_occur$Freq>1,]n_occur[n_occur$Freq>1,]
+n_occur[n_occur$Freq>1,]
 
 quit$action_end_date<-data.frame(lapply(quit$action_end_date,function(x) {gsub("9999","2021",x)}))
 
@@ -607,7 +611,93 @@ class(gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components$id)
 gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit <- merge(gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components,quit_filtered,by=c("id"), all.x=T, all.y=F,sort = FALSE)
 gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit<-as.data.frame(gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit)
 
-gibushon<-gibushon_mamda_criteria_rama_eq_quit_decision_EichutGrade_components_quit
+#absences
+
+absences_2012_2013<-read_csv("Q:/04_Mehkar/18_asher/Gibushon/absences_2012_2013.csv",locale = locale(date_names = "he", encoding = "ISO-8859-8"))
+colnames(absences_2012_2013)[1] <- "personal_number"
+colnames(absences_2012_2013)[2] <- "type"
+colnames(absences_2012_2013)[3] <- "hiyuv_days"
+colnames(absences_2012_2013)[4] <- "non_hiyuv_days"
+library (data.table)
+absences_2012_2013<-data.frame(lapply(absences_2012_2013,function(x) {gsub("חופשה","days_off",x)}))
+absences_2012_2013<-data.frame(lapply(absences_2012_2013,function(x) {gsub("מחלה","sick_days",x)}))
+class(absences_2012_2013$hiyuv_days)
+absences_2012_2013$hiyuv_days<-as.numeric(absences_2012_2013$hiyuv_days)
+class(absences_2012_2013$non_hiyuv_days)
+absences_2012_2013$non_hiyuv_days<-as.numeric(absences_2012_2013$non_hiyuv_days)
+absences_2012_2013$days_2012_2013<-absences_2012_2013$hiyuv_days
+class(absences_2012_2013$days_2012_2013)
+
+
+absences_2014_2019<-read_csv("Q:/04_Mehkar/18_asher/Gibushon/absences_2014_2019.csv",locale = locale(date_names = "he", encoding = "ISO-8859-8"))
+colnames(absences_2014_2019)[1] <- "personal_number"
+colnames(absences_2014_2019)[2] <- "type"
+colnames(absences_2014_2019)[3] <- "days_2014_2019"
+library (data.table)
+absences_2014_2019<-data.frame(lapply(absences_2014_2019,function(x) {gsub("חופשה","days_off",x)}))
+absences_2014_2019<-data.frame(lapply(absences_2014_2019,function(x) {gsub("מחלה","sick_days",x)}))
+class(absences_2014_2019$days_2014_2019)
+absences_2014_2019$days_2014_2019<-as.numeric(as.character(absences_2014_2019$days_2014_2019))
+
+filtered_absences_2012_2013_sick_days=absences_2012_2013%>%
+  filter(type=="sick_days")%>%
+  select(personal_number,days_2012_2013)
+colnames(filtered_absences_2012_2013_sick_days)[2]<-"sick_days_2012_2013"
+
+filtered_absences_2012_2013_days_off=absences_2012_2013%>%
+  filter(type=="days_off")%>%
+  select(personal_number,days_2012_2013)
+colnames(filtered_absences_2012_2013_days_off)[2]<-"days_off_2012_2013"
+
+
+filtered_absences_2014_2019_sick_days=absences_2014_2019%>%
+  filter(type=="sick_days")%>%
+  select(personal_number,days_2014_2019)
+colnames(filtered_absences_2014_2019_sick_days)[2]<-"sick_days_2014_2019"
+
+filtered_absences_2014_2019_days_off=absences_2014_2019%>%
+  filter(type=="days_off")%>%
+  select(personal_number,days_2014_2019)
+colnames(filtered_absences_2014_2019_days_off)[2]<-"days_off_2014_2019"
+
+filtered_absences_2012_2013_sick_days_days_off <- merge(filtered_absences_2012_2013_sick_days,filtered_absences_2012_2013_days_off,by=c("personal_number"), all.x=T, all.y=T,sort = FALSE)
+filtered_absences_2014_2019_sick_days_days_off <- merge(filtered_absences_2014_2019_sick_days,filtered_absences_2014_2019_days_off,by=c("personal_number"), all.x=T, all.y=T,sort = FALSE)
+filtered_absences_2012_2013_2014_2019_sick_days_days_off <- merge(filtered_absences_2012_2013_sick_days_days_off,filtered_absences_2014_2019_sick_days_days_off,by=c("personal_number"), all.x=T, all.y=T,sort = FALSE)
+
+absences <- filtered_absences_2012_2013_2014_2019_sick_days_days_off
+
+# detach plyr and dplyr packages and reattach dplyr************
+library(dplyr)
+absences = absences %>%
+  rowwise() %>%
+  mutate(sick_days = sum(sick_days_2012_2013,sick_days_2014_2019,na.rm = T),
+         days_off = sum(days_off_2012_2013,days_off_2014_2019,na.rm = T))%>%
+  select(personal_number,sick_days,days_off)
+
+n_occur<-data.frame(table(absences$personal_number))
+n_occur[n_occur$Freq>1,]
+
+filtered_all_policemen_03.06.2021_id = filtered_all_policemen_03.06.2021%>%
+  select(personal_number,id)%>%
+  filter(!is.na(id))
+
+absences <- merge(absences,filtered_all_policemen_03.06.2021_id,by=c("personal_number"), all.x=T, all.y=F,sort = FALSE)
+
+
+#********arrived here**********
+
+library(dplyr)
+absences_filtered=absences%>%
+  select(id,sick_days,days_off)
+
+class(absences_filtered$id)
+# absences_filtered$id<-as.numeric(absences_filtered$id)
+class(gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit$id)
+gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit_absences <- merge(gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit,absences_filtered,by=c("id"), all.x=T, all.y=F,sort = FALSE)
+class(gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit_absences)
+#gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit_absences<-as.data.frame(gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit_absences)
+
+gibushon<-gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit_absences
 
 #Remove spaces.
 
@@ -617,7 +707,8 @@ is.na(gibushon)<-gibushon==''
 
 class(gibushon)
 
-gibushon <- as.data.frame(gibushon)
+#gibushon <- as.data.frame(gibushon)
+
 
 # ***************** From here the processing was done on the civil PC. **********************
 
