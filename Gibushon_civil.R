@@ -1102,22 +1102,15 @@ write_excel_csv(gibushon_civil_for_Qlik_View,file="C:/Users/USER/Documents/MAMDA
 
 filtered_gibushon_civil_diff = gibushon_civil %>%
   rowwise() %>%
-  mutate(tkufatit_14_zscore = ifelse(date.tkufatit_14_diff< 518,NA,tkufatit_14_zscore),
-         tkufatit_15_zscore = ifelse(date.tkufatit_15_diff< 196,NA,tkufatit_15_zscore),
-         final.score.2015_zscore = ifelse(date.period.eval.2015_diff< 230,NA,final.score.2015_zscore),
-         final.score.2017_zscore = ifelse(date.period.eval.2017_diff< 105,NA,final.score.2017_zscore),
-         final.score.2018_zscore = ifelse(date.period.eval.2018_diff< 113,NA,final.score.2018_zscore),
-         row_score_2019 = ifelse(date.tkufatit_2019_diff< 91,NA,row_score_2019),
-         am_2010 = ifelse(TaarichHavara_am_2010_diff< 91,NA,am_2010),
-         am_2012 = ifelse(TaarichHavara_am_2012_diff< 91,NA,am_2012),
-         am_2015 = ifelse(TaarichHavara_am_2015_diff< 196,NA,am_2015),
-         am_2015_special = ifelse(TaarichHavara_am_2015_diff< 196,NA,am_2015_special),
-         am_2018 = ifelse(TaarichHavara_am_2018_diff< 91,NA,am_2018),
-         am_2018_special = ifelse(TaarichHavara_am_2010_diff< 91,NA,am_2018_special),
-         cf_2010 = ifelse(TaarichHavara_cf_2010_diff< 475,NA,cf_2010),
-         cf_2012 = ifelse(TaarichHavara_cf_2012_diff< 475,NA,cf_2012),
-         cf_2015 = ifelse(TaarichHavara_cf_2015_diff< 475,NA,cf_2015),
-         cf_2018 = ifelse(TaarichHavara_cf_2018_diff< 92,NA,cf_2018))
+  mutate(tkufatit_14_zscore = ifelse(date.tkufatit_14_diff>169 & date.tkufatit_14_diff<943,tkufatit_14_zscore,NA),
+         final.score.2015_zscore = ifelse(date.period.eval.2015_diff>380 & date.period.eval.2015_diff<1367,final.score.2015_zscore,NA),
+         final.score.2017_zscore = ifelse(date.period.eval.2017_diff>1170 & date.period.eval.2017_diff<1702,final.score.2017_zscore,NA),
+         final.score.2018_zscore = ifelse(date.period.eval.2018_diff>1501 & date.period.eval.2018_diff<2437,final.score.2018_zscore,NA),
+         row_score_2019 = ifelse(date.tkufatit_2019_diff>1187 & date.tkufatit_2019_diff<2041,row_score_2019,NA),
+         am_2015 = ifelse(TaarichHavara_am_2015_diff>331 & TaarichHavara_am_2015_diff<1477,am_2015,NA),
+         am_2018 = ifelse(TaarichHavara_am_2018_diff>1636 & TaarichHavara_am_2018_diff<2061,am_2018,NA),
+         am_2018_special = ifelse(TaarichHavara_am_2018_diff>918 & TaarichHavara_am_2018_diff<2342,am_2018_special,NA),
+         cf_2018 = ifelse(TaarichHavara_cf_2018_diff>1128 & TaarichHavara_cf_2018_diff>2308,cf_2018,NA))
 
 class(filtered_gibushon_civil_diff)
 filtered_gibushon_civil_diff<-as.data.frame(filtered_gibushon_civil_diff)
@@ -1249,17 +1242,17 @@ head(filtered_gibushon_civil_diff$TaarichHavara_am_2015_diff,20)
 
 filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
   rowwise() %>%
-  mutate(am = mean(c(am_2010,am_2012,am_2015,am_2018),na.rm = T),
-         am_special = mean(c(am_2015_special,am_2018_special),na.rm = T),
-         cf = mean(c(cf_2010,cf_2012,cf_2015,cf_2018),na.rm = T),
-         tkufatit = mean(c(final.score.2015_zscore,final.score.2017_zscore,tkufatit_14_zscore,final.score.2018_zscore,row_score_2019_zscore),na.rm = T))
+  mutate(am = mean(c(am_2015,am_2018),na.rm = T),
+         am_special = mean(am_2018_special,na.rm = T),
+         cf = mean(cf_2018,na.rm = T),
+         tkufatit = mean(c(tkufatit_14_zscore,final.score.2015_zscore,final.score.2017_zscore,final.score.2018_zscore,row_score_2019_zscore),na.rm = T))
 
 # next commands are for range restriction (later)
 filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
   rowwise() %>%
-  mutate(am_not_na = sum(!is.na(c(am_2010,am_2012,am_2015,am_2018))),
-         cf_not_na = sum(!is.na(c(cf_2010,cf_2012,cf_2015,cf_2018))),
-         tkufatit_not_na = sum(!is.na(c(final.score.2015_zscore,final.score.2017_zscore,tkufatit_14_zscore,final.score.2018_zscore,row_score_2019))))
+  mutate(am_not_na = sum(!is.na(c(am_2015,am_2018))),
+         cf_not_na = sum(!is.na(cf_2018)),
+         tkufatit_not_na = sum(!is.na(c(tkufatit_14_zscore,final.score.2015_zscore,final.score.2017_zscore,final.score.2018_zscore,row_score_2019))))
 
 #Second high order criteria (listwise deletion)
 
@@ -1281,20 +1274,14 @@ nrow(filtered_gibushon_civil_diff)
 # Criteria_count
 
 filtered_gibushon_civil_diff$critria_count <- 
-  rowSums(!is.na(filtered_gibushon_civil_diff[c("final.score.2015_zscore",
+  rowSums(!is.na(filtered_gibushon_civil_diff[c("tkufatit_14_zscore",
+                                                "final.score.2015_zscore",
                                                 "final.score.2017_zscore",
                                                 "final.score.2018_zscore",
-                                                "tkufatit_14_zscore",
-                                                "row_score_2019",
-                                                "am_2010",
-                                                "am_2012",
+                                                "row_score_2019_zscore",
                                                 "am_2015",
-                                                "am_2015_special",
                                                 "am_2018",
                                                 "am_2018_special",
-                                                "cf_2010",
-                                                "cf_2012",
-                                                "cf_2015",
                                                 "cf_2018")]))
 
 #qa
@@ -1307,6 +1294,10 @@ filtered_gibushon_civil_diff_criteria_count = filtered_gibushon_civil_diff %>%
 head(filtered_gibushon_civil_diff_criteria_count$critria_count,100)
 
 # seniority from A.C.
+
+
+# arrived here############################################
+###### Fix according to QlikView ***************************************************************************
 
 filtered_gibushon_civil_diff_criteria_count = filtered_gibushon_civil_diff_criteria_count %>%
   rowwise() %>%
