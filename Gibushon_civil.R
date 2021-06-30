@@ -1269,7 +1269,8 @@ row.names(gibushon_final_corr_output)<-gibushon_final_relevant_predictors_column
 for(i in 1:(ncol(gibushon_final_corr_output)/4)){
   colnames(gibushon_final_corr_output)[i*4] <- ""
 }
-write.csv(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_p_c_corr_output.csv")
+# write.csv(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_p_c_corr_output.csv")
+write.xlsx(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_p_c_corr_output.xlsx")
 
 
 # Correlations predictors-criteria on gibushon_final_filtered
@@ -1306,6 +1307,9 @@ for(i in 1:(ncol(gibushon_final_filtered_corr_output)/4)){
   colnames(gibushon_final_filtered_corr_output)[i*4] <- ""
 }
 # write.csv(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_p_c_corr_output_0.253+.csv")
+write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_p_c_corr_output.xlsx")
+
+
 
 cbind.fill<-function(...){
   nm <- list(...) 
@@ -1349,7 +1353,7 @@ row.names(gibushon_final_spcorr_output)<-gibushon_final_relevant_predictors_colu
 for(i in 1:(ncol(gibushon_final_spcorr_output)/4)){
   colnames(gibushon_final_spcorr_output)[i*4] <- ""
 }
-#write.csv(gibushon_final_spcorr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_spcorr_output_p-c_0.25+.csv")
+# write.csv(gibushon_final_spcorr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_spcorr_output_p-c_0.25+.csv")
 write.xlsx(gibushon_final_spcorr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_spcorr_output_p-c.xlsx")
 
 
@@ -1383,7 +1387,8 @@ row.names(gibushon_final_corr_output)<-gibushon_final_relevant_predictors_column
 for(i in 1:(ncol(gibushon_final_corr_output)/4)){
   colnames(gibushon_final_corr_output)[i*4] <- ""
 }
-write.csv(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_p_p_corr_output_1+.csv")
+# write.csv(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_p_p_corr_output_1+.csv")
+write..xlsx (gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_p_p_corr_output.xlsx")
 
 
 # Correlations criteria-criteria
@@ -1416,7 +1421,8 @@ row.names(gibushon_final_corr_output)<-gibushon_final_relevant_predictors_column
 for(i in 1:(ncol(gibushon_final_corr_output)/4)){
   colnames(gibushon_final_corr_output)[i*4] <- ""
 }
-write.csv(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_c_c_corr_output_1+.csv")
+# write.csv(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_c_c_corr_output_1+.csv")
+write.xlsx(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_c_c_corr_output.xlsx")
 
 
 # Semi-partial correlations predictors-criteria - seniority_ac
@@ -1467,7 +1473,8 @@ row.names(gibushon_final_spcorr_output)<-gibushon_final_relevant_predictors_colu
 for(i in 1:(ncol(gibushon_final_spcorr_output)/4)){
   colnames(gibushon_final_spcorr_output)[i*4] <- ""
 }
-write.csv(gibushon_final_spcorr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_spcorr_output_p-c_1+.csv")
+# write.csv(gibushon_final_spcorr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_spcorr_output_p-c_1+.csv")
+write.xlsx(gibushon_final_spcorr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_spcorr_output_p-c.xlsx")
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 # Range restriction.
