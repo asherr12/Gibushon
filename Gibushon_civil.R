@@ -2,7 +2,7 @@
 library(readr)
 locale("he")
 
-# Before the next column, split the file (in the file itself-not by code) to columns by: Data, Text to Columns...
+# Before the next command, split the file (in the file itself-not by code) to columns by: Data, Text to Columns...
 gibushon_mamda<-read_csv("Q:/04_Mehkar/18_asher/Gibushon/gibushon_mamda_2012_2019.csv",locale = locale(date_names = "he", encoding = "ISO-8859-8"))
 gibushon_mamda<-as.data.frame(gibushon_mamda)
 
