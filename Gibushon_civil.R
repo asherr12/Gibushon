@@ -388,20 +388,20 @@ gibushon_mamda_criteria<-as.data.frame(gibushon_mamda_criteria)
 library(dplyr)
 gibushon_mamda_criteria = gibushon_mamda_criteria %>%
   rowwise() %>%
-  mutate(date.tkufatit_14_diff = date.tkufatit_14-GibDate,
-         date.tkufatit_15_diff = date.tkufatit_15-GibDate,
-         date.period.eval.2015_diff = date.period.eval.2015-GibDate,
-         date.period.eval.2017_diff = date.period.eval.2017-GibDate,
-         date.period.eval.2018_diff = date.period.eval.2018-GibDate,
-         TaarichHavara_am_2010_diff = TaarichHavara_am_2010-GibDate,
-         TaarichHavara_am_2012_diff = TaarichHavara_am_2012-GibDate,
-         TaarichHavara_am_2015_diff = TaarichHavara_am_2015-GibDate,
-         TaarichHavara_am_2018_diff = TaarichHavara_am_2018-GibDate,
-         TaarichHavara_cf_2010_diff = TaarichHavara_cf_2010-GibDate,
-         TaarichHavara_cf_2012_diff = TaarichHavara_cf_2012-GibDate,
-         TaarichHavara_cf_2015_diff = TaarichHavara_cf_2015-GibDate,
-         TaarichHavara_cf_2018_diff = TaarichHavara_cf_2018-GibDate,
-         date.tkufatit_2019_diff = date.tkufatit_2019-GibDate)
+  mutate(date.tkufatit_14_diff = ifelse(!is.na(tkufatit_14) & (date.tkufatit_14-GibDate)>0,(date.tkufatit_14-GibDate),NA),
+         date.tkufatit_15_diff = ifelse(!is.na(tkufatit_15) & (date.tkufatit_15-GibDate)>0,(date.tkufatit_15-GibDate),NA),
+         date.period.eval.2015_diff = ifelse(!is.na(date.period.eval.2015) & (date.period.eval.2015-GibDate)>0,(date.period.eval.2015-GibDate),NA),
+         date.period.eval.2017_diff = ifelse(!is.na(date.period.eval.2017) & (date.period.eval.2017-GibDate)>0,(date.period.eval.2017-GibDate),NA),
+         date.period.eval.2018_diff = ifelse(!is.na(date.period.eval.2018) & (date.period.eval.2018-GibDate)>0,(date.period.eval.2018-GibDate),NA),
+         TaarichHavara_am_2010_diff = ifelse(!is.na(TaarichHavara_am_2010) & (TaarichHavara_am_2010-GibDate)>0,(TaarichHavara_am_2010-GibDate),NA),
+         TaarichHavara_am_2012_diff = ifelse(!is.na(TaarichHavara_am_2012) & (TaarichHavara_am_2012-GibDate)>0,(TaarichHavara_am_2012-GibDate),NA),
+         TaarichHavara_am_2015_diff = ifelse(!is.na(TaarichHavara_am_2015) & (TaarichHavara_am_2015-GibDate)>0,(TaarichHavara_am_2015-GibDate),NA),
+         TaarichHavara_am_2018_diff = ifelse(!is.na(TaarichHavara_am_2018) & (TaarichHavara_am_2018-GibDate)>0,(TaarichHavara_am_2018-GibDate),NA),
+         TaarichHavara_cf_2010_diff = ifelse(!is.na(TaarichHavara_cf_2010) & (TaarichHavara_cf_2010-GibDate)>0,(TaarichHavara_cf_2010-GibDate),NA),
+         TaarichHavara_cf_2012_diff = ifelse(!is.na(TaarichHavara_cf_2012) & (TaarichHavara_cf_2012-GibDate)>0,(TaarichHavara_cf_2012-GibDate),NA),
+         TaarichHavara_cf_2015_diff = ifelse(!is.na(TaarichHavara_cf_2015) & (TaarichHavara_cf_2015-GibDate)>0,(TaarichHavara_cf_2015-GibDate),NA),
+         TaarichHavara_cf_2018_diff = ifelse(!is.na(TaarichHavara_cf_2018) & (TaarichHavara_cf_2018-GibDate)>0,(TaarichHavara_cf_2018-GibDate),NA),
+         date.tkufatit_2019_diff = ifelse(!is.na(date.tkufatit_2019) & (date.tkufatit_2019-GibDate)>0,(date.tkufatit_2019-GibDate),NA))
 
 #RAMA
 rama_2012_2019<-read_csv("Q:/04_Mehkar/18_asher/Gibushon/rama_2012_2019.csv",locale = locale(date_names = "he", encoding = "ISO-8859-8"))
@@ -913,10 +913,6 @@ ncol_before_zscores<-ncol(gibushon_civil)
 # 587 591 595 599 603 607 611 615 619 623 627 631 635 639 643 649 651 657 659 665 667 673 675 681 683
 # 689 691 708 710 712 714 716 718 720 722 724 726 728 730 732 750 752 754 756 758 760 762 764 766 768
 # 770 772 774 776 794 795 831 832 833 834 840 841",fixed=T)
-
-# colnames(gibushon_civil)[76]<-"final.score.2015" # 52+24=76
-# colnames(gibushon_civil)[103]<-"final.score.2017" # 78+25=103
-
 
 #arrived here**************************************************************
 
