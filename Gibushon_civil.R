@@ -1019,7 +1019,7 @@ gibushon_civil = gibushon_civil %>%
          NPct3_am_2015_special = ifelse(is.na(RAvg_am_2015) & (!is.na(NPct1_am_2015_zscore) | !is.na(NPct2_am_2015_zscore) | !is.na(NPct3_am_2015_zscore)),NPct3_am_2015_zscore,NA))
 
 class(gibushon_civil)
-gibushon_civil<-as.data.frame(gibushon_civil)
+# gibushon_civil<-as.data.frame(gibushon_civil)
 
 gibushon_civil[sapply(gibushon_civil, is.nan)] <- NA
 
@@ -1097,11 +1097,11 @@ filtered_gibushon_civil_diff<-as.data.frame(filtered_gibushon_civil_diff)
 
 #qa
 
-head(gibushon_civil$am_2015,100)
+head(gibushon_civil$am_2015,1000)
 
-head(filtered_gibushon_civil_diff$am_2015,100)
+head(filtered_gibushon_civil_diff$am_2015,1000)
 
-head(filtered_gibushon_civil_diff$TaarichHavara_am_2015_diff,100)
+head(filtered_gibushon_civil_diff$TaarichHavara_am_2015_diff,1000)
 
 #First high order criteria
 
@@ -1112,9 +1112,10 @@ filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
          tkufatit = rowMeans(select(., tkufatit_14_zscore,final.score.2015_zscore,final.score.2017_zscore,final.score.2018_zscore,row_score_2019_zscore),na.rm = T))
 
 
-gibushon_civil = gibushon_civil %>%
-  mutate(NPct_am_2018 = rowMeans(select(., NPct1_am_2018_zscore,NPct2_am_2018_zscore,NPct3_am_2018_zscore),na.rm = T),
-         NPct_am_2018_special = rowMeans(select(., NPct1_am_2018_special,NPct2_am_2018_special,NPct3_am_2018_special),na.rm = T))
+head(filtered_gibushon_civil_diff$am,1000)
+head(filtered_gibushon_civil_diff$am_special,1000)
+head(filtered_gibushon_civil_diff$cf,1000)
+head(filtered_gibushon_civil_diff$tkufatit,1000)
 
 # next commands are for range restriction (later)
 filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
@@ -1127,11 +1128,12 @@ filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
 
 filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
   rowwise() %>%
-  mutate(amcf = ifelse(!is.na(am) & !is.na(am_special), rowMeans(select(., am,am_special,cf),na.rm = F),
-                       ifelse(!is.na(am),mean(c(am,cf),na.rm = F),mean(c(am_special,cf),na.rm = F))),
-         tkufatitamcf = rowMeans(select(., tkufatit,amcf),na.rm = F),
-         tkufatitam = ifelse(!is.na(am) & !is.na(am_special), rowMeans(select(., am,am_special,tkufatit),na.rm = F),
-                             ifelse(!is.na(am),rowMeans(select(., am,tkufatit),na.rm = F),rowMeans(select(., am_special,tkufatit),na.rm = F))))
+  mutate(amcf = ifelse(!is.na(am) & !is.na(am_special) & !is.na(cf), rowMeans(select(., am,am_special,cf),na.rm = F)),
+                ifelse(!is.na(am) & !is.na(cf), rowMeans(select(., am,cf),na.rm = F),ifelse(!is.na(am_special) & !is.na(cf),mean(c(am_special,cf),na.rm = F)),NA),
+         tkufatitamcf = ifelse(!is.na(tkufatit) & !is.na(amcf),rowMeans(select(., tkufatit,amcf),na.rm = F),NA),
+           tkufatitam = ifelse(!is.na(am) & !is.na(am_special) & !is.na(tkufatit), rowMeans(select(., am,am_special,tkufatit),na.rm = F)),
+                        ifelse(!is.na(am) & !is.na(tkufatit),rowMeans(select(., am,tkufatit),na.rm = F),
+                        ifelse(!is.na(am_special) & !is.na(tkufatit),rowMeans(select(., am_special,tkufatit),na.rm = F))),NA)
 
 class(filtered_gibushon_civil_diff)
 filtered_gibushon_civil_diff<-as.data.frame(filtered_gibushon_civil_diff)
