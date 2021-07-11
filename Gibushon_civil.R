@@ -1126,6 +1126,8 @@ filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
 
 #Second high order criteria (listwise deletion)
 
+##################arrived here*******************
+
 filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
   rowwise() %>%
   mutate(amcf = ifelse(!is.na(am) & !is.na(am_special) & !is.na(cf), rowMeans(select(., am,am_special,cf),na.rm = F)),
@@ -1134,6 +1136,10 @@ filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
            tkufatitam = ifelse(!is.na(am) & !is.na(am_special) & !is.na(tkufatit), rowMeans(select(., am,am_special,tkufatit),na.rm = F)),
                         ifelse(!is.na(am) & !is.na(tkufatit),rowMeans(select(., am,tkufatit),na.rm = F),
                         ifelse(!is.na(am_special) & !is.na(tkufatit),rowMeans(select(., am_special,tkufatit),na.rm = F))),NA)
+
+head(filtered_gibushon_civil_diff$amcf,1000)
+head(filtered_gibushon_civil_diff$tkufatitamcf ,1000)
+head(filtered_gibushon_civil_diff$tkufatitam,1000)
 
 class(filtered_gibushon_civil_diff)
 filtered_gibushon_civil_diff<-as.data.frame(filtered_gibushon_civil_diff)
