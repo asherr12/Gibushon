@@ -1395,8 +1395,10 @@ cbind.fill<-function(...){
 }
 
 library(ppcor)
-gibushon_final_relevant_predictors_columns_for_spcorrelations <- gibushon_final[c(828,842:850,853:858,831:834)]
-gibushon_final_relevant_predictors_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(828,842:850,853:858,831:834)]))
+# gibushon_final_relevant_predictors_columns_for_spcorrelations <- gibushon_final[c(828,842:850,853:858,831:834)]
+# gibushon_final_relevant_predictors_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(828,842:850,853:858,831:834)]))
+gibushon_final_relevant_predictors_columns_for_spcorrelations <- gibushon_final[c(842:850,853:858,831:834)]
+gibushon_final_relevant_predictors_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(842:850,853:858,831:834)]))
 gibushon_final_relevant_criteria_columns_for_spcorrelations <- gibushon_final[c(1047:1053,801,1023:1024)]
 gibushon_final_relevant_criteria_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(1047:1053,801,1023:1024)]))
 gibushon_final_spcorr_output<-data.frame()[15,]
@@ -1467,7 +1469,7 @@ for(i in 1:(ncol(gibushon_final_filtered_corr_output)/4)){
   colnames(gibushon_final_filtered_corr_output)[i*4] <- ""
 }
 # write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_p_c_corr_output.xlsx")
-write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_no_yasam_p_c_corr_output.xlsx")
+# write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_no_yasam_p_c_corr_output.xlsx")
 write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_no_detective_p_c_corr_output.xlsx")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 # Range restriction.
