@@ -1122,7 +1122,6 @@ filtered_gibushon_civil_diff<-as.data.frame(filtered_gibushon_civil_diff)
 
 filtered_gibushon_civil_diff[sapply(filtered_gibushon_civil_diff, is.nan)] <- NA
 
-
 # next commands are for range restriction (later)
 filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
   rowwise() %>%
@@ -1130,16 +1129,25 @@ filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
          cf_not_na = sum(!is.na(cf_2018)),
          tkufatit_not_na = sum(!is.na(c(tkufatit_14_zscore,final.score.2015_zscore,final.score.2017_zscore,final.score.2018_zscore,row_score_2019))))
 
+class(filtered_gibushon_civil_diff)
+filtered_gibushon_civil_diff<-as.data.frame(filtered_gibushon_civil_diff)
+
+filtered_gibushon_civil_diff[sapply(filtered_gibushon_civil_diff, is.nan)] <- NA
+
 #Second high order criteria (listwise deletion)
 
 filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
   mutate(amcf = ifelse((!is.na(am) & !is.na(am_special) & !is.na(cf)), rowMeans(select(., am,am_special,cf),na.rm = F),
                 ifelse((!is.na(am) & !is.na(cf)), rowMeans(select(., am,cf),na.rm = F),
                 ifelse((!is.na(am_special) & !is.na(cf)),rowMeans(select(., am_special,cf),na.rm = F),NA))),
- tkufatitamcf = ifelse((!is.na(tkufatit) & !is.na(amcf)),rowMeans(select(., tkufatit,amcf),na.rm = F),NA),
+# tkufatitamcf = ifelse((!is.na(tkufatit) & !is.na(amcf)),rowMeans(select(., tkufatit,amcf),na.rm = F),NA),
+# Becouse of an error, I separated this row from the others. 
    tkufatitam = ifelse((!is.na(am) & !is.na(am_special) & !is.na(tkufatit)), rowMeans(select(., am,am_special,tkufatit),na.rm = F),
                 ifelse((!is.na(am) & !is.na(tkufatit)),rowMeans(select(., am,tkufatit),na.rm = F),
                 ifelse((!is.na(am_special) & !is.na(tkufatit)),rowMeans(select(., am_special,tkufatit),na.rm = F),NA))))
+
+filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
+  mutate(tkufatitamcf = ifelse((!is.na(tkufatit) & !is.na(amcf)),rowMeans(select(., tkufatit,amcf),na.rm = F),NA))
 
 head(filtered_gibushon_civil_diff$amcf,1000)
 head(filtered_gibushon_civil_diff$tkufatitamcf ,1000)
@@ -1151,9 +1159,6 @@ class(filtered_gibushon_civil_diff)
 filtered_gibushon_civil_diff[sapply(filtered_gibushon_civil_diff, is.nan)] <- NA
 
 nrow(filtered_gibushon_civil_diff)
-
-#arrived here********************************************************************************
-
 
 # Criteria_count
 
@@ -1230,21 +1235,23 @@ mode<-function(X)
   temp<-table (as.vector(X))
   names (temp)[temp==max(temp)]
 }
+
 options(width = 71,max.print=30000)
 # # The 2 commands after the first command, are for cleaning the output file.
-gibushon_civil_freq_relevant_columns<-colnames(gibushon_final[c(21:22,24:33,35,44,48:49,52,78,104,106,107,122,129,131,138,
-                                                                   140,147,149,156,158,165,167,171,175,192,199,201,208,210,
-                                                                   217,219,226,228,235,237,241,245,263,265,269,271,275,277,
-                                                                   281,283,287,289,293,299,305,326,328,332,334,338,340,344,
-                                                                   346,350,352,356,362,368,392,396,400,404,408,412,416,420,
-                                                                   424,428,432,436,440,444,448,452,456,460,464,468,472,476,
-                                                                   480,484,490,492,498,500,506,508,514,516,522,524,530,532,
-                                                                   538,551,555,559,563,567,571,575,697,706,579,583,587,591,
-                                                                   595,599,603,607,611,615,619,623,627,631,635,639,643,649,
-                                                                   651,657,659,665,667,673,675,681,683,689,691,708,710,712,
-                                                                   714,716,718,720,722,724,726,728,730,732,750,752,754,756,
-                                                                   758,760,762,764,766,768,770,772,774,776,794,795,828,831,
-                                                                   832:834,836:837,840:841,1055)])
+gibushon_civil_freq_relevant_columns<-
+  colnames(gibushon_final[c(20:21,23:26,28:32,34:35,43,47:48,51,78,104,106:107,122,129,131,138,
+                            140,147,149,156,158,165,167,171,175,192,199,201,208,210,217,219,
+                            226,228,235,237,241,245,263,265,269,271,275,277,281,283,287,289,
+                            293,299,305,326,328,332,334,338,340,344,346,350,352,356,362,368,
+                            392,396,400,404,408,412,416,420,424,428,432,436,440,444,448,452,
+                            456,460,464,468,472,476,480,484,490,492,498,500,506,508,514,516,
+                            522,524,530,532,538,551,555,559,563,567,571,575,697,706,579,583,
+                            587,591,595,599,603,607,611,615,619,623,627,631,635,639,643,649,
+                            651,657,659,665,667,673,675,681,683,689,691,708,710,712,714,716,
+                            718,720,722,724,726,728,730,732,750,752,754,756,758,760,762,764,
+                            766,768,770,772,774,776,794,795,801,828,831,832:834,837,840:841,
+                            1040:1043,1047:1055)])
+                                                                   
 out<-""
 cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_1.txt", sep="", append=F,fill = T)
 suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
@@ -1259,7 +1266,7 @@ suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
   cat(colnames(gibushon_final[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_1.txt", append=T,fill = T)
 })
 
-gibushon_civil_freq_relevant_columns<-colnames(gibushon_final[c(798:801,826,835,837:839)])
+gibushon_civil_freq_relevant_columns<-colnames(gibushon_final[c(798:800,826,835,838:839)])
 out<-""
 cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_2.txt", sep="", append=F,fill = T)
 suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
