@@ -1313,6 +1313,7 @@ for(i in 1:(ncol(gibushon_final_corr_output)/4)){
 }
 write.xlsx(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_p_c_corr_output.xlsx")
 
+
 # Correlations predictors-predictors
 
 gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(828,842:850,853:858,831:834,1055)]
@@ -1343,7 +1344,6 @@ row.names(gibushon_final_corr_output)<-gibushon_final_relevant_predictors_column
 for(i in 1:(ncol(gibushon_final_corr_output)/4)){
   colnames(gibushon_final_corr_output)[i*4] <- ""
 }
-# write.csv(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_p_p_corr_output_1+.csv")
 write.xlsx (gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_p_p_corr_output.xlsx")
 
 
@@ -1377,7 +1377,6 @@ row.names(gibushon_final_corr_output)<-gibushon_final_relevant_predictors_column
 for(i in 1:(ncol(gibushon_final_corr_output)/4)){
   colnames(gibushon_final_corr_output)[i*4] <- ""
 }
-# write.csv(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_c_c_corr_output_1+.csv")
 write.xlsx(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_c_c_corr_output.xlsx")
 
 
@@ -1429,14 +1428,13 @@ row.names(gibushon_final_spcorr_output)<-gibushon_final_relevant_predictors_colu
 for(i in 1:(ncol(gibushon_final_spcorr_output)/4)){
   colnames(gibushon_final_spcorr_output)[i*4] <- ""
 }
-# write.csv(gibushon_final_spcorr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_spcorr_output_p-c_1+.csv")
 write.xlsx(gibushon_final_spcorr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_spcorr_output_p-c.xlsx")
 
 
 # Correlations predictors-criteria on gibushon_final_filtered
 
 gibushon_final_filtered=gibushon_final%>%
-  filter(job == "detective" | job == "inspector" | job == "patrol" | job == "traffic" | job == "yasam" | job == "youth worker")
+  filter(job == "detective" | job == "inspector" | job == "patrol" | job == "traffic" | job == "yasam")
 
 gibushon_final_filtered_relevant_predictors_columns_for_correlations <- gibushon_final_filtered[c(828,842:850,853:858,831:834,1055)]
 gibushon_final_filtered_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(828,842:850,853:858,831:834,1055)]))
@@ -1466,7 +1464,6 @@ row.names(gibushon_final_filtered_corr_output)<-gibushon_final_filtered_relevant
 for(i in 1:(ncol(gibushon_final_filtered_corr_output)/4)){
   colnames(gibushon_final_filtered_corr_output)[i*4] <- ""
 }
-# write.csv(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_p_c_corr_output_0.253+.csv")
 write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_p_c_corr_output.xlsx")
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
