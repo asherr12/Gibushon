@@ -385,6 +385,9 @@ gibushon_mamda_criteria$date.tkufatit_2019<-as.Date(unlist(gibushon_mamda_criter
 
 gibushon_mamda_criteria<-as.data.frame(gibushon_mamda_criteria)
 
+# Most of the negative gaps (or very low gaps) are because of missing values of criteria and some of them are
+# because errors in IDs. That's the reason of the details in the next commands.
+
 library(dplyr)
 gibushon_mamda_criteria = gibushon_mamda_criteria %>%
   rowwise() %>%
