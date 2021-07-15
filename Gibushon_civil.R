@@ -1447,8 +1447,8 @@ gibushon_final_filtered=gibushon_final%>%
 # filter(job == "inspector" | job == "patrol" | job == "traffic" | job == "yasam" | is.na(job))
 # filter(job == "detective" | job == "patrol" | job == "traffic" | job == "yasam" | is.na(job))
 # filter(rama_religion != "Moslem" | is.na(rama_religion))
-filter(GibDate <= 01/09/2018 | is.na(GibDate))
-  
+# filter(GibDate <= 01/09/2018 | is.na(GibDate))
+filter(FinalGradeg > 3.5)
 
 gibushon_final_filtered_relevant_predictors_columns_for_correlations <- gibushon_final_filtered[c(828,842:850,853:858,831:834,1055)]
 gibushon_final_filtered_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(828,842:850,853:858,831:834,1055)]))
@@ -1483,7 +1483,8 @@ for(i in 1:(ncol(gibushon_final_filtered_corr_output)/4)){
 # write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_no_detective_p_c_corr_output.xlsx")
 # write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_no_inspector_p_c_corr_output.xlsx")
 # write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_no_Moslems_p_c_corr_output.xlsx")
-write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_before_01.09.2018_p_c_corr_output.xlsx")
+# write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_before_01.09.2018_p_c_corr_output.xlsx")
+write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_FinalGradeg_gt_then_3.5_p_c_corr_output.xlsx")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 # Range restriction.
 # The variance of all the sample of candidates in the A.C. should be higher then the variance of the sample that I performed on it
