@@ -383,7 +383,7 @@ demographics_14.07.2021<-read_csv("Q:/04_Mehkar/18_asher/demographics_14.07.2021
 colnames(demographics_14.07.2021)[1] <- "personal_number"
 colnames(demographics_14.07.2021)[9] <- "marital_status"
 colnames(demographics_14.07.2021)[10] <- "gender"
-colnames(demographics_14.07.2021)[11] <- "relign"
+colnames(demographics_14.07.2021)[11] <- "religion"
 colnames(demographics_14.07.2021)[12] <- "age"
 colnames(demographics_14.07.2021)[13] <- "education"
 
@@ -1197,13 +1197,25 @@ gibushon_civil$job_sector4[grep("תביעות_תעבורה", gibushon_civil$job_sector4)] <-
 gibushon_civil$job_sector4[grep("תובלה", gibushon_civil$job_sector4)] <- "other"
 gibushon_civil$job_sector4[grep("תלונות_הציבור", gibushon_civil$job_sector4)] <- "other"
 
+gibushon_civil$rama_religion[grep("אחר", gibushon_civil$rama_religion)] <- "Other"
 gibushon_civil$rama_religion[grep("בדואי", gibushon_civil$rama_religion)] <- "Bedouin"
 gibushon_civil$rama_religion[grep("דרוזי", gibushon_civil$rama_religion)] <- "Druze"
 gibushon_civil$rama_religion[grep("יהודי", gibushon_civil$rama_religion)] <- "Jewish"
 gibushon_civil$rama_religion[grep("מוסלמי", gibushon_civil$rama_religion)] <- "Moslem"
 gibushon_civil$rama_religion[grep("נוצרי", gibushon_civil$rama_religion)] <- "Christian"
+gibushon_civil$rama_religion[grep("נוצרי-ערבי", gibushon_civil$rama_religion)] <- "Christian"
 gibushon_civil$rama_religion[grep("צ'רקסי", gibushon_civil$rama_religion)] <- "Circassian"
 
+gibushon_civil$religion[grep("אחר", gibushon_civil$religion)] <- "Other"
+gibushon_civil$religion[grep("בדואי", gibushon_civil$religion)] <- "Bedouin"
+gibushon_civil$religion[grep("דרוזי", gibushon_civil$religion)] <- "Druze"
+gibushon_civil$religion[grep("יהודי", gibushon_civil$religion)] <- "Jewish"
+gibushon_civil$religion[grep("מוסלמי", gibushon_civil$religion)] <- "Moslem"
+gibushon_civil$religion[grep("נוצרי", gibushon_civil$religion)] <- "Christian"
+gibushon_civil$religion[grep("נוצרי-ערבי", gibushon_civil$religion)] <- "Christian"
+gibushon_civil$religion[grep("צ'רקסי", gibushon_civil$religion)] <- "Circassian"
+
+gibushon_civil$religion<-ifelse(!is.na(gibushon_civil$religion),gibushon_civil$religion,gibushon_civil$rama_religion)
 
 gibushon_civil$commander <- str_replace_all(gibushon_civil$commander, c("לא ידוע" = NA, "לא מפקד" = "not commander", "מפקד" = "commander"))
 gibushon_civil$behavior_old<-str_replace_all(gibushon_civil$behavior_old, "[[:punct:]]", " ")
@@ -1826,7 +1838,7 @@ gibushon_final_filtered=gibushon_final%>%
 # filter(job == "detective" | job == "inspector" | job == "patrol" | job == "traffic" | is.na(job))
 # filter(job == "inspector" | job == "patrol" | job == "traffic" | job == "yasam" | is.na(job))
 # filter(job == "detective" | job == "patrol" | job == "traffic" | job == "yasam" | is.na(job))
-# filter(rama_religion != "Moslem" | is.na(rama_religion))
+# filter( != "Moslem" | is.na())
 # filter(GibDate <= 01/09/2018 | is.na(GibDate))
 filter(FinalGradeg > 3.5)
 
