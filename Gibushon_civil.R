@@ -1324,7 +1324,7 @@ gibushon_civil_zscore_relevant_columns <- colnames(gibushon_civil
                                              639,643,649,651,657,659,665,667,673,675,681,683,689,691,
                                              708,710,712,714,716,718,720,722,724,726,728,730,732,750,
                                              752,754,756,758,760,762,764,766,768,770,772,774,776,794,
-                                             795,831,832,833,834,840,841)])
+                                             795,806,840:843,849,850)])
 
 for(i in gibushon_civil_zscore_relevant_columns) {
   gibushon_civil[ncol(gibushon_civil)+1]<-NA
