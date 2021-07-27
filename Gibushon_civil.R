@@ -1077,6 +1077,12 @@ gibushon_civil<-rename(gibushon_civil,c("Mazav0"="power",
 
 library(stringr)
 
+gibushon_civil$marital_status [grep("אלמן/ה", gibushon_civil$marital_status )] <- "widower"
+gibushon_civil$marital_status [grep("גרוש/ה", gibushon_civil$marital_status )] <- "divorcee"
+gibushon_civil$marital_status [grep("נשוי/ה", gibushon_civil$marital_status )] <- "married"
+gibushon_civil$marital_status [grep("עקד/ה", gibushon_civil$marital_status )] <- "separated"
+gibushon_civil$marital_status [grep("רווק/ה", gibushon_civil$marital_status )] <- "bachelor"
+
 gibushon_civil$gender <- str_replace_all(gibushon_civil$gender, c("זכר" = "male", "נקבה" = "female"))
 gibushon_civil$rama_gender <- str_replace_all(gibushon_civil$rama_gender, c("זכר" = "male", "נקבה" = "female"))
 gibushon_civil$gender<-ifelse(!is.na(gibushon_civil$gender),gibushon_civil$gender,gibushon_civil$rama_gender)
@@ -1216,6 +1222,14 @@ gibushon_civil$religion[grep("נוצרי-ערבי", gibushon_civil$religion)] <- "Christi
 gibushon_civil$religion[grep("צ'רקסי", gibushon_civil$religion)] <- "Circassian"
 
 gibushon_civil$religion<-ifelse(!is.na(gibushon_civil$religion),gibushon_civil$religion,gibushon_civil$rama_religion)
+
+gibushon_civil$education[grep("אחר", gibushon_civil$education)] <- "other"
+gibushon_civil$education[grep("הנדסאי/טכנאי", gibushon_civil$education)] <- "technician or Practical Engineer"
+gibushon_civil$education[grep("השכלה תיכונית", gibushon_civil$education)] <- "high school"
+gibushon_civil$education[grep("תואר ראשון", gibushon_civil$education)] <- "first degree"
+gibushon_civil$education[grep("תואר שני", gibushon_civil$education)] <- "second degree"
+gibushon_civil$education[grep("תואר שלישי", gibushon_civil$education)] <- "PhD"
+
 
 gibushon_civil$commander <- str_replace_all(gibushon_civil$commander, c("לא ידוע" = NA, "לא מפקד" = "not commander", "מפקד" = "commander"))
 gibushon_civil$behavior_old<-str_replace_all(gibushon_civil$behavior_old, "[[:punct:]]", " ")
@@ -2154,7 +2168,7 @@ library(psych)
 options(width = 71,max.print=30000)
 round(freq(ordered(as.numeric(unlist(gibushon_civil$decision))), plot = F,main=colnames(gibushon_civil$decision),font=2),2)
 round(describe(as.numeric(unlist(gibushon$ac_final_grade))),2)
-freq(gibushon_civil$job_sector4, plot = F,main=colnames(gibushon_civil$job_sector4),font=2)
+freq(gibushon_civil$marital_status , plot = F,main=colnames(gibushon_civil$marital_status),font=2)
 freq(gibushon_civil$rama_gender, plot = F,main=colnames(gibushon_civil$rama_gender),font=2)
 freq(gibushon_civil$gender, plot = F,main=colnames(gibushon_civil$gender),font=2)
 freq(gibushon_civil$general_gender, plot = F,main=colnames(gibushon_civil$general_gender),font=2)
