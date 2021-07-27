@@ -1512,7 +1512,7 @@ head(filtered_gibushon_civil_diff$cf,1000)
 head(filtered_gibushon_civil_diff$tkufatit,1000)
 
 class(filtered_gibushon_civil_diff)
-filtered_gibushon_civil_diff<-as.data.frame(filtered_gibushon_civil_diff)
+# filtered_gibushon_civil_diff<-as.data.frame(filtered_gibushon_civil_diff)
 
 filtered_gibushon_civil_diff[sapply(filtered_gibushon_civil_diff, is.nan)] <- NA
 
@@ -1643,8 +1643,9 @@ gibushon_civil_freq_relevant_columns<-
                             587,591,595,599,603,607,611,615,619,623,627,631,635,639,643,649,
                             651,657,659,665,667,673,675,681,683,689,691,708,710,712,714,716,
                             718,720,722,724,726,728,730,732,750,752,754,756,758,760,762,764,
-                            766,768,770,772,774,776,794,795,801,828,831,832:834,837,840:841,
-                            1040:1043,1047:1055)])
+                            766,768,770,772,774,776,794,795,799,800:801,806,810,840:843,
+                            832:834,837,840:843,846,849:850,
+                            1058:1066)])
                                                                    
 out<-""
 cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_1.txt", sep="", append=F,fill = T)
@@ -1660,7 +1661,7 @@ suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
   cat(colnames(gibushon_final[i]),out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_1.txt", append=T,fill = T)
 })
 
-gibushon_civil_freq_relevant_columns<-colnames(gibushon_final[c(798:800,826,835,838:839)])
+gibushon_civil_freq_relevant_columns<-colnames(gibushon_final[c(797,805,807:809,811,844,847:848,851)])
 out<-""
 cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_2.txt", sep="", append=F,fill = T)
 suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
