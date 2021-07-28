@@ -1284,6 +1284,11 @@ gibushon_civil$action_reason <- str_replace_all(gibushon_civil$action_reason, c(
 
 gibushon_civil$combat <- str_replace_all(gibushon_civil$combat, c("לא ידוע" = NA, "לא קרבי" = "not fighting", "קרבי" = "fighting"))
 
+#Ethiopians
+
+gibushon_civil$language[grep("NA", gibushon_civil$language)] <- "Other"
+gibushon_civil$language[grep("אמהרית_דיבור", gibushon_civil$language)] <- "Ethiopians"
+
 class(gibushon_civil)
       
 # gibushon_civil<-as.data.frame(gibushon_civil)
@@ -1688,14 +1693,19 @@ suppressWarnings(for(i in gibushon_civil_freq_relevant_columns) {
 colnames(gibushon_final)[1:1000]
 colnames(gibushon_final)[1001:ncol(gibushon_final)]
 
+gibushon_final <- gibushon_final %>% 
+   mutate(beinaim_kovea = rowMeans(select(.,beinaim_index,kovea_index)))
+
+head(gibushon_final$beinaim_kovea,1000)
+
 library("xlsx")
 
 # Correlations predictors-criteria
 
-gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(828,842:850,853:858,831:834,1055)]
-gibushon_final_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final[c(828,842:850,853:858,831:834,1055)]))
-gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(1047:1053,801,1023:1024)]
-gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(1047:1053,801,1023:1024)]))
+gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(810,853:860,863:868,1029:1033,1066)]
+gibushon_final_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final[c(810,853:860,863:868,1029:1033,1066)]))
+gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(1058:1064,799:801,1070,806)]
+gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(1058:1064,799:801,1070,806)]))
 gibushon_final_corr_output<-data.frame()[23,]
 
 for(i in 1:length(gibushon_final_relevant_criteria_columns_names_for_correlations)){
@@ -1725,10 +1735,10 @@ write.xlsx(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibu
 
 # Correlations predictors-predictors
 
-gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(828,842:850,853:858,831:834,1055)]
-gibushon_final_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final[c(828,842:850,853:858,831:834,1055)]))
-gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(828,842:850,853:858,831:834,1055)]
-gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(828,842:850,853:858,831:834,1055)]))
+gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(810,853:860,863:868,1029:1033,1066)]
+gibushon_final_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final[c(810,853:860,863:868,1029:1033,1066)]))
+gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(810,853:860,863:868,1029:1033,1066)]
+gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(810,853:860,863:868,1029:1033,1066)]))
 gibushon_final_corr_output<-data.frame()[16,]
 
 for(i in 1:length(gibushon_final_relevant_criteria_columns_names_for_correlations)){
@@ -1758,10 +1768,10 @@ write.xlsx (gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gib
 
 # Correlations criteria-criteria
 
-gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(1047:1053,801,1023:1024)]
-gibushon_final_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final[c(1047:1053,801,1023:1024)]))
-gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(1047:1053,801,1023:1024)]
-gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(1047:1053,801,1023:1024)]))
+gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(1058:1064,799:801,1070,806)]
+gibushon_final_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final[c(1058:1064,799:801,1070,806)]))
+gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(1058:1064,799:801,1070,806)]
+gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(1058:1064,799:801,1070,806)]))
 gibushon_final_corr_output<-data.frame()[16,]
 
 for(i in 1:length(gibushon_final_relevant_criteria_columns_names_for_correlations)){
@@ -1806,10 +1816,10 @@ cbind.fill<-function(...){
 library(ppcor)
 # gibushon_final_relevant_predictors_columns_for_spcorrelations <- gibushon_final[c(828,842:850,853:858,831:834)]
 # gibushon_final_relevant_predictors_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(828,842:850,853:858,831:834)]))
-gibushon_final_relevant_predictors_columns_for_spcorrelations <- gibushon_final[c(842:850,853:858,831:834)]
-gibushon_final_relevant_predictors_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(842:850,853:858,831:834)]))
-gibushon_final_relevant_criteria_columns_for_spcorrelations <- gibushon_final[c(1047:1053,801,1023:1024)]
-gibushon_final_relevant_criteria_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(1047:1053,801,1023:1024)]))
+gibushon_final_relevant_predictors_columns_for_spcorrelations <- gibushon_final[c(810,853:860,863:868,1029:1033)]
+gibushon_final_relevant_predictors_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(810,853:860,863:868,1029:1033)]))
+gibushon_final_relevant_criteria_columns_for_spcorrelations <- gibushon_final[c(1058:1064,799:801,1070,806)]
+gibushon_final_relevant_criteria_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(1058:1064,799:801,1070,806)]))
 gibushon_final_spcorr_output<-data.frame()[15,]
 
 for(i in 1:length(gibushon_final_relevant_criteria_columns_names_for_spcorrelations)){
@@ -1856,10 +1866,10 @@ gibushon_final_filtered=gibushon_final%>%
 # filter(GibDate <= 01/09/2018 | is.na(GibDate))
 filter(FinalGradeg > 3.5)
 
-gibushon_final_filtered_relevant_predictors_columns_for_correlations <- gibushon_final_filtered[c(828,842:850,853:858,831:834,1055)]
-gibushon_final_filtered_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(828,842:850,853:858,831:834,1055)]))
-gibushon_final_filtered_relevant_criteria_columns_for_correlations <- gibushon_final_filtered[c(1047:1053,801,1023:1024)]
-gibushon_final_filtered_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(1047:1053,801,1023:1024)]))
+gibushon_final_filtered_relevant_predictors_columns_for_correlations <- gibushon_final_filtered[c(810,853:860,863:868,1029:1033,1066)]
+gibushon_final_filtered_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(810,853:860,863:868,1029:1033,1066)]))
+gibushon_final_filtered_relevant_criteria_columns_for_correlations <- gibushon_final_filtered[c(1058:1064,799:801,1070,806)]
+gibushon_final_filtered_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(1058:1064,799:801,1070,806)]))
 gibushon_final_filtered_corr_output<-data.frame()[23,]
 
 for(i in 1:length(gibushon_final_filtered_relevant_criteria_columns_names_for_correlations)){
@@ -2113,7 +2123,7 @@ library(descr)
 library(psych)
 options(width = 71,max.print=30000)
 round(freq(ordered(as.numeric(unlist(filtered_gibushon_civil_diff$date.tkufatit_2019_diff))), plot = F,main=colnames(filtered_gibushon_civil_diff$date.tkufatit_2019_diff),font=2),2)
-round(freq(ordered(gibushon_final$ac_date), plot = F,main=colnames(gibushon_final$ac_date),font=2))
+round(freq(ordered(gibushon_final$course_fail_pass), plot = F,main=colnames(gibushon_final$course_fail_pass),font=2))
 round(describe (as.numeric(filtered_gibushon_civil_diff$date.tkufatit_2019_diff)))
 describe (as.numeric(filtered_gibushon_civil_diff$HEBREW_spacial_stanines_a))
 describe (as.numeric(filtered_gibushon_civil_diff$HEBREW_spacial_stanines_b))
@@ -2168,7 +2178,7 @@ library(psych)
 options(width = 71,max.print=30000)
 round(freq(ordered(as.numeric(unlist(gibushon_civil$decision))), plot = F,main=colnames(gibushon_civil$decision),font=2),2)
 round(describe(as.numeric(unlist(gibushon$ac_final_grade))),2)
-freq(gibushon_civil$marital_status , plot = F,main=colnames(gibushon_civil$marital_status),font=2)
+freq(gibushon_civil$language , plot = F,main=colnames(gibushon_civil$language),font=2)
 freq(gibushon_civil$rama_gender, plot = F,main=colnames(gibushon_civil$rama_gender),font=2)
 freq(gibushon_civil$gender, plot = F,main=colnames(gibushon_civil$gender),font=2)
 freq(gibushon_civil$general_gender, plot = F,main=colnames(gibushon_civil$general_gender),font=2)
