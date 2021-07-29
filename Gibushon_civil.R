@@ -1510,9 +1510,11 @@ gibushon_civil_filtered2 <- gibushon_civil_filtered
 #arrived here#######
 
 gibushon_civil_filtered2$tkufatit_14_sd <- NA
+class(gibushon_civil_filtered2)
+gibushon_civil_filtered2<-as.data.frame(gibushon_civil_filtered2)
 for (i in 1:(nrow(gibushon_civil_filtered2)-2)){
   gibushon_civil_filtered3 <- gibushon_civil_filtered2
-  gibushon_civil_filtered3 <- gibushon_civil_filtered3[i:(nrow(gibushon_civil_filtered2)-2),]
+  gibushon_civil_filtered3 <- gibushon_civil_filtered3[i:nrow(gibushon_civil_filtered2),]
   gibushon_civil_filtered2[i,]$tkufatit_14_sd<-sd(gibushon_civil_filtered3$tkufatit_14, na.rm = T)
   }  
   
