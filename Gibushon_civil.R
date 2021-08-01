@@ -1494,7 +1494,7 @@ head(gibushon_civil$tkufatit_not_na,1000)
 # gibushon_civil_for_Qlik_View <- gibushon_civil
 # write_excel_csv(gibushon_civil_for_Qlik_View,file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_for_Qlik_View.csv")
 
-# Code replacing the use of QlikView.
+# Code for replacing the use of QlikView.
 
 library(dplyr)
 gibushon_civil_filtered = gibushon_civil%>%
@@ -1507,8 +1507,6 @@ gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered
 
 gibushon_civil_filtered2 <- gibushon_civil_filtered
 
-#arrived here#######
-
 gibushon_civil_filtered2$tkufatit_14_sd <- NA
 class(gibushon_civil_filtered2)
 gibushon_civil_filtered2<-as.data.frame(gibushon_civil_filtered2)
@@ -1517,7 +1515,50 @@ for (i in 1:(nrow(gibushon_civil_filtered2)-2)){
   gibushon_civil_filtered3 <- gibushon_civil_filtered3[i:nrow(gibushon_civil_filtered2),]
   gibushon_civil_filtered2[i,]$tkufatit_14_sd<-sd(gibushon_civil_filtered3$tkufatit_14, na.rm = T)
   }  
-  
+
+library(dplyr)
+gibushon_civil_filtered4 = gibushon_civil_filtered2%>%
+  select(date.tkufatit_14_diff,tkufatit_14_sd)
+
+gibushon_civil_filtered4 <- aggregate(tkufatit_14_sd ~ ., mean, data = gibushon_civil_filtered4)
+
+plot(tkufatit_14_sd ~ date.tkufatit_14_diff, gibushon_civil_filtered4)
+
+# find the point that the SD begins to decrease steadily after the highest SD value
+
+diff_befoere_decrease <- which(gibushon_civil_filtered4$tkufatit_14_sd==max(gibushon_civil_filtered4$tkufatit_14_sd))
+diff_decrease <- gibushon_civil_filtered4[(diff_befoere_decrease+1),]$date.tkufatit_14_diff
+diff_decrease
+
+#arrived here####### - try to find the stability of decreasing from the max value#####
+
+for (i in 1:nrow(gibushon_civil_filtered4)) {
+  if (gibushon_civil_filtered4[i+1,]$tkufatit_14_sd > max(gibushon_civil_filtered4$tkufatit_14_sd) &
+      gibushon_civil_filtered4[i+2,]$tkufatit_14_sd > gibushon_civil_filtered4[i+1,]$tkufatit_14_sd &
+      gibushon_civil_filtered4[i+3,]$tkufatit_14_sd > gibushon_civil_filtered4[i+2,]$tkufatit_14_sd &
+      gibushon_civil_filtered4[i+4,]$tkufatit_14_sd > gibushon_civil_filtered4[i+3,]$tkufatit_14_sd){
+    diff_increase <- gibushon_civil_filtered4[i,]$date.tkufatit_14_diff
+    print(diff_increase)
+    break
+  }
+}
+
+
+# find the point that the SD begins to increase steadily after the lowest SD value
+
+for (i in 1:nrow(gibushon_civil_filtered4)) {
+  if (gibushon_civil_filtered4[i+1,]$tkufatit_14_sd > gibushon_civil_filtered4[i,]$tkufatit_14_sd &
+      gibushon_civil_filtered4[i+2,]$tkufatit_14_sd > gibushon_civil_filtered4[i+1,]$tkufatit_14_sd &
+      gibushon_civil_filtered4[i+3,]$tkufatit_14_sd > gibushon_civil_filtered4[i+2,]$tkufatit_14_sd &
+      gibushon_civil_filtered4[i+4,]$tkufatit_14_sd > gibushon_civil_filtered4[i+3,]$tkufatit_14_sd){
+      diff_increase <- gibushon_civil_filtered4[i,]$date.tkufatit_14_diff
+      print(diff_increase)
+      break
+  }
+}
+
+
+
 
 
 filtered_gibushon_civil_diff = gibushon_civil %>%
