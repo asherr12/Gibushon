@@ -1535,9 +1535,15 @@ keys <- colnames(gibushon_civil_filtered4)[!grepl(paste(j,"_sd",sep = ""),colnam
 X <- as.data.table(gibushon_civil_filtered4)
 gibushon_civil_filtered4 <- X[,lapply(.SD,mean),keys]
 
+gibushon_civil_filtered4 <- as.data.frame(gibushon_civil_filtered4)
+
 }
 
-plot((paste(j,"_sd",sep = "")) ~ (paste("date.",j,"_diff",sep = "")), gibushon_civil_filtered4)
+#arrived here########################
+
+plot(tkufatit_14_sd ~ date.tkufatit_14_diff, gibushon_civil_filtered4)
+
+#plot(paste(j,"_sd",sep = "") ~ paste("date.",j,"_diff",sep = ""), gibushon_civil_filtered4)
 
 # find the point that the SD begins to decrease steadily after the highest SD value
 
