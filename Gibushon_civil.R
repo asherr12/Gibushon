@@ -494,16 +494,16 @@ gibushon_mamda_criteria = gibushon_mamda_criteria %>%
   mutate(date.tkufatit_14_diff = ifelse(!is.na(tkufatit_14) & (date.tkufatit_14-GibDate)>0,(date.tkufatit_14-GibDate),NA),
          date.tkufatit_15_diff = ifelse(!is.na(tkufatit_15) & (date.tkufatit_15-GibDate)>0,(date.tkufatit_15-GibDate),NA),
          date.period.eval.2015_diff = ifelse(!is.na(date.period.eval.2015) & (date.period.eval.2015-GibDate)>0,(date.period.eval.2015-GibDate),NA),
-         date.period.eval.2017_diff = ifelse(!is.na(date.period.eval.2017) & (date.period.eval.2017-GibDate)>0,(date.period.eval.2017-GibDate),NA),
-         date.period.eval.2018_diff = ifelse(!is.na(date.period.eval.2018) & (date.period.eval.2018-GibDate)>0,(date.period.eval.2018-GibDate),NA),
-         TaarichHavara_am_2010_diff = ifelse(!is.na(TaarichHavara_am_2010) & (TaarichHavara_am_2010-GibDate)>0,(TaarichHavara_am_2010-GibDate),NA),
-         TaarichHavara_am_2012_diff = ifelse(!is.na(TaarichHavara_am_2012) & (TaarichHavara_am_2012-GibDate)>0,(TaarichHavara_am_2012-GibDate),NA),
-         TaarichHavara_am_2015_diff = ifelse(!is.na(TaarichHavara_am_2015) & (TaarichHavara_am_2015-GibDate)>0,(TaarichHavara_am_2015-GibDate),NA),
-         TaarichHavara_am_2018_diff = ifelse(!is.na(TaarichHavara_am_2018) & (TaarichHavara_am_2018-GibDate)>0,(TaarichHavara_am_2018-GibDate),NA),
-         TaarichHavara_cf_2010_diff = ifelse(!is.na(TaarichHavara_cf_2010) & (TaarichHavara_cf_2010-GibDate)>0,(TaarichHavara_cf_2010-GibDate),NA),
-         TaarichHavara_cf_2012_diff = ifelse(!is.na(TaarichHavara_cf_2012) & (TaarichHavara_cf_2012-GibDate)>0,(TaarichHavara_cf_2012-GibDate),NA),
-         TaarichHavara_cf_2015_diff = ifelse(!is.na(TaarichHavara_cf_2015) & (TaarichHavara_cf_2015-GibDate)>0,(TaarichHavara_cf_2015-GibDate),NA),
-         TaarichHavara_cf_2018_diff = ifelse(!is.na(TaarichHavara_cf_2018) & (TaarichHavara_cf_2018-GibDate)>0,(TaarichHavara_cf_2018-GibDate),NA),
+         date.final.score.2017_diff = ifelse(!is.na(date.period.eval.2017) & (date.period.eval.2017-GibDate)>0,(date.period.eval.2017-GibDate),NA),
+         date.final.score.2018_diff = ifelse(!is.na(date.period.eval.2018) & (date.period.eval.2018-GibDate)>0,(date.period.eval.2018-GibDate),NA),
+         date.am_2010_diff = ifelse(!is.na(TaarichHavara_am_2010) & (TaarichHavara_am_2010-GibDate)>0,(TaarichHavara_am_2010-GibDate),NA),
+         date.am_2012_diff = ifelse(!is.na(TaarichHavara_am_2012) & (TaarichHavara_am_2012-GibDate)>0,(TaarichHavara_am_2012-GibDate),NA),
+         date.am_2015_diff = ifelse(!is.na(TaarichHavara_am_2015) & (TaarichHavara_am_2015-GibDate)>0,(TaarichHavara_am_2015-GibDate),NA),
+         date.am_2018_diff = ifelse(!is.na(TaarichHavara_am_2018) & (TaarichHavara_am_2018-GibDate)>0,(TaarichHavara_am_2018-GibDate),NA),
+         date.cf_2010_diff = ifelse(!is.na(TaarichHavara_cf_2010) & (TaarichHavara_cf_2010-GibDate)>0,(TaarichHavara_cf_2010-GibDate),NA),
+         date.cf_2012_diff = ifelse(!is.na(TaarichHavara_cf_2012) & (TaarichHavara_cf_2012-GibDate)>0,(TaarichHavara_cf_2012-GibDate),NA),
+         date.cf_2015_diff = ifelse(!is.na(TaarichHavara_cf_2015) & (TaarichHavara_cf_2015-GibDate)>0,(TaarichHavara_cf_2015-GibDate),NA),
+         date.cf_2018_diff = ifelse(!is.na(TaarichHavara_cf_2018) & (TaarichHavara_cf_2018-GibDate)>0,(TaarichHavara_cf_2018-GibDate),NA),
          date.tkufatit_2019_diff = ifelse(!is.na(date.tkufatit_2019) & (date.tkufatit_2019-GibDate)>0,(date.tkufatit_2019-GibDate),NA))
 
 #RAMA
@@ -1319,10 +1319,10 @@ courses_soc_02082021 <- courses_soc_02082021 %>%
   mutate(NPct = rowMeans(select(.,NPct1,NPct2)))
 
 courses_soc_02082021 <- courses_soc_02082021 %>%
-  mutate(am = rowMeans(select(.,RAvg,RTeken,NPct)))
+  mutate(amcourses = rowMeans(select(.,RAvg,RTeken,NPct)))
 
 filtered_courses_soc_02082021 <- courses_soc_02082021 %>%
-  select(id,GroupId,am)
+  select(id,amcourses)
 
 gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit_absences_language_amcourses <-
   merge(gibushon_mamda_criteria_rama_eq_colors_decision_EichutGrade_components_quit_absences_language,filtered_courses_soc_02082021,by=c("id"), all.x=T, all.y=F,sort = FALSE)
@@ -1588,7 +1588,7 @@ class(gibushon_civil)
       
 # gibushon_civil<-as.data.frame(gibushon_civil)
 
-colnames(gibushon_civil)
+colnames(gibushon_civil)[1:1000]
 
 ncol_before_zscores<-ncol(gibushon_civil)
 
@@ -1638,7 +1638,7 @@ gibushon_civil_zscore_relevant_columns <- colnames(gibushon_civil
                                              639,643,649,651,657,659,665,667,673,675,681,683,689,691,
                                              708,710,712,714,716,718,720,722,724,726,728,730,732,750,
                                              752,754,756,758,760,762,764,766,768,770,772,774,776,794,
-                                             795,806,840:843,849,850)])
+                                             795,806,840:843,849,850,852)])
 
 for(i in gibushon_civil_zscore_relevant_columns) {
   gibushon_civil[ncol(gibushon_civil)+1]<-NA
@@ -1790,36 +1790,57 @@ head(gibushon_civil$tkufatit_not_na,1000)
 library(dplyr)
 library(data.table)
 
-criteria_list <- c("tkufatit_14","final.score.2015","final.score.2017", 
-                   "final.score.2018","row_score_2019","am_2015","am_2018","cf_2018")
+# which(colnames(gibushon_civil)=="TaarichHavara_cf_2018_diff")
+# colnames(gibushon_civil)[830] <- "date.cf_2018_diff"
 
-criteria_list <- c("tkufatit_14")
+#criteria_list <- c("tkufatit_14","tkufatit_15","final.score.2017", 
+#                   "final.score.2018","row_score_2019","am_2015","am_2018","cf_2018")
+
+criteria_list <- c("tkufatit_14","tkufatit_15","final.score.2017","final.score.2018",
+                   "cf_2018","row_score_2019")# , "am_2015","am_2018"
+
+criteria_list <- c("am_2015")
+
+# head(gibushon_civil$am_2015,1000)
 
 for (j in criteria_list) {
 
 gibushon_civil_filtered = gibushon_civil%>%
   rowwise()%>%
-  mutate(j<-ifelse(!is.na(paste(j,"_zscore",sep = "")),j,NA))%>%
+#  mutate(j<-ifelse(!is.na(paste(j,"_zscore",sep = "")),j,NA))%>%
+  mutate(j<-ifelse(j!=am_2015 & j!=am_2018 & !is.na(paste(j,"_zscore",sep = "")),j,
+            ifelse (j!=am_2015, am_2015),
+            ifelse (j!=am_2018, am_2018,NA)))%>%
 #  select(paste(j,"_zscore",sep = ""),j,paste("date.",j,"_diff",sep = ""))%>%
 #  filter(!is.na(paste("date.",j,"_diff",sep = "")))
-  select(paste(j,"_zscore",sep = ""),j,paste("date.",j,"_diff",sep = ""))
+#  select(paste(j,"_zscore",sep = ""),j,paste("date.",j,"_diff",sep = ""))
+  select(j,paste("date.",j,"_diff",sep = ""))
 
-gibushon_civil_filtered<-gibushon_civil_filtered[!is.na(gibushon_civil_filtered[3]), ]
+# gibushon_civil_filtered<-gibushon_civil_filtered[!is.na(gibushon_civil_filtered[3]), ]
+gibushon_civil_filtered<-gibushon_civil_filtered[!is.na(gibushon_civil_filtered[2]), ]
 
-gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered[[3]]),]
+# gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered[[3]]),]
+gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered[[2]]),]
+
 
 gibushon_civil_filtered2 <- gibushon_civil_filtered
 
-gibushon_civil_filtered2[4] <- NA
+# gibushon_civil_filtered2[4] <- NA
 
-colnames(gibushon_civil_filtered2)[4]<-paste(j,"_sd",sep = "")
+gibushon_civil_filtered2[3] <- NA
+
+#colnames(gibushon_civil_filtered2)[4]<-paste(j,"_sd",sep = "")
+colnames(gibushon_civil_filtered2)[3]<-paste(j,"_sd",sep = "")
+
 
 gibushon_civil_filtered2<-as.data.frame(gibushon_civil_filtered2)
 
 for (i in 1:(nrow(gibushon_civil_filtered2)-2)){
   gibushon_civil_filtered3 <- gibushon_civil_filtered2
   gibushon_civil_filtered3 <- gibushon_civil_filtered3[i:nrow(gibushon_civil_filtered2),]
-  gibushon_civil_filtered2[i,4]<-sd(gibushon_civil_filtered3[,2], na.rm = T)
+  # gibushon_civil_filtered2[i,4]<-sd(gibushon_civil_filtered3[,2], na.rm = T)
+  gibushon_civil_filtered2[i,3]<-sd(gibushon_civil_filtered3[,1], na.rm = T)
+  
   }  
 
 library(dplyr)
@@ -1836,40 +1857,39 @@ gibushon_civil_filtered4 <- as.data.frame(gibushon_civil_filtered4)
 plot(gibushon_civil_filtered4[,2] ~ gibushon_civil_filtered4[,1], gibushon_civil_filtered4,
      ylab = paste(j,"_sd",sep = ""), xlab = paste("date.",j,"_diff",sep = ""))
 
+# find the point that the SD begins to increase steadily after the lowest SD value
+
+for (i in 1:nrow(gibushon_civil_filtered4)) {
+  if (gibushon_civil_filtered4[i+1,][,2] > gibushon_civil_filtered4[i,][,2] &
+      gibushon_civil_filtered4[i+2,][,2] > gibushon_civil_filtered4[i+1,][,2] &
+      gibushon_civil_filtered4[i+3,][,2] > gibushon_civil_filtered4[i+2,][,2] &
+      gibushon_civil_filtered4[i+4,][,2] > gibushon_civil_filtered4[i+3,][,2]){
+    diff_increase <- gibushon_civil_filtered4[i,][,1]
+    print(diff_increase)
+    break
+  }
 }
-
-#arrived here########################
-
 
 # find the point that the SD begins to decrease steadily after the highest SD value
 
-diff_befoere_decrease <- which(gibushon_civil_filtered4$j_sd==max(gibushon_civil_filtered4$j_sd))
-diff_decrease <- gibushon_civil_filtered4[(diff_befoere_decrease+1),]$date.j_diff
-row_decrease <- which(gibushon_civil_filtered4$date.j_diff == diff_decrease)
+
+#######arrived here##### an error on the next row - doesn't get the right value
+
+diff_befoere_decrease <- which(gibushon_civil_filtered4[,1]==max(gibushon_civil_filtered4[,2],na.rm = T))
+diff_decrease <- gibushon_civil_filtered4[(diff_befoere_decrease+1),][,1]
+row_decrease <- which(gibushon_civil_filtered4[,1] == diff_decrease)
 
 for (i in row_decrease:nrow(gibushon_civil_filtered4)) {
-  if (gibushon_civil_filtered4[i+1,]$j_sd < max(gibushon_civil_filtered4$j_sd) &
-      gibushon_civil_filtered4[i+2,]$j_sd < gibushon_civil_filtered4[i+1,]$j_sd &
-      gibushon_civil_filtered4[i+3,]$j_sd < gibushon_civil_filtered4[i+2,]$j_sd &
-      gibushon_civil_filtered4[i+4,]$j_sd < gibushon_civil_filtered4[i+3,]$j_sd){
-    final_diff_decrease <- gibushon_civil_filtered4[i,]$date.j_diff
+  if (gibushon_civil_filtered4[i+1,][,2] < max(gibushon_civil_filtered4[,2],na.rm = T) &
+      gibushon_civil_filtered4[i+2,][,2] < gibushon_civil_filtered4[i+1,][,2] &
+      gibushon_civil_filtered4[i+3,][,2] < gibushon_civil_filtered4[i+2,][,2] &
+      gibushon_civil_filtered4[i+4,][,2] < gibushon_civil_filtered4[i+3,][,2]){
+    final_diff_decrease <- gibushon_civil_filtered4[i,][,1]
     print(final_diff_decrease)
     break
   }
 }
 
-# find the point that the SD begins to increase steadily after the lowest SD value
-
-for (i in 1:nrow(gibushon_civil_filtered4)) {
-  if (gibushon_civil_filtered4[i+1,]$j_sd > gibushon_civil_filtered4[i,]$j_sd &
-      gibushon_civil_filtered4[i+2,]$j_sd > gibushon_civil_filtered4[i+1,]$j_sd &
-      gibushon_civil_filtered4[i+3,]$j_sd > gibushon_civil_filtered4[i+2,]$j_sd &
-      gibushon_civil_filtered4[i+4,]$j_sd > gibushon_civil_filtered4[i+3,]$j_sd){
-      diff_increase <- gibushon_civil_filtered4[i,]$date.j_diff
-      print(diff_increase)
-      break
-  }
-}
 
 }
 
@@ -1883,13 +1903,13 @@ for (i in 1:nrow(gibushon_civil_filtered4)) {
 filtered_gibushon_civil_diff = gibushon_civil %>%
   rowwise() %>%
   mutate(tkufatit_14_zscore = ifelse(date.tkufatit_14_diff>=232 & date.tkufatit_14_diff<=1014,tkufatit_14_zscore,NA),#169,943
-         final.score.2015_zscore = ifelse(date.period.eval.2015_diff>=308 & date.period.eval.2015_diff<=1252,final.score.2015_zscore,NA),#380,1367
-         final.score.2017_zscore = ifelse(date.period.eval.2017_diff>=1170 & date.period.eval.2017_diff<=960,final.score.2017_zscore,NA),#1170,1702
-         final.score.2018_zscore = ifelse(date.period.eval.2018_diff>=124 & date.period.eval.2018_diff<=1580,final.score.2018_zscore,NA),#1501,2437
-         row_score_2019_zscore = ifelse(date.tkufatit_2019_diff>=256 & date.tkufatit_2019_diff<=1773,row_score_2019_zscore,NA),#1187,2041
-         am_2015 = ifelse(TaarichHavara_am_2015_diff>=331 & TaarichHavara_am_2015_diff<=1477,am_2015,NA),#331,1477
-         am_2018 = ifelse(TaarichHavara_am_2018_diff>=243 & TaarichHavara_am_2018_diff<2401,am_2018,NA),#918,2342
-         cf_2018 = ifelse(TaarichHavara_cf_2018_diff>=309 & TaarichHavara_cf_2018_diff<=2339,cf_2018,NA))#1128,2308
+         tkufatit_15_zscore = ifelse(date.tkufatit_15_diff>=308 & date.tkufatit_15_diff<=1252,tkufatit_15_zscore,NA),#380,1367
+         final.score.2017_zscore = ifelse(date.final.score.2017_diff>=1170 & date.final.score.2017_diff<=960,final.score.2017_zscore,NA),#1170,1702
+         final.score.2018_zscore = ifelse(date.final.score.2018_diff>=124 & date.final.score.2018_diff<=1580,final.score.2018_zscore,NA),#1501,2437
+         row_score_2019_zscore = ifelse(date.row_score_2019_diff>=256 & date.row_score_2019_diff<=1773,row_score_2019_zscore,NA),#1187,2041
+         am_2015 = ifelse(date.am_2015_diff>=331 & date.am_2015_diff<=1477,am_2015,NA),#331,1477
+         am_2018 = ifelse(date.am_2018_diff>=243 & date.am_2018_diff<2401,am_2018,NA),#918,2342
+         cf_2018 = ifelse(date.cf_2018_diff>=309 & date.cf_2018_diff<=2339,cf_2018,NA))#1128,2308
 
 class(filtered_gibushon_civil_diff)
 filtered_gibushon_civil_diff<-as.data.frame(filtered_gibushon_civil_diff)
@@ -1909,6 +1929,8 @@ filtered_gibushon_civil_diff = filtered_gibushon_civil_diff %>%
          am_special = am_2018_special,
          cf = cf_2018,
          tkufatit = rowMeans(select(., tkufatit_14_zscore,final.score.2015_zscore,final.score.2017_zscore,final.score.2018_zscore,row_score_2019_zscore),na.rm = T))
+
+
 
 
 head(filtered_gibushon_civil_diff$am,1000)
@@ -2049,7 +2071,7 @@ gibushon_civil_freq_relevant_columns<-
                             651,657,659,665,667,673,675,681,683,689,691,708,710,712,714,716,
                             718,720,722,724,726,728,730,732,750,752,754,756,758,760,762,764,
                             766,768,770,772,774,776,794,795,799,800:801,806,810,840:843,846,
-                            849:850,1058:1066)])
+                            849:850,852,1058:1066)])
                                                                    
 out<-""
 cat("", out, file="C:/Users/USER/Documents/MAMDA/gibushon/gibushon_civil_frequencies_1.txt", sep="", append=F,fill = T)
@@ -2090,8 +2112,8 @@ library("xlsx")
 
 gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(810,853:860,863:868,1030:1033,1066)]
 gibushon_final_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final[c(810,853:860,863:868,1030:1033,1066)]))
-gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(1058:1064,799:801,1070,1029)]
-gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(1058:1064,799:801,1070,1029)]))
+gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(1058:1064,799:801,852,1070,1029)]
+gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(1058:1064,799:801,852,1070,1029)]))
 gibushon_final_corr_output<-data.frame()[23,]
 
 for(i in 1:length(gibushon_final_relevant_criteria_columns_names_for_correlations)){
@@ -2154,10 +2176,10 @@ write.xlsx (gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gib
 
 # Correlations criteria-criteria
 
-gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(1058:1064,799:801,1070,806)]
+gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final[c(1058:1064,799:801,852,1070,806)]
 gibushon_final_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final[c(1058:1064,799:801,1070,806)]))
-gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(1058:1064,799:801,1070,1029)]
-gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(1058:1064,799:801,1070,1029)]))
+gibushon_final_relevant_criteria_columns_for_correlations <- gibushon_final[c(1058:1064,799:801,852,1070,1029)]
+gibushon_final_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final[c(1058:1064,799:801,852,1070,1029)]))
 gibushon_final_corr_output<-data.frame()[16,]
 
 for(i in 1:length(gibushon_final_relevant_criteria_columns_names_for_correlations)){
@@ -2204,8 +2226,8 @@ library(ppcor)
 # gibushon_final_relevant_predictors_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(828,842:850,853:858,831:834)]))
 gibushon_final_relevant_predictors_columns_for_spcorrelations <- gibushon_final[c(810,853:860,863:868,1030:1033)]
 gibushon_final_relevant_predictors_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(810,853:860,863:868,1030:1033)]))
-gibushon_final_relevant_criteria_columns_for_spcorrelations <- gibushon_final[c(1058:1064,799:801,1070,1029)]
-gibushon_final_relevant_criteria_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(1058:1064,799:801,1070,1029)]))
+gibushon_final_relevant_criteria_columns_for_spcorrelations <- gibushon_final[c(1058:1064,799:801,852,1070,1029)]
+gibushon_final_relevant_criteria_columns_names_for_spcorrelations <- c(colnames(gibushon_final[c(1058:1064,799:801,852,1070,1029)]))
 gibushon_final_spcorr_output<-data.frame()[15,]
 
 for(i in 1:length(gibushon_final_relevant_criteria_columns_names_for_spcorrelations)){
@@ -2255,8 +2277,8 @@ filter(religion !="Moslem")
 
 gibushon_final_filtered_relevant_predictors_columns_for_correlations <- gibushon_final_filtered[c(810,853:860,863:868,1030:1033,1066)]
 gibushon_final_filtered_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(810,853:860,863:868,1030:1033,1066)]))
-gibushon_final_filtered_relevant_criteria_columns_for_correlations <- gibushon_final_filtered[c(1058:1064,799:801,1070,1029)]
-gibushon_final_filtered_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(1058:1064,799:801,1070,1029)]))
+gibushon_final_filtered_relevant_criteria_columns_for_correlations <- gibushon_final_filtered[c(1058:1064,799:801,852,1070,1029)]
+gibushon_final_filtered_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(1058:1064,799:801,852,1070,1029)]))
 gibushon_final_filtered_corr_output<-data.frame()[23,]
 
 for(i in 1:length(gibushon_final_filtered_relevant_criteria_columns_names_for_correlations)){
@@ -2563,7 +2585,7 @@ library(stringr)
 library(descr)
 library(psych)
 options(width = 71,max.print=30000)
-round(freq(ordered(as.numeric(unlist(gibushon_civil$decision))), plot = F,main=colnames(gibushon_civil$decision),font=2),2)
+round(freq(ordered(as.numeric(unlist(gibushon_civil$amcourses))), plot = F,main=colnames(gibushon_civil$amcourses),font=2),2)
 round(describe(as.numeric(unlist(gibushon$ac_final_grade))),2)
 freq(gibushon_civil$language , plot = F,main=colnames(gibushon_civil$language),font=2)
 freq(gibushon_civil$rama_gender, plot = F,main=colnames(gibushon_civil$rama_gender),font=2)
