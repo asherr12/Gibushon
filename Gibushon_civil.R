@@ -1793,8 +1793,6 @@ library(data.table)
 criteria_list <- c("tkufatit_14","tkufatit_15","final.score.2017","final.score.2018",
                    "cf_2018","row_score_2019","am_2015","am_2018")
 
-criteria_list <- c("am_2018")
-
 for (j in criteria_list) {
 
 gibushon_civil_filtered = gibushon_civil%>%
@@ -1832,7 +1830,9 @@ gibushon_civil_filtered4 <- X[,lapply(.SD,mean),keys]
 
 gibushon_civil_filtered4 <- as.data.frame(gibushon_civil_filtered4)
 
-gibushon_civil_filtered4[,2] <- scale(as.numeric(unlist(gibushon_civil_filtered4[,2])))
+# gibushon_civil_filtered4[,2] <- scale(as.numeric(unlist(gibushon_civil_filtered4[,2])))
+
+gibushon_civil_filtered4[,2] <- log(gibushon_civil_filtered4[,2])
 
 if (min(gibushon_civil_filtered4[,2],na.rm = T)<0){
   gibushon_civil_filtered4[,2] <-  gibushon_civil_filtered4[,2]+abs(min(gibushon_civil_filtered4[,2],na.rm = T)) 
@@ -1859,21 +1859,18 @@ for (i in 1:nrow(gibushon_civil_filtered4)) {
 
 # find the point that the SD begins to decrease steadily after the highest SD value
 
-#arrived here #####solve the bug and create smaller diff intervals (divide to 7 if grater then 1000)
-for (i in (which.max(gibushon_civil_filtered4[,2])+1):(nrow(gibushon_civil_filtered4)-6)) {
-#  if ((nrow(gibushon_civil_filtered4)-i)>4 & 
-    if(gibushon_civil_filtered4[i,][,2] < max(gibushon_civil_filtered4[,2],na.rm = T) &
+#arrived here (divide to 7 if grater then 1000)#########
+for (i in (which.max(gibushon_civil_filtered4[,2])+1):nrow(gibushon_civil_filtered4)) {
+  if ((nrow(gibushon_civil_filtered4)-i)>2 & 
+         gibushon_civil_filtered4[i,][,2] < max(gibushon_civil_filtered4[,2],na.rm = T) &
          gibushon_civil_filtered4[i+1,][,2] < gibushon_civil_filtered4[i,][,2] &
          gibushon_civil_filtered4[i+2,][,2] < gibushon_civil_filtered4[i+1,][,2] &
          gibushon_civil_filtered4[i+3,][,2] < gibushon_civil_filtered4[i+2,][,2]) {
        diff_decrease <- gibushon_civil_filtered4[i,][,1]
        print(diff_decrease)
-       break
-#        break} else 
-#         {break
-} 
+      break
+ } 
 }
-
 }
 
 # arrived here#### set for other criteria and update values in the next commands.
