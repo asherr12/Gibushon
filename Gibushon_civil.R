@@ -1838,8 +1838,6 @@ if (min(gibushon_civil_filtered4[,2],na.rm = T)<0){
   gibushon_civil_filtered4[,2] <-  gibushon_civil_filtered4[,2]+abs(min(gibushon_civil_filtered4[,2],na.rm = T)) 
 }
 
-# gibushon_civil_filtered4[,2] <- log10(gibushon_civil_filtered4[,2])
-
 plot(gibushon_civil_filtered4[,2] ~ gibushon_civil_filtered4[,1], gibushon_civil_filtered4,
      ylab = paste(j,"_sd",sep = ""), xlab = paste("date.",j,"_diff",sep = ""))
 
