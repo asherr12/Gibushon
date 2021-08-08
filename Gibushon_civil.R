@@ -1790,57 +1790,36 @@ head(gibushon_civil$tkufatit_not_na,1000)
 library(dplyr)
 library(data.table)
 
-# which(colnames(gibushon_civil)=="TaarichHavara_cf_2018_diff")
-# colnames(gibushon_civil)[830] <- "date.cf_2018_diff"
-
-#criteria_list <- c("tkufatit_14","tkufatit_15","final.score.2017", 
-#                   "final.score.2018","row_score_2019","am_2015","am_2018","cf_2018")
-
 criteria_list <- c("tkufatit_14","tkufatit_15","final.score.2017","final.score.2018",
-                   "cf_2018","row_score_2019")# , "am_2015","am_2018"
+                   "cf_2018","row_score_2019","am_2015","am_2018")
 
-criteria_list <- c("am_2015")
-
-# head(gibushon_civil$am_2015,1000)
+criteria_list <- c("am_2018")
 
 for (j in criteria_list) {
 
 gibushon_civil_filtered = gibushon_civil%>%
   rowwise()%>%
-#  mutate(j<-ifelse(!is.na(paste(j,"_zscore",sep = "")),j,NA))%>%
   mutate(j<-ifelse(j!=am_2015 & j!=am_2018 & !is.na(paste(j,"_zscore",sep = "")),j,
             ifelse (j!=am_2015, am_2015),
             ifelse (j!=am_2018, am_2018,NA)))%>%
-#  select(paste(j,"_zscore",sep = ""),j,paste("date.",j,"_diff",sep = ""))%>%
-#  filter(!is.na(paste("date.",j,"_diff",sep = "")))
-#  select(paste(j,"_zscore",sep = ""),j,paste("date.",j,"_diff",sep = ""))
   select(j,paste("date.",j,"_diff",sep = ""))
 
-# gibushon_civil_filtered<-gibushon_civil_filtered[!is.na(gibushon_civil_filtered[3]), ]
 gibushon_civil_filtered<-gibushon_civil_filtered[!is.na(gibushon_civil_filtered[2]), ]
 
-# gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered[[3]]),]
 gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered[[2]]),]
-
 
 gibushon_civil_filtered2 <- gibushon_civil_filtered
 
-# gibushon_civil_filtered2[4] <- NA
-
 gibushon_civil_filtered2[3] <- NA
 
-#colnames(gibushon_civil_filtered2)[4]<-paste(j,"_sd",sep = "")
 colnames(gibushon_civil_filtered2)[3]<-paste(j,"_sd",sep = "")
-
 
 gibushon_civil_filtered2<-as.data.frame(gibushon_civil_filtered2)
 
 for (i in 1:(nrow(gibushon_civil_filtered2)-2)){
   gibushon_civil_filtered3 <- gibushon_civil_filtered2
   gibushon_civil_filtered3 <- gibushon_civil_filtered3[i:nrow(gibushon_civil_filtered2),]
-  # gibushon_civil_filtered2[i,4]<-sd(gibushon_civil_filtered3[,2], na.rm = T)
   gibushon_civil_filtered2[i,3]<-sd(gibushon_civil_filtered3[,1], na.rm = T)
-  
   }  
 
 library(dplyr)
@@ -1853,6 +1832,13 @@ gibushon_civil_filtered4 <- X[,lapply(.SD,mean),keys]
 
 gibushon_civil_filtered4 <- as.data.frame(gibushon_civil_filtered4)
 
+gibushon_civil_filtered4[,2] <- scale(as.numeric(unlist(gibushon_civil_filtered4[,2])))
+
+if (min(gibushon_civil_filtered4[,2],na.rm = T)<0){
+  gibushon_civil_filtered4[,2] <-  gibushon_civil_filtered4[,2]+abs(min(gibushon_civil_filtered4[,2],na.rm = T)) 
+}
+
+# gibushon_civil_filtered4[,2] <- log10(gibushon_civil_filtered4[,2])
 
 plot(gibushon_civil_filtered4[,2] ~ gibushon_civil_filtered4[,1], gibushon_civil_filtered4,
      ylab = paste(j,"_sd",sep = ""), xlab = paste("date.",j,"_diff",sep = ""))
@@ -1865,6 +1851,7 @@ for (i in 1:nrow(gibushon_civil_filtered4)) {
       gibushon_civil_filtered4[i+3,][,2] > gibushon_civil_filtered4[i+2,][,2] &
       gibushon_civil_filtered4[i+4,][,2] > gibushon_civil_filtered4[i+3,][,2]){
     diff_increase <- gibushon_civil_filtered4[i,][,1]
+    print(paste(colnames(gibushon_civil_filtered4)[1],":",sep = ""))
     print(diff_increase)
     break
   }
@@ -1872,31 +1859,22 @@ for (i in 1:nrow(gibushon_civil_filtered4)) {
 
 # find the point that the SD begins to decrease steadily after the highest SD value
 
-
-#######arrived here##### an error on the next row - doesn't get the right value
-
-diff_befoere_decrease <- which(gibushon_civil_filtered4[,1]==max(gibushon_civil_filtered4[,2],na.rm = T))
-diff_decrease <- gibushon_civil_filtered4[(diff_befoere_decrease+1),][,1]
-row_decrease <- which(gibushon_civil_filtered4[,1] == diff_decrease)
-
-for (i in row_decrease:nrow(gibushon_civil_filtered4)) {
-  if (gibushon_civil_filtered4[i+1,][,2] < max(gibushon_civil_filtered4[,2],na.rm = T) &
-      gibushon_civil_filtered4[i+2,][,2] < gibushon_civil_filtered4[i+1,][,2] &
-      gibushon_civil_filtered4[i+3,][,2] < gibushon_civil_filtered4[i+2,][,2] &
-      gibushon_civil_filtered4[i+4,][,2] < gibushon_civil_filtered4[i+3,][,2]){
-    final_diff_decrease <- gibushon_civil_filtered4[i,][,1]
-    print(final_diff_decrease)
-    break
-  }
+#arrived here #####solve the bug and create smaller diff intervals (divide to 7 if grater then 1000)
+for (i in (which.max(gibushon_civil_filtered4[,2])+1):(nrow(gibushon_civil_filtered4)-6)) {
+#  if ((nrow(gibushon_civil_filtered4)-i)>4 & 
+    if(gibushon_civil_filtered4[i,][,2] < max(gibushon_civil_filtered4[,2],na.rm = T) &
+         gibushon_civil_filtered4[i+1,][,2] < gibushon_civil_filtered4[i,][,2] &
+         gibushon_civil_filtered4[i+2,][,2] < gibushon_civil_filtered4[i+1,][,2] &
+         gibushon_civil_filtered4[i+3,][,2] < gibushon_civil_filtered4[i+2,][,2]) {
+       diff_decrease <- gibushon_civil_filtered4[i,][,1]
+       print(diff_decrease)
+       break
+#        break} else 
+#         {break
+} 
 }
 
-
 }
-
-
-
-
-
 
 # arrived here#### set for other criteria and update values in the next commands.
 
