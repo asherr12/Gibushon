@@ -1702,7 +1702,7 @@ colnames(gibushon_civil[(ncol_before_zscores+1):ncol_zscores])
 
 # gibushon_civil[(ncol_before_zscores+1):ncol_zscores][gibushon_civil[(ncol_before_zscores+1):ncol_zscores]>4]<-NA
 
-gibushon_civil[(ncol_before_zscores+1):ncol_zscores][gibushon_civil[(ncol_before_zscores+1):ncol_zscores]>6]<-NA
+abs(gibushon_civil)[(ncol_before_zscores+1):ncol_zscores][gibushon_civil[(ncol_before_zscores+1):ncol_zscores]>6]<-NA
 
 colnames(gibushon_civil)
 
