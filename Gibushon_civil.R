@@ -1658,7 +1658,7 @@ ncol_zscores<-ncol(gibushon_civil)
 library(dplyr)
 
 gibushon_civil_outliers = gibushon_civil[(ncol_before_zscores+1):ncol_zscores]
-ouitliers<-function(x) ifelse(!is.na(x) & x>3.29, x, NA)
+ouitliers<-function(x) ifelse(!is.na(x) & abs(x)>3.29, x, NA)
 allna<-function(x) ifelse(all(is.na(x)),NULL,x)
 
 gibushon_civil_outliers = gibushon_civil_outliers%>%
@@ -1842,7 +1842,7 @@ class(gibushon_civil_filtered4)
 
 gibushon_civil_filtered4 <- as.data.frame(gibushon_civil_filtered4)
 
-ouitliers<-function(x) ifelse(!is.na(x) & x<3.29, x, NA)
+ouitliers<-function(x) ifelse(!is.na(x) & abs(x)<3.29, x, NA)
 
 gibushon_civil_filtered4[,2] <- ouitliers(gibushon_civil_filtered4[,2])
 
