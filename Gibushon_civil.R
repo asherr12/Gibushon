@@ -1804,17 +1804,16 @@ criteria_list <- c("tkufatit_14","tkufatit_15","final.score.2017","final.score.2
 criteria_list <- c("tkufatit_14")
 
 for (j in criteria_list) {
-  
 gibushon_civil_filtered = gibushon_civil%>%
   rowwise()%>%
-  mutate(j<-ifelse(j!=am_2015 & j!=am_2018 & !is.na(paste(j,"_zscore",sep = "")),j,
-            ifelse (j!=am_2015, am_2015),
-            ifelse (j!=am_2018, am_2018,NA)))%>%
-  select(j,paste("date.",j,"_diff",sep = ""))
-}
-gibushon_civil_filtered<-gibushon_civil_filtered[!is.na(gibushon_civil_filtered[2]), ]
+  mutate(j<-ifelse(j!=am_2015 & j!=am_2018 & !is.na(paste(j,"_zscore",sep = "")),j),
+            ifelse(j==am_2015,am_2015),
+            ifelse(j==am_2018,am_2018,NA))%>%
+    select(paste("date.",j,"_diff",sep = ""),all_of(j))
+         
+gibushon_civil_filtered<-gibushon_civil_filtered[!is.na(gibushon_civil_filtered[1]), ]
 
-gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered[[2]]),]
+gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered[[1]]),]
 
 gibushon_civil_filtered2 <- gibushon_civil_filtered
 
@@ -1827,7 +1826,7 @@ gibushon_civil_filtered2<-as.data.frame(gibushon_civil_filtered2)
 for (i in 1:(nrow(gibushon_civil_filtered2)-2)){
   gibushon_civil_filtered3 <- gibushon_civil_filtered2
   gibushon_civil_filtered3 <- gibushon_civil_filtered3[i:nrow(gibushon_civil_filtered2),]
-  gibushon_civil_filtered2[i,3]<-sd(gibushon_civil_filtered3[,1], na.rm = T)
+  gibushon_civil_filtered2[i,3]<-sd(gibushon_civil_filtered3[,2], na.rm = T)
   }  
 
 library(dplyr)
@@ -1843,6 +1842,9 @@ gibushon_civil_filtered4 = gibushon_civil_filtered2%>%
 # gibushon_civil_filtered4 <- as.data.frame(gibushon_civil_filtered4)
 gibushon_civil_filtered4 = gibushon_civil_filtered4 %>% 
   group_by(gibushon_civil_filtered4[,1]) %>% mutate_each(funs(mean)) %>% distinct
+
+}
+
 
 gibushon_civil_filtered4<-gibushon_civil_filtered4[-c(3)]
 
