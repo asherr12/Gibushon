@@ -1365,6 +1365,7 @@ colnames(gibushon_civil)
 # With complicated packages that load S4 classes & methods, detach command is not 
 # guaranteed to restore everything to exactly the state before the package was loaded (?).******
 
+library (dplyr)
 detach(package:dplyr, unload = TRUE)
 library (plyr)
 gibushon_civil<-rename(gibushon_civil,c("Mazav0"="power",
