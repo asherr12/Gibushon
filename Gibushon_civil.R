@@ -779,6 +779,10 @@ filtered_absences_2012_2013_2014_2019_sick_days_days_off <- merge(filtered_absen
 absences <- filtered_absences_2012_2013_2014_2019_sick_days_days_off
 
 # detach plyr and dplyr packages and reattach dplyr************
+
+detach(package:plyr, unload = TRUE)
+detach(package:dplyr, unload = TRUE)
+
 library(dplyr)
 absences = absences %>%
   rowwise() %>%
@@ -1359,8 +1363,9 @@ colnames(gibushon_civil)
 
 # Remove Checkmark form dplyr package, because it's in conflict with plyr.*********
 # With complicated packages that load S4 classes & methods, detach command is not 
-# guaranteed to restore everything to exactly the state before the package was loaded.******
+# guaranteed to restore everything to exactly the state before the package was loaded (?).******
 
+detach(package:dplyr, unload = TRUE)
 library (plyr)
 gibushon_civil<-rename(gibushon_civil,c("Mazav0"="power",
                                         "Mazav2"="investment",
@@ -1588,7 +1593,7 @@ class(gibushon_civil)
       
 # gibushon_civil<-as.data.frame(gibushon_civil)
 
-colnames(gibushon_civil)[1:1000]
+colnames(gibushon_civil)
 
 ncol_before_zscores<-ncol(gibushon_civil)
 
@@ -1653,7 +1658,9 @@ ncol_zscores<-ncol(gibushon_civil)
 
 # Remove Checkmark form plyr package, because it's in conflict with dplyr.*********
 # With complicated packages that load S4 classes & methods, detach command is not 
-# guaranteed to restore everything to exactly the state before the package was loaded.
+# guaranteed to restore everything to exactly the state before the package was loaded (?).
+
+detach(package:plyr, unload = TRUE)
 
 library(dplyr)
 
@@ -1700,7 +1707,7 @@ write_excel_csv(gibushon_civil,file="C:/Users/USER/Documents/MAMDA/gibushon/gibu
 
 # gibushon_civil[(ncol_before_zscores+1):ncol_zscores][gibushon_civil[(ncol_before_zscores+1):ncol_zscores]>6]<-NA
 
-ouitliers2<-function(x) ifelse(!is.na(x) & abs(x)>4, x, NA)
+ouitliers2<-function(x) ifelse(!is.na(x) & abs(x)<4, x, NA)
 
 gibushon_civil = gibushon_civil%>%
   mutate_at(vars((ncol_before_zscores+1):ncol_zscores), funs(ouitliers2))
@@ -1794,15 +1801,17 @@ library(data.table)
 criteria_list <- c("tkufatit_14","tkufatit_15","final.score.2017","final.score.2018",
                    "cf_2018","row_score_2019","am_2015","am_2018")
 
-for (j in criteria_list) {
+criteria_list <- c("tkufatit_14")
 
+for (j in criteria_list) {
+  
 gibushon_civil_filtered = gibushon_civil%>%
   rowwise()%>%
   mutate(j<-ifelse(j!=am_2015 & j!=am_2018 & !is.na(paste(j,"_zscore",sep = "")),j,
             ifelse (j!=am_2015, am_2015),
             ifelse (j!=am_2018, am_2018,NA)))%>%
   select(j,paste("date.",j,"_diff",sep = ""))
-
+}
 gibushon_civil_filtered<-gibushon_civil_filtered[!is.na(gibushon_civil_filtered[2]), ]
 
 gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered[[2]]),]
@@ -2602,9 +2611,9 @@ library(stringr)
 library(descr)
 library(psych)
 options(width = 71,max.print=30000)
-round(freq(ordered(as.numeric(unlist(gibushon_civil$amcourses))), plot = F,main=colnames(gibushon_civil$amcourses),font=2),2)
+round(freq(ordered(as.numeric(unlist(gibushon_civil$EichutGrade_zscore))), plot = F,main=colnames(gibushon_civil$EichutGrade_zscore),font=2),2)
 round(describe(as.numeric(unlist(gibushon$ac_final_grade))),2)
-freq(gibushon_civil$language , plot = F,main=colnames(gibushon_civil$language),font=2)
+freq(gibushon_civil$religion , plot = F,main=colnames(gibushon_civil$religion),font=2)
 freq(gibushon_civil$rama_gender, plot = F,main=colnames(gibushon_civil$rama_gender),font=2)
 freq(gibushon_civil$gender, plot = F,main=colnames(gibushon_civil$gender),font=2)
 freq(gibushon_civil$general_gender, plot = F,main=colnames(gibushon_civil$general_gender),font=2)
