@@ -1797,6 +1797,8 @@ head(gibushon_civil$tkufatit_not_na,1000)
 # Optimal gap between A.C. date and criteria******************************
 
 library(dplyr)
+detach(package:dplyr, unload = TRUE)
+library(dplyr)
 library(data.table)
 
 criteria_list <- c("tkufatit_14","tkufatit_15","final.score.2017","final.score.2018",
@@ -1920,6 +1922,7 @@ for (i in (which.max(gibushon_civil_filtered4[,2])+1):nrow(gibushon_civil_filter
  } 
 }
 }
+
 
 filtered_gibushon_civil_diff = gibushon_civil %>%
   rowwise() %>%
@@ -2329,9 +2332,11 @@ write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/M
 # write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_before_01.09.2018_p_c_corr_output.xlsx")
 # write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibushon/gibushon_final_filtered_FinalGradeg_gt_then_3.5_p_c_corr_output.xlsx")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
-# Range restriction correction for FinalGradeg_zscore
 
-try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
+
+# Range restriction correction for FinalGradeg_zscore with tkufatitam *****************************
+# The variance of all the sample of candidates in the A.C. should be higher then the variance of the sample that I performed on it
+# the validation study (after the various filtering). Verify it
 
 corr_temp<-c()
 corr_try <- try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
@@ -2343,59 +2348,78 @@ r0 <- corr_temp$"predictor"
 library (descr)
 Sxn <- round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg)),2)
 Sxn <- Sxn$sd
+Sxn
 Sx0 <- round(describe (as.numeric(gibushon_final$FinalGradeg)),2)
 Sx0 <- Sx0$sd
+Sx0
+rn <- round((r0*(Sxn/Sx0))/sqrt(1-r0^2)+r0^2*Sxn^2/Sx0,2)
+rxy <- 0.710
+n <- NA
+rn2 <- round(rn/sqrt(1*rxy),2)
+library(data.table)
+FinalGradeg_zscore__tkufatitam = data.table(c(round(r0,2),round(rn,2),round(rn2,2)))
+FinalGradeg_zscore__tkufatitam <- as.data.frame(FinalGradeg_zscore__tkufatitam)
+colnames(FinalGradeg_zscore__tkufatitam)[1] <- "FinalGradeg_zscore__tkufatitam"
+rownames(FinalGradeg_zscore__tkufatitam) <- c("r0","rn","rn2")
+FinalGradeg_zscore__tkufatitam
+
+
+# library(gridExtra)
+#library(grid)
+# d <- head(iris[,1:3])
+# grid.table(FinalGradeg_zscore__tkufatitam)
+
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 # Range restriction.
 # The variance of all the sample of candidates in the A.C. should be higher then the variance of the sample that I performed on it
 # the validation study (after the various filtering)
 
-library (descr)
-library (psych)
-
-try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatit),use="pairwise.complete.obs"), silent=T)
-try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$am),use="pairwise.complete.obs"), silent=T)
-try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
-
-round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg)),2)
-
-gibushon_final$ac_final_grade_restricted<-gibushon_final$FinalGradeg
-
-round(describe (as.numeric(gibushon_final$ac_final_grade_restricted)),2)
-
-# Average number of repeated criteria (for n in range restriction Excel file).
-
-library(dplyr)
-
-counter = gibushon_final %>%
-  rowwise() %>%
-  mutate(tkufatit_nna = sum(!is.na(c(final.score.2015_zscore,final.score.2017_zscore,tkufatit_14_zscore,final.score.2018_zscore,row_score_2019_zscore))),
-         am_nna = sum(!is.na(c(am_2015,am_2018,am_2018_special))))
-
-library (descr)
-library (psych)
-
-round(freq(ordered(counter$tkufatit_nna), plot = F,main=colnames(counter$tkufatit_nna),font=2),2)
-notna_tkufatit_average<-(1448*1+3906*2+193*3)/(180+1448+3906+193)
-round(notna_tkufatit_average,2)
-
-round(freq(ordered(counter$am_nna), plot = F,main=colnames(counter$am_nna),font=2),2)
-notna_am_average<-(3159*1+1409*2)/(1159+3159+1409)
-round(notna_am_average,2)
-
-#-----------------------------------------------------------------------------------------------------------------------------------------------------
-library (descr)
-library (psych)
-
-try(cor.test(as.numeric(gibushon_final$mini_sociometry_negative_percent),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
-round(describe (as.numeric(filtered_gibushon_civil_diff$mini_sociometry_negative_percent)),2)
-
-round(describe (as.numeric(filtered_gibushon_civil_diff$SocioFinalGrade)),2)
-
-gibushon_final$SocioFinalGrade_restricted<-gibushon_final$SocioFinalGrade
-
-round(describe (as.numeric(gibushon_final$SocioFinalGrade_restricted)),2)
+# library (descr)
+# library (psych)
+# 
+# try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatit),use="pairwise.complete.obs"), silent=T)
+# try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$am),use="pairwise.complete.obs"), silent=T)
+# try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
+# 
+# round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg)),2)
+# 
+# gibushon_final$ac_final_grade_restricted<-gibushon_final$FinalGradeg
+# 
+# round(describe (as.numeric(gibushon_final$ac_final_grade_restricted)),2)
+# 
+# # Average number of repeated criteria (for n in range restriction Excel file).
+# 
+# library(dplyr)
+# 
+# counter = gibushon_final %>%
+#   rowwise() %>%
+#   mutate(tkufatit_nna = sum(!is.na(c(final.score.2015_zscore,final.score.2017_zscore,tkufatit_14_zscore,final.score.2018_zscore,row_score_2019_zscore))),
+#          am_nna = sum(!is.na(c(am_2015,am_2018,am_2018_special))))
+# 
+# library (descr)
+# library (psych)
+# 
+# round(freq(ordered(counter$tkufatit_nna), plot = F,main=colnames(counter$tkufatit_nna),font=2),2)
+# notna_tkufatit_average<-(1448*1+3906*2+193*3)/(180+1448+3906+193)
+# round(notna_tkufatit_average,2)
+# 
+# round(freq(ordered(counter$am_nna), plot = F,main=colnames(counter$am_nna),font=2),2)
+# notna_am_average<-(3159*1+1409*2)/(1159+3159+1409)
+# round(notna_am_average,2)
+# 
+# #-----------------------------------------------------------------------------------------------------------------------------------------------------
+# library (descr)
+# library (psych)
+# 
+# try(cor.test(as.numeric(gibushon_final$mini_sociometry_negative_percent),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
+# round(describe (as.numeric(filtered_gibushon_civil_diff$mini_sociometry_negative_percent)),2)
+# 
+# round(describe (as.numeric(filtered_gibushon_civil_diff$SocioFinalGrade)),2)
+# 
+# gibushon_final$SocioFinalGrade_restricted<-gibushon_final$SocioFinalGrade
+# 
+# round(describe (as.numeric(gibushon_final$SocioFinalGrade_restricted)),2)
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 # Regression analysis
