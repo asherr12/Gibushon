@@ -2338,34 +2338,6 @@ write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/M
 # The variance of all the sample of candidates in the A.C. should be higher then the variance of the sample that I performed on it
 # the validation study (after the various filtering). Verify it
 
-corr_temp<-c()
-corr_try <- try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
-corr_temp$"predictor" <-ifelse(class(corr_try)=="try-error", NA, corr_try$estimate)
-corr_temp$p.value <-ifelse(class(corr_try)=="try-error", NA, corr_try$p.value)
-corr_temp$n <-(ifelse(class(corr_try)=="try-error", NA, corr_try$parameter+2))
-corr_temp<-data.frame(corr_temp)
-r0 <- corr_temp$"predictor"
-library (descr)
-Sxn <- round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg)),2)
-Sxn <- Sxn$sd
-Sxn
-Sx0 <- round(describe (as.numeric(gibushon_final$FinalGradeg)),2)
-Sx0 <- Sx0$sd
-Sx0
-rn <- round((r0*(Sxn/Sx0))/sqrt(1-r0^2)+r0^2*Sxn^2/Sx0,2)
-rxy <- 0.710
-n <- NA
-rn2 <- round(rn/sqrt(1*rxy),2)
-library(data.table)
-FinalGradeg_zscore__tkufatitam = data.table(c(round(r0,2),round(rn,2),round(rn2,2)))
-FinalGradeg_zscore__tkufatitam <- as.data.frame(FinalGradeg_zscore__tkufatitam)
-colnames(FinalGradeg_zscore__tkufatitam)[1] <- "FinalGradeg_zscore__tkufatitam"
-rownames(FinalGradeg_zscore__tkufatitam) <- c("r0","rn","rn2")
-FinalGradeg_zscore__tkufatitam
-
-
-# the same above with loop for multiple vars
-
 gibushon_final_filterred_restriction_predictores = gibushon_final%>%
   select(FinalGradeg_zscore,SocioFinalGrade)
 gibushon_final_filterred_restriction_criteria = gibushon_final%>%
@@ -2382,22 +2354,40 @@ corr_temp$p.value <-ifelse(class(corr_try)=="try-error", NA, corr_try$p.value)
 corr_temp$n <-(ifelse(class(corr_try)=="try-error", NA, corr_try$parameter+2))
 corr_temp<-data.frame(corr_temp)
 r0 <- corr_temp$"predictor"
+
 library (descr)
 Sxn <- round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg)),2)
 Sxn <- Sxn$sd
 Sxn
+
 Sx0 <- round(describe (as.numeric(j)),2)
 Sx0 <- Sx0$sd
 Sx0
+
 rn <- round((r0*(Sxn/Sx0))/sqrt(1-r0^2)+r0^2*Sxn^2/Sx0,2)
+
 ryy <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit",0.623,
        ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="am",0.4765,0.71))
-n <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit",1.720,#replace the number
-     ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="am",1.040,NA))#replace the number
+
+
+# arrived here#################################################################
+# replace the next commend and numbers by 
+# n=the avarage number of times the criterion was measured in this study
+# only for am and tkufatit.
+
+# n <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit",1.720,
+#             ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="am",1.040,NA))
+
+n <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit" |
+     ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="am",
+     8888,NA))
+
 ryyb <- (ryy*n)/(1+(n-1)*ryy)
+
 rn2 <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit" |
               names(gibushon_final_filterred_restriction_criteria[k])=="am",round(rn/sqrt(1*ryyb),2),
               round(rn/sqrt(1*ryy),2))
+
 library(data.table)
 range_restriction_table = data.table(c(round(r0,2),round(rn,2),round(rn2,2)))
 range_restriction_table <- as.data.frame(range_restriction_table)
