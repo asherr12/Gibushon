@@ -2344,7 +2344,7 @@ library (descr)
 Sxn <- round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg)),2)
 Sxn <- Sxn$sd
 Sx0 <- round(describe (as.numeric(gibushon_final$FinalGradeg)),2)
-Sxn <- Sx0$sd
+Sx0 <- Sx0$sd
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 # Range restriction.
