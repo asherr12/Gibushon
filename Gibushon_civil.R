@@ -2364,14 +2364,56 @@ rownames(FinalGradeg_zscore__tkufatitam) <- c("r0","rn","rn2")
 FinalGradeg_zscore__tkufatitam
 
 
-# library(gridExtra)
-#library(grid)
-# d <- head(iris[,1:3])
-# grid.table(FinalGradeg_zscore__tkufatitam)
+# the same above with loop for multiple vars
+
+gibushon_final_filterred_restriction_predictores = gibushon_final%>%
+  select(FinalGradeg_zscore,SocioFinalGrade)
+gibushon_final_filterred_restriction_criteria = gibushon_final%>%
+  select(am,tkufatit,tkufatitam)
+
+k <- 1
+l <- 1
+for (i in gibushon_final_filterred_restriction_predictores) {
+  for (j in gibushon_final_filterred_restriction_criteria) {
+corr_temp<-c()
+corr_try <- try(cor.test(as.numeric(i),as.numeric((j),use="pairwise.complete.obs"), silent=T))
+corr_temp$"predictor" <-ifelse(class(corr_try)=="try-error", NA, corr_try$estimate)
+corr_temp$p.value <-ifelse(class(corr_try)=="try-error", NA, corr_try$p.value)
+corr_temp$n <-(ifelse(class(corr_try)=="try-error", NA, corr_try$parameter+2))
+corr_temp<-data.frame(corr_temp)
+r0 <- corr_temp$"predictor"
+library (descr)
+Sxn <- round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg)),2)
+Sxn <- Sxn$sd
+Sxn
+Sx0 <- round(describe (as.numeric(j)),2)
+Sx0 <- Sx0$sd
+Sx0
+rn <- round((r0*(Sxn/Sx0))/sqrt(1-r0^2)+r0^2*Sxn^2/Sx0,2)
+ryy <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit",0.623,
+       ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="am",0.4765,0.71))
+n <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit",1.720,#replace the number
+     ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="am",1.040,NA))#replace the number
+ryyb <- (ryy*n)/(1+(n-1)*ryy)
+rn2 <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit" |
+              names(gibushon_final_filterred_restriction_criteria[k])=="am",round(rn/sqrt(1*ryyb),2),
+              round(rn/sqrt(1*ryy),2))
+library(data.table)
+range_restriction_table = data.table(c(round(r0,2),round(rn,2),round(rn2,2)))
+range_restriction_table <- as.data.frame(range_restriction_table)
+print(names(gibushon_final_filterred_restriction_predictores[l]))
+colnames(range_restriction_table)<-names(gibushon_final_filterred_restriction_criteria[k])
+rownames(range_restriction_table) <- c("r0","rn","rn2")
+print(range_restriction_table)
+k <- k+1
+  }
+  l <- l+1
+  k <- 1
+}
 
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
-# Range restriction.
+# Range restriction. - old code
 # The variance of all the sample of candidates in the A.C. should be higher then the variance of the sample that I performed on it
 # the validation study (after the various filtering)
 
