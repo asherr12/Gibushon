@@ -2342,13 +2342,13 @@ write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/M
 #   select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
 
 gibushon_final_filterred_restriction_predictores = gibushon_final%>%
-  select(Hebrewg_zscore)
+  select(FinalGradeg_zscore)
 
 # filtered_gibushon_civil_diff_filterred_restriction_predictores = filtered_gibushon_civil_diff%>%
 #   select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
 
 filtered_gibushon_civil_diff_filterred_restriction_predictores = filtered_gibushon_civil_diff%>%
-  select(Hebrewg_zscore)
+  select(FinalGradeg_zscore)
 
 gibushon_final_filterred_restriction_criteria = gibushon_final%>%
   select(tkufatit,am,tkufatitam,course_score,amcourses)
@@ -2385,8 +2385,8 @@ n_am <- sum(counter_am_nna$product,na.rm = T)/sum(counter_am_nna$freq,na.rm = T)
 k <- 1
 l <- 1
 for (i in gibushon_final_filterred_restriction_predictores) {
-  for (j in gibushon_final_filterred_restriction_criteria) {
     for (f in filtered_gibushon_civil_diff_filterred_restriction_predictores) {
+      for (j in gibushon_final_filterred_restriction_criteria) {
 corr_temp<-c()
 corr_try <- try(cor.test(as.numeric(i),as.numeric((j),use="pairwise.complete.obs"), silent=T))
 corr_temp$"predictor" <-ifelse(class(corr_try)=="try-error", NA, corr_try$estimate)
@@ -2429,10 +2429,10 @@ colnames(range_restriction_table)<-names(gibushon_final_filterred_restriction_cr
 rownames(range_restriction_table) <- c("r0","rn","rn2")
 print(range_restriction_table)
 k <- k+1
-  }
+    }
   l <- l+1
   k <- 1
-}
+  }
 }
 # Verify that all is correct: compare to the manual computation.
 
@@ -2480,11 +2480,11 @@ k <- k+1
 # try(cor.test(as.numeric(gibushon_final$mini_sociometry_negative_percent),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
 # round(describe (as.numeric(filtered_gibushon_civil_diff$mini_sociometry_negative_percent)),2)
 # 
-# round(describe (as.numeric(filtered_gibushon_civil_diff$SocioFinalGrade)),2)
+describe (as.numeric(filtered_gibushon_civil_diff$Hebrewg_zscore))
 # 
-# gibushon_final$SocioFinalGrade_restricted<-gibushon_final$SocioFinalGrade
+gibushon_final$SocioFinalGrade_restricted<-gibushon_final$FinalGradeg
 # 
-# round(describe (as.numeric(gibushon_final$SocioFinalGrade_restricted)),2)
+round(describe (as.numeric(gibushon_final$SocioFinalGrade_restricted)),2)
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 # Regression analysis
