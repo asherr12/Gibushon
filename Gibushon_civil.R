@@ -2376,11 +2376,8 @@ ryy <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit
 # only for am and tkufatit.
 # After that, verify that all is correct: compare to the manual computation.
 
-# n <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit",1.720,
-#             ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="am",1.040,NA))
-
-n <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit",2.830,
-     ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="am",1.020,NA))
+n <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit",2.83,
+     ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="am",1.02,NA))
 
 ryyb <- (ryy*n)/(1+(n-1)*ryy)
 
@@ -2428,6 +2425,21 @@ counter = gibushon_final %>%
   rowwise() %>%
   mutate(tkufatit_nna = sum(!is.na(c(final.score.2015_zscore,final.score.2017_zscore,tkufatit_14_zscore,final.score.2018_zscore,row_score_2019_zscore))),
          am_nna = sum(!is.na(c(am_2015,am_2018,am_2018_special))))
+         
+class(counter)         
+counter <- as.data.frame(counter)
+
+counter = counter %>%
+select(tkufatit_nna,am_nna)
+
+library(dplyr)
+detach(package:dplyr, unload = TRUE)
+library('plyr')
+counter_tkufatit_nna <- as.data.frame(count(counter, 'tkufatit_nna'))
+counter_am_nna <- as.data.frame(count(counter, 'am_nna'))
+
+
+
 
 library (descr)
 library (psych)
