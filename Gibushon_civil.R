@@ -2338,16 +2338,11 @@ write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/M
 # The variance of all the sample of candidates in the A.C. should be higher then the variance of the sample that I performed on it
 # the validation study (after the various filtering). Verify it
 
-# gibushon_final_filterred_restriction_predictores = gibushon_final%>%
-#   select(FinalGradeg_zscore,SocioFinalGrade)
 gibushon_final_filterred_restriction_predictores = gibushon_final%>%
-  select(FinalGradeg_zscore)
+  select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
 
-# gibushon_final_filterred_restriction_criteria = gibushon_final%>%
-#   select(tkufatit,am,tkufatitam)
 gibushon_final_filterred_restriction_criteria = gibushon_final%>%
-  select(tkufatit)
-
+  select(tkufatit,am,tkufatitam,course_score,amcourses)
 
 counter = gibushon_final %>%
   rowwise() %>%
