@@ -2338,8 +2338,17 @@ write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/M
 # The variance of all the sample of candidates in the A.C. should be higher then the variance of the sample that I performed on it
 # the validation study (after the various filtering). Verify it
 
+# gibushon_final_filterred_restriction_predictores = gibushon_final%>%
+#   select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
+
 gibushon_final_filterred_restriction_predictores = gibushon_final%>%
-  select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
+  select(Hebrewg_zscore)
+
+# filtered_gibushon_civil_diff_filterred_restriction_predictores = filtered_gibushon_civil_diff%>%
+#   select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
+
+filtered_gibushon_civil_diff_filterred_restriction_predictores = filtered_gibushon_civil_diff%>%
+  select(Hebrewg_zscore)
 
 gibushon_final_filterred_restriction_criteria = gibushon_final%>%
   select(tkufatit,am,tkufatitam,course_score,amcourses)
@@ -2377,6 +2386,7 @@ k <- 1
 l <- 1
 for (i in gibushon_final_filterred_restriction_predictores) {
   for (j in gibushon_final_filterred_restriction_criteria) {
+    for (f in filtered_gibushon_civil_diff_filterred_restriction_predictores) {
 corr_temp<-c()
 corr_try <- try(cor.test(as.numeric(i),as.numeric((j),use="pairwise.complete.obs"), silent=T))
 corr_temp$"predictor" <-ifelse(class(corr_try)=="try-error", NA, corr_try$estimate)
@@ -2386,7 +2396,7 @@ corr_temp<-data.frame(corr_temp)
 r0 <- corr_temp$"predictor"
 
 library (descr)
-Sxn <- round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg)),2)
+Sxn <- round(describe (as.numeric(f)),2)
 Sxn <- Sxn$sd
 Sxn
 
@@ -2423,7 +2433,7 @@ k <- k+1
   l <- l+1
   k <- 1
 }
-
+}
 # Verify that all is correct: compare to the manual computation.
 
 
