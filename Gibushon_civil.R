@@ -2338,17 +2338,11 @@ write.xlsx(gibushon_final_filtered_corr_output,file = "C:/Users/USER/Documents/M
 # The variance of all the sample of candidates in the A.C. should be higher then the variance of the sample that I performed on it
 # the validation study (after the various filtering). Verify it
 
-# gibushon_final_filterred_restriction_predictores = gibushon_final%>%
-#   select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
-
 gibushon_final_filterred_restriction_predictores = gibushon_final%>%
-  select(FinalGradeg_zscore)
-
-# filtered_gibushon_civil_diff_filterred_restriction_predictores = filtered_gibushon_civil_diff%>%
-#   select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
+  select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
 
 filtered_gibushon_civil_diff_filterred_restriction_predictores = filtered_gibushon_civil_diff%>%
-  select(FinalGradeg_zscore)
+  select(SocioGrade_zscore,FinalGradeg_zscore,SocioFinalGrade_zscore,Daparg_zscore,Hebrewg_zscore)
 
 gibushon_final_filterred_restriction_criteria = gibushon_final%>%
   select(tkufatit,am,tkufatitam,course_score,amcourses)
@@ -2424,15 +2418,16 @@ rn2 <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit
 library(data.table)
 range_restriction_table = data.table(c(round(r0,2),round(rn,2),round(rn2,2)))
 range_restriction_table <- as.data.frame(range_restriction_table)
-print(names(gibushon_final_filterred_restriction_predictores[l]))
+print(names(gibushon_final_filterred_restriction_predictores[l]))#################try without l
 colnames(range_restriction_table)<-names(gibushon_final_filterred_restriction_criteria[k])
 rownames(range_restriction_table) <- c("r0","rn","rn2")
 print(range_restriction_table)
 k <- k+1
     }
-  l <- l+1
   k <- 1
-  }
+  l<-l+1
+    }
+  l <- 1
 }
 # Verify that all is correct: compare to the manual computation.
 
