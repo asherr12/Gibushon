@@ -2652,9 +2652,9 @@ ggplot(filtered_gibushon_civil_diff, aes(x=ac_final_grade)) +
 library(descr)
 library(psych)
 options(width = 71,max.print=30000)
-round(freq(ordered(as.numeric(unlist(filtered_gibushon_civil_diff$date.tkufatit_2019_diff))), plot = F,main=colnames(filtered_gibushon_civil_diff$date.tkufatit_2019_diff),font=2),2)
+round(freq(ordered(as.numeric(unlist(gibushon_civil$FinalGradeg))), plot = F,main=colnames(gibushon_civil$FinalGradeg),font=2),2)
 round(freq(ordered(gibushon_final$course_fail_pass), plot = F,main=colnames(gibushon_final$course_fail_pass),font=2))
-round(describe (as.numeric(filtered_gibushon_civil_diff$date.tkufatit_2019_diff)))
+round(describe (as.numeric(gibushon_final$amcourses)))
 describe (as.numeric(filtered_gibushon_civil_diff$HEBREW_spacial_stanines_a))
 describe (as.numeric(filtered_gibushon_civil_diff$HEBREW_spacial_stanines_b))
 describe (as.numeric(filtered_gibushon_civil_diff$HEBREW_copmlete_zscore_internal))
@@ -2672,25 +2672,25 @@ filtered_gibushon_civil_diff$ac_final_grade<-ifelse(filtered_gibushon_civil_diff
 library(ggplot2)
 library(scales)
 
-ggplot(gibushon_final, aes(x=final_impression)) + 
+# ggplot(gibushon_final, aes(x=final_impression)) + 
+#   geom_bar(na.rm = T,fill = "#FF6666") +
+#   xlab("ציון מבחן מצב")+
+#   ylab("מס' מועמדים")+
+#   #  ggtitle("תרשים 1: התפלגות ציוני מבחן מצב")+
+#   stat_bin(binwidth=0.5, geom="text", aes(label=..count..), vjust=-0.5, hjust=0.45) +
+#   scale_x_continuous(breaks = seq(1, 6.5, 0.5))+
+#   scale_y_continuous(breaks = seq(0, 315, 50),limits = c(0,370))+
+#   #  theme(plot.title = element_text(hjust = 0.5, size = 16,color = "blue",face = "bold"))+
+#   theme(axis.title.x = element_text(size = 12,color = "#993333", face = "bold"))+
+#   theme(axis.title.y = element_text(size = 12,color = "#993333", face = "bold"))
+
+
+
+ggplot(gibushon_final, aes(x=FinalGradeg)) + 
   geom_bar(na.rm = T,fill = "#FF6666") +
-  xlab("ציון מבחן מצב")+
+  xlab("ציון גיבושון")+
   ylab("מס' מועמדים")+
-  #  ggtitle("תרשים 1: התפלגות ציוני מבחן מצב")+
-  stat_bin(binwidth=0.5, geom="text", aes(label=..count..), vjust=-0.5, hjust=0.45) +
-  scale_x_continuous(breaks = seq(1, 6.5, 0.5))+
-  scale_y_continuous(breaks = seq(0, 315, 50),limits = c(0,370))+
-  #  theme(plot.title = element_text(hjust = 0.5, size = 16,color = "blue",face = "bold"))+
-  theme(axis.title.x = element_text(size = 12,color = "#993333", face = "bold"))+
-  theme(axis.title.y = element_text(size = 12,color = "#993333", face = "bold"))
-
-
-
-ggplot(gibushon_final, aes(x=ac_final_grade)) + 
-  geom_bar(na.rm = T,fill = "#FF6666") +
-  xlab("ציון מרכז הערכה")+
-  ylab("מס' מועמדים")+
-  #  ggtitle("תרשים 1: התפלגות ציוני מרכז ההערכה")+
+  #  ggtitle("תרשים 1: התפלגות ציוני הגיבושון")+
   stat_bin(binwidth=0.5, geom="text", aes(label=..count..), vjust=-0.5, hjust=0.45) +
   scale_x_continuous(breaks = seq(1, 6.5, 0.5))+
   scale_y_continuous(breaks = seq(0, 315, 50),limits = c(0,370))+
