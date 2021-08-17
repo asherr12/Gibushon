@@ -2474,11 +2474,11 @@ k <- k+1
 # try(cor.test(as.numeric(gibushon_final$mini_sociometry_negative_percent),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
 # round(describe (as.numeric(filtered_gibushon_civil_diff$mini_sociometry_negative_percent)),2)
 # 
-describe (as.numeric(filtered_gibushon_civil_diff$Hebrewg_zscore))
+# describe (as.numeric(filtered_gibushon_civil_diff$Hebrewg_zscore))
 # 
-gibushon_final$SocioFinalGrade_restricted<-gibushon_final$FinalGradeg
+# gibushon_final$SocioFinalGrade_restricted<-gibushon_final$FinalGradeg
 # 
-round(describe (as.numeric(gibushon_final$SocioFinalGrade_restricted)),2)
+# round(describe (as.numeric(gibushon_final$SocioFinalGrade_restricted)),2)
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 # Regression analysis
