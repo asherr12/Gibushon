@@ -2686,7 +2686,7 @@ library(scales)
 
 
 
-ggplot(gibushon_final, aes(x=FinalGradeg)) + 
+ggplot(gibushon_civil, aes(x=FinalGradeg)) + 
   geom_bar(na.rm = T,fill = "#FF6666") +
   xlab("ציון גיבושון")+
   ylab("מס' מועמדים")+
