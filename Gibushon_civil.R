@@ -2377,9 +2377,10 @@ counter_am_nna = counter_am_nna %>%
 n_am <- sum(counter_am_nna$product,na.rm = T)/sum(counter_am_nna$freq,na.rm = T)
 
 k <- 1
+f <- 1
 l <- 1
 for (i in gibushon_final_filterred_restriction_predictores) {
-    for (f in filtered_gibushon_civil_diff_filterred_restriction_predictores) {
+    # for (f in filtered_gibushon_civil_diff_filterred_restriction_predictores) {
       for (j in gibushon_final_filterred_restriction_criteria) {
 corr_temp<-c()
 corr_try <- try(cor.test(as.numeric(i),as.numeric((j),use="pairwise.complete.obs"), silent=T))
@@ -2390,7 +2391,7 @@ corr_temp<-data.frame(corr_temp)
 r0 <- corr_temp$"predictor"
 
 library (descr)
-Sxn <- round(describe (as.numeric(f)),2)
+Sxn <- round(describe (filtered_gibushon_civil_diff_filterred_restriction_predictores[f]),2)
 Sxn <- Sxn$sd
 Sxn
 
@@ -2418,18 +2419,18 @@ rn2 <- ifelse(names(gibushon_final_filterred_restriction_criteria[k])=="tkufatit
 library(data.table)
 range_restriction_table = data.table(c(round(r0,2),round(rn,2),round(rn2,2)))
 range_restriction_table <- as.data.frame(range_restriction_table)
-print(names(gibushon_final_filterred_restriction_predictores[l]))#################try without l
+print(names(gibushon_final_filterred_restriction_predictores[l]))
 colnames(range_restriction_table)<-names(gibushon_final_filterred_restriction_criteria[k])
 rownames(range_restriction_table) <- c("r0","rn","rn2")
 print(range_restriction_table)
 k <- k+1
-    }
-  k <- 1
-  l<-l+1
-    }
-  l <- 1
+# f <- f+1
 }
-# Verify that all is correct: compare to the manual computation.
+  k <- 1
+  l <- l+1  
+  # f <- 1
+}
+
 
 
 
