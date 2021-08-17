@@ -2380,7 +2380,6 @@ k <- 1
 f <- 1
 l <- 1
 for (i in gibushon_final_filterred_restriction_predictores) {
-    # for (f in filtered_gibushon_civil_diff_filterred_restriction_predictores) {
       for (j in gibushon_final_filterred_restriction_criteria) {
 corr_temp<-c()
 corr_try <- try(cor.test(as.numeric(i),as.numeric((j),use="pairwise.complete.obs"), silent=T))
@@ -2430,10 +2429,6 @@ k <- k+1
   f <- f+1
 }
 
-
-
-
-
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 # Range restriction. - old code
 # The variance of all the sample of candidates in the A.C. should be higher then the variance of the sample that I performed on it
@@ -2442,27 +2437,29 @@ k <- k+1
 # library (descr)
 # library (psych)
 # 
-# try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatit),use="pairwise.complete.obs"), silent=T)
-# try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$am),use="pairwise.complete.obs"), silent=T)
-# try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
-# 
-# round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg)),2)
-# 
-# gibushon_final$ac_final_grade_restricted<-gibushon_final$FinalGradeg
-# 
-# round(describe (as.numeric(gibushon_final$ac_final_grade_restricted)),2)
-# 
-# # Average number of repeated criteria (for n in range restriction Excel file).
-# 
-# library(dplyr)
-# 
+try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatit),use="pairwise.complete.obs"), silent=T)
+try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$am),use="pairwise.complete.obs"), silent=T)
+try(cor.test(as.numeric(gibushon_final$FinalGradeg_zscore),as.numeric(gibushon_final$tkufatitam),use="pairwise.complete.obs"), silent=T)
 
-# library (descr)
-# library (psych)
-# 
-# round(freq(ordered(counter$tkufatit_nna), plot = F,main=colnames(counter$tkufatit_nna),font=2),2)
-# notna_tkufatit_average<-(273*1+2411*2+1734*3+1362*4+277*5)/(2+273+2411+1734+1362+277)
-# round(notna_tkufatit_average,2)
+round(describe (as.numeric(filtered_gibushon_civil_diff$FinalGradeg_zscore)),2)
+
+gibushon_final$FinalGradeg_zscore_restricted<-gibushon_final$FinalGradeg_zscore
+
+round(describe (as.numeric(gibushon_final$FinalGradeg_zscore_restricted)),2)
+
+# Average number of repeated criteria (for n in range restriction Excel file).
+
+library (descr)
+library (psych)
+
+counter = gibushon_final %>%
+  rowwise() %>%
+  mutate(tkufatit_nna = sum(!is.na(c(final.score.2015_zscore,final.score.2017_zscore,tkufatit_14_zscore,final.score.2018_zscore,row_score_2019_zscore))),
+         am_nna = sum(!is.na(c(am_2015,am_2018,am_2018_special))))
+
+round(freq(ordered(counter$tkufatit_nna), plot = F,main=colnames(counter$tkufatit_nna),font=2),2)
+notna_tkufatit_average<-(273*1+2411*2+1734*3+1362*4+277*5)/(2+273+2411+1734+1362+277)
+round(notna_tkufatit_average,2)
 # 
 # round(freq(ordered(counter$am_nna), plot = F,main=colnames(counter$am_nna),font=2),2)
 # notna_am_average<-(3362*1+1396*2)/(1301+3362+1396)
