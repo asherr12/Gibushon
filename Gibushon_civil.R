@@ -2486,6 +2486,8 @@ k <- k+1
 }
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
+colnames(gibushon_final_filtered)
+
 # Regression analysis
 
 library(QuantPsyc)  # lm.beta
@@ -2495,125 +2497,71 @@ library(lmSupport)  #lm.sumSquares
 library(perturbR)  # colldiag
 library(regtools)  # pairwise
 
-# reg_tkufatitam <- lm(tkufatitam ~ ac_final_grade
-#                      + mini_sociometry_negative_percent
-#                      + sherut
-#                      + seniority_days_ac,
-#                      data=gibushon_final)
-# summary(reg_tkufatitam)
-
-# reg_tkufatitam <- lm(tkufatitam ~ ac_final_grade
-#                      + mini_sociometry_negative_percent
-#                      + rama
-#                      + seniority_days_ac,
-#                      data=gibushon_final)
-# summary(reg_tkufatitam)
-
-reg_tkufatitam <- lm(tkufatitam ~ ac_final_grade
-                     + mini_sociometry_negative_percent
-                     + seniority_days_ac,
-                     data=gibushon_final)
+reg_tkufatitam <- lm(tkufatitam ~ FinalGradeg_zscore
+                     + EichutGrade_zscore,
+                     data=gibushon_final_filtered)
 summary(reg_tkufatitam)
+
 # standardised coefficients
 round(lm.beta(reg_tkufatitam),2)
+
 # R
-R_tkufatitam<-round(sqrt(0.061),2)
+R_tkufatitam<-round(sqrt(0.02145),2)
 R_tkufatitam
 
-# reg_tkufatitam <- lm(tkufatitam ~ ac_final_grade
-#                      + mini_sociometry_negative_percent
-#                      + mini_sociometry_positive_percent
-#                      + seniority_days_ac,
-#                      data=gibushon_final)
-# summary(reg_tkufatitam)
+--------------
 
+reg_course_score <- lm(course_score_zscore ~ FinalGradeg_zscore
+                     + EichutGrade_zscore,
+                     data=gibushon_final_filtered)
+summary(reg_course_score)
 
-# reg_am <- lm(am ~ ac_final_grade
-#                      + mini_sociometry_negative_percent
-#                      + sherut
-#                      + seniority_days_ac,
-#                      data=gibushon_final)
-# summary(reg_am)
-
-# reg_tkufatitam <- lm(tkufatitam ~ ac_final_grade
-#                      + mini_sociometry_computed
-#                      + seniority_days_ac,
-#                      data=gibushon_final)
-# summary(reg_tkufatitam)
-
-# R
-# R_tkufatitam<-round(sqrt(0.06805),2)
-# R_tkufatitam
-
-reg_am <- lm(am ~
-               ac_final_grade
-             + mini_sociometry_negative_percent
-             + seniority_days_ac,
-             data=gibushon_final)
-summary(reg_am)
 # standardised coefficients
-round(lm.beta(reg_am),2)
+round(lm.beta(reg_tkufatitam),2)
+
 # R
-R_am<-round(sqrt(0.08267),2)
-R_am
-
-round(reg_am$coefficients,2)
-
-# reg_am <- lm(am ~
-#                ac_final_grade
-#              + mini_sociometry_computed
-#              + seniority_days_ac,
-#              data=gibushon_final)
-# summary(reg_am)
-
-
-# reg_am <- lm(am ~
-#                ac_final_grade
-#              + mini_sociometry_negative_percent
-#              + mini_sociometry_positive_percent
-#              + seniority_days_ac,
-#              data=gibushon_final)
-# summary(reg_am)
+reg_course_score<-round(sqrt(0.02145),2)
+reg_course_score
 
 #---------------------------------------------
 # predicted_scores
-gibushon_final$predicted_score_tkufatitam <- 
-  round(predict(reg_tkufatitam, gibushon_final),2)
+gibushon_final_filtered$predicted_score_tkufatitam <- 
+  round(predict(reg_tkufatitam, gibushon_final_filtered),2)
 
-filtered_gibushon_civil_diff$seniority_days_ac<-0
+filtered_gibushon_civil$seniority_days_ac<-0
 
-filtered_gibushon_civil_diff$predicted_score_tkufatitam_unrestricted <- 
-  round(predict(reg_tkufatitam, filtered_gibushon_civil_diff),2)
+filtered_gibushon_civil$predicted_score_tkufatitam_unrestricted <- 
+  round(predict(reg_tkufatitam, filtered_gibushon_civil),2)
 
-gibushon_final$predicted_score_am <- 
-  round(predict(reg_am, gibushon_final),2)
+gibushon_final_filtered$predicted_score_am <- 
+  round(predict(reg_am, gibushon_final_filtered),2)
 
-filtered_gibushon_civil_diff$predicted_score_am_unrestricted <- 
-  round(predict(reg_am, filtered_gibushon_civil_diff),2)
+filtered_gibushon_civil$predicted_score_am_unrestricted <- 
+  round(predict(reg_am, filtered_gibushon_civil),2)
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 library (descr)
 library (psych)
-filtered_gibushon_civil_diff$predicted_score_tkufatitam_unrestricted<-as.numeric(filtered_gibushon_civil_diff$predicted_score_tkufatitam)
-gibushon_final$predicted_score_tkufatitam_restricted<-as.numeric(gibushon_final$predicted_score_tkufatitam)
-try(cor.test(as.numeric(gibushon_final$predicted_score_tkufatitam_restricted),as.numeric(gibushon_final$tkufatit),use="pairwise.complete.obs"), silent=T)
-try(cor.test(as.numeric(gibushon_final$predicted_score_tkufatitam_restricted),as.numeric(gibushon_final$am),use="pairwise.complete.obs"), silent=T)
-try(cor.test(as.numeric(gibushon_final$predicted_score_tkufatitam_restricted),as.numeric(unlist(gibushon_final$tkufatitam)),use="pairwise.complete.obs"), silent=T)
-round(describe (as.numeric(filtered_gibushon_civil_diff$predicted_score_tkufatitam_unrestricted)),2)
-round(describe (as.numeric(gibushon_final$predicted_score_tkufatitam_restricted)),2)
+filtered_gibushon_civil$predicted_score_tkufatitam_unrestricted<-as.numeric(filtered_gibushon_civil$predicted_score_tkufatitam)
+gibushon_final_filtered$predicted_score_tkufatitam_restricted<-as.numeric(gibushon_final_filtered$predicted_score_tkufatitam)
+try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_tkufatitam_restricted),as.numeric(gibushon_final_filtered$tkufatit),use="pairwise.complete.obs"), silent=T)
+try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_tkufatitam_restricted),as.numeric(gibushon_final_filtered$am),use="pairwise.complete.obs"), silent=T)
+try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_tkufatitam_restricted),as.numeric(unlist(gibushon_final_filtered$tkufatitam)),use="pairwise.complete.obs"), silent=T)
+round(describe (as.numeric(filtered_gibushon_civil$predicted_score_tkufatitam_unrestricted)),2)
+round(describe (as.numeric(gibushon_final_filtered$predicted_score_tkufatitam_restricted)),2)
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
-filtered_gibushon_civil_diff$predicted_score_am_unrestricted<-as.numeric(filtered_gibushon_civil_diff$predicted_score_am)
-gibushon_final$predicted_score_am_restricted<-gibushon_final$predicted_score_am
+filtered_gibushon_civil$predicted_score_am_unrestricted<-as.numeric(filtered_gibushon_civil$predicted_score_am)
+gibushon_final_filtered$predicted_score_am_restricted<-gibushon_final_filtered$predicted_score_am
 
 # Don't add the predicted scores to the spcorr tables, 
 # because the seniority was already cleaned from it.***
 
-try(cor.test(as.numeric(gibushon_final$predicted_score_am_restricted),as.numeric(gibushon_final$tkufatit),use="pairwise.complete.obs"), silent=T)
-try(cor.test(as.numeric(gibushon_final$predicted_score_am_restricted),as.numeric(gibushon_final$am),use="pairwise.complete.obs"), silent=T)
-try(cor.test(as.numeric(gibushon_final$predicted_score_am_restricted),as.numeric(unlist(gibushon_final$tkufatitam)),use="pairwise.complete.obs"), silent=T)
-round(describe (as.numeric(filtered_gibushon_civil_diff$HEBREW_copmlete)),2)
-round(describe (as.numeric(gibushon_final$predicted_score_am_restricted)),2)
+try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_am_restricted),as.numeric(gibushon_final_filtered$tkufatit),use="pairwise.complete.obs"), silent=T)
+try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_am_restricted),as.numeric(gibushon_final_filtered$am),use="pairwise.complete.obs"), silent=T)
+try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_am_restricted),as.numeric(unlist(gibushon_final_filtered$tkufatitam)),use="pairwise.complete.obs"), silent=T)
+round(describe (as.numeric(filtered_gibushon_civil$HEBREW_copmlete)),2)
+round(describe (as.numeric(gibushon_final_filtered$predicted_score_am_restricted)),2)
 
 library(descr)
 library(psych)
@@ -2621,18 +2569,6 @@ options(width = 71,max.print=30000)
 freq(ordered(gibushon_final$ac_date), plot = F,main=colnames(gibushon_final$ac_date),font=2)
 round(freq(ordered(as.numeric(unlist(gibushon_final$personality))), plot = F,main=colnames(gibushon_final$personality),font=2),2)
 round(freq(ordered(as.numeric(unlist(gibushon_civil$personality))), plot = F,main=colnames(gibushon_final$personality),font=2),2)
-
-#There isn't enough variability in the moked and personality variables, so I can't check it's influence on criteria.
-
-dates<-filtered_gibushon_civil_diff$ac_date
-dates<-as.Date(unlist(dates),format="%d/%m/%Y")
-dates=="2004-12-21"
-dates=="2020-11-30"
-dates[162]<-NA
-dates[463]<-NA
-
-min(dates,na.rm = T)
-max(dates,na.rm = T)
 
 library(ggplot2)
 library(scales)
