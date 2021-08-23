@@ -2166,11 +2166,12 @@ write.xlsx(gibushon_final_corr_output,file = "C:/Users/USER/Documents/MAMDA/gibu
 
 # Correlations predictors-predictors
 
-gibushon_final_relevant_predictors_columns_for_correlations <- gibushon_final_filtered[c(810,853:861,864:869,1031:1034,1068)]
+gibushon_final_filtered_relevant_predictors_columns_for_correlations <- gibushon_final_filtered[c(810,853:861,864:869,1031:1034,1068)]
 gibushon_final_filtered_relevant_predictors_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(810,853:861,864:869,1031:1034,1068)]))
 gibushon_final_filtered_relevant_criteria_columns_for_correlations <- gibushon_final_filtered[c(810,853:861,864:869,1031:1034,1068)]
 gibushon_final_filtered_relevant_criteria_columns_names_for_correlations <- c(colnames(gibushon_final_filtered[c(810,853:861,864:869,1031:1034,1068)]))
-gibushon_final_filtered_corr_output<-data.frame()[25,]
+# options(width = 71,max.print=30000)
+gibushon_final_filtered_corr_output<-data.frame()[21,]
 
 for(i in 1:length(gibushon_final_filtered_relevant_criteria_columns_names_for_correlations)){
   corr_output_temp<-c()
