@@ -2496,6 +2496,9 @@ library(MASS)  # studres
 #library(lmSupport) # error in this pakckage
 library(perturbR)  # colldiag
 library(regtools)  # pairwise
+library(stats)  # prediction
+
+
 
 reg_tkufatitam <- lm(tkufatitam ~ FinalGradeg_zscore
                      + EichutGrade_zscore,
@@ -2519,17 +2522,18 @@ summary(reg_course_score)
 round(lm.beta(reg_course_score),2)
 
 # R
-reg_course_score<-round(sqrt(0.09168),2)
-reg_course_score
+R_course_score<-round(sqrt(0.09168),2)
+R_course_score
 
 
 #---------------------------------------------
 # predicted_scores
 gibushon_final_filtered$predicted_score_tkufatitam <- 
-  round(predict(reg_tkufatitam, gibushon_final_filtered),2)
+  round(predict.lm(reg_tkufatitam, gibushon_final_filtered),2)
 
-gibushon_final_filtered$predicted_course_score <- 
+gibushon_final_filtered$predicted_course_score <-
   round(predict(reg_course_score, gibushon_final_filtered),2)
+
 
 # filtered_gibushon_civil$seniority_days_ac<-0
 # 
@@ -2550,7 +2554,7 @@ gibushon_final_filtered$predicted_score_tkufatitam_restricted<-as.numeric(gibush
 try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_tkufatitam_restricted),as.numeric(gibushon_final_filtered$tkufatit),use="pairwise.complete.obs"), silent=T)
 try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_tkufatitam_restricted),as.numeric(gibushon_final_filtered$am),use="pairwise.complete.obs"), silent=T)
 try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_tkufatitam_restricted),as.numeric(unlist(gibushon_final_filtered$tkufatitam)),use="pairwise.complete.obs"), silent=T)
-filtered_gibushon_civil$predicted_score_tkufatitam_unrestricted<-as.numeric(filtered_gibushon_civil$predicted_score_tkufatitam)
+gibushon_final_filtered$predicted_course_score<-as.numeric(gibushon_final_filtered$predicted_course_score)
 
 try(cor.test(as.numeric(gibushon_final_filtered$predicted_score_reg_course_score),as.numeric(unlist(gibushon_final_filtered$course_score_zscore)),use="pairwise.complete.obs"), silent=T)
 
