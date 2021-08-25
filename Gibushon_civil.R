@@ -1924,6 +1924,7 @@ for (i in (which.max(gibushon_civil_filtered_gap4[,2])+1):nrow(gibushon_civil_fi
 }
 
 
+
 filtered_gibushon_civil_diff = gibushon_civil %>%
   rowwise() %>%
   mutate(tkufatit_14_zscore = ifelse(date.tkufatit_14_diff>=119 & date.tkufatit_14_diff<=937,tkufatit_14_zscore,NA),#169,943
@@ -2488,6 +2489,28 @@ k <- k+1
 }
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Plot for report
+
+library(ggplot2)
+library(scales)
+library(cowplot)
+
+ggplot(gibushon_civil_filtered, aes(x=FinalGradeg)) + 
+  geom_bar(na.rm = T,fill = "darkorchid1") +
+  xlab("ציון גיבושון")+
+  ylab("מס' מועמדים")+
+  #  ggtitle("תרשים 1: התפלגות ציוני הגיבושון")+
+  stat_bin(binwidth=0.5, geom="text", aes(label=..count..), vjust=-0.5, hjust=0.45) +
+  scale_x_continuous(breaks = seq(1, 6.5, 0.5))+
+  scale_y_continuous(breaks = seq(0, 1500, 200),limits = c(0,1500))+
+  #  theme(plot.title = element_text(hjust = 0.5, size = 16,color = "blue",face = "bold"))+
+  theme(axis.title.x = element_text(size = 12,color = "#993333", face = "bold"))+
+  theme(axis.title.y = element_text(size = 12,color = "#993333", face = "bold"))+
+  stat_function(fun = dnorm, n = 1500, args = list(mean = mean(gibushon_civil$FinalGradeg,na.rm = T), sd = sd(gibushon_civil$FinalGradeg,na.rm = T)), color="red",
+                mapping = aes(y = after_stat(y*3500)))
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------
 colnames(gibushon_final_filtered)
 
 # Regression analysis
@@ -2501,6 +2524,19 @@ library(regtools)  # pairwise
 library(stats)  # prediction
 
 reg_tkufatitam <- lm(tkufatitam ~ MazavClali_zscore
+                     + SocioFinalGrade_zscore,
+                     data=gibushon_final_filtered)
+summary(reg_tkufatitam)
+
+# standardised coefficients
+round(lm.beta(reg_tkufatitam),2)
+
+# R
+R_tkufatitam<-round(sqrt(0.0214),2)
+R_tkufatitam
+
+#--------------
+reg_tkufatitam <- lm(tkufatitam ~ MazavClali_zscore
                      + SocioFinalGrade_zscore
                      + EichutGrade_zscore,
                      data=gibushon_final_filtered)
@@ -2510,7 +2546,7 @@ summary(reg_tkufatitam)
 round(lm.beta(reg_tkufatitam),2)
 
 # R
-R_tkufatitam<-round(sqrt(0.02196),2)
+R_tkufatitam<-round(sqrt(0.0214),2)
 R_tkufatitam
 
 #--------------
@@ -2581,30 +2617,6 @@ options(width = 71,max.print=30000)
 freq(ordered(gibushon_final$ac_date), plot = F,main=colnames(gibushon_final$ac_date),font=2)
 round(freq(ordered(as.numeric(unlist(gibushon_final$personality))), plot = F,main=colnames(gibushon_final$personality),font=2),2)
 round(freq(ordered(as.numeric(unlist(gibushon_civil$personality))), plot = F,main=colnames(gibushon_final$personality),font=2),2)
-
-gibushon_civil_filtered=gibushon_civil%>%
-  filter(job_sector4 == "detective"  | job_sector4 == "inspector" | job_sector4 == "patrol" | job_sector4 == "traffic" | job_sector4 == "yasam")
-
-library(ggplot2)
-library(scales)
-library(cowplot)
-
-ggplot(gibushon_civil_filtered, aes(x=FinalGradeg)) + 
-  geom_bar(na.rm = T,fill = "darkorchid1") +
-  xlab("ציון גיבושון")+
-  ylab("מס' מועמדים")+
-  #  ggtitle("תרשים 1: התפלגות ציוני הגיבושון")+
-  stat_bin(binwidth=0.5, geom="text", aes(label=..count..), vjust=-0.5, hjust=0.45) +
-  scale_x_continuous(breaks = seq(1, 6.5, 0.5))+
-  scale_y_continuous(breaks = seq(0, 1500, 200),limits = c(0,1500))+
-  #  theme(plot.title = element_text(hjust = 0.5, size = 16,color = "blue",face = "bold"))+
-  theme(axis.title.x = element_text(size = 12,color = "#993333", face = "bold"))+
-  theme(axis.title.y = element_text(size = 12,color = "#993333", face = "bold"))+
-  stat_function(fun = dnorm, n = 1500, args = list(mean = mean(gibushon_civil$FinalGradeg,na.rm = T), sd = sd(gibushon_civil$FinalGradeg,na.rm = T)), color="red",
-                mapping = aes(y = after_stat(y*3500)))
-
-# y <- dnorm(gibushon_civil$FinalGradeg, mean(gibushon_civil$FinalGradeg,na.rm = T), sd = sd(gibushon_civil$FinalGradeg,na.rm = T))
-# p <- plot(gibushon_civil$FinalGradeg,y,type = "p", col = "red")
 
 #***********************assistance commands******************************
 
