@@ -2632,7 +2632,7 @@ round(lm.beta(reg_tkufatitam),2)
 R_tkufatitam<-round(sqrt(0.07971),2)
 R_tkufatitam
 
-#--------------
+#--------------favorite*********************
 reg_tkufatitam <- lm(tkufatitam ~ MazavClali_zscore
                      + SocioFinalGrade_zscore
                      + rama_score_zscore
@@ -2694,7 +2694,7 @@ summary(reg_tkufatitam)
 round(lm.beta(reg_tkufatitam),2)
 
 # R
-R_tkufatitam<-round(sqrt(0.1057),2)
+R_tkufatitam<-round(sqrt(0.1018),2)
 R_tkufatitam
 
 #--------------
