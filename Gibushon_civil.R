@@ -1805,103 +1805,103 @@ criteria_list <- c("tkufatit_14","tkufatit_15","final.score.2017","final.score.2
                    "cf_2018","row_score_2019","am_2015","am_2018")
 
 for (j in criteria_list) {
-gibushon_civil_filtered = gibushon_civil%>%
+gibushon_civil_filtered_gap = gibushon_civil%>%
   rowwise()%>%
   mutate(j<-ifelse(j!=am_2015 & j!=am_2018 & !is.na(paste(j,"_zscore",sep = "")),j),
             ifelse(j==am_2015,am_2015),
             ifelse(j==am_2018,am_2018,NA))%>%
     select(paste("date.",j,"_diff",sep = ""),all_of(j))
          
-gibushon_civil_filtered<-gibushon_civil_filtered[!is.na(gibushon_civil_filtered[1]), ]
+gibushon_civil_filtered_gap<-gibushon_civil_filtered_gap[!is.na(gibushon_civil_filtered_gap[1]), ]
 
-gibushon_civil_filtered <- gibushon_civil_filtered[order(gibushon_civil_filtered[[1]]),]
+gibushon_civil_filtered_gap <- gibushon_civil_filtered_gap[order(gibushon_civil_filtered_gap[[1]]),]
 
-gibushon_civil_filtered2 <- gibushon_civil_filtered
+gibushon_civil_filtered_gap2 <- gibushon_civil_filtered_gap
 
-gibushon_civil_filtered2[3] <- NA
+gibushon_civil_filtered_gap2[3] <- NA
 
-colnames(gibushon_civil_filtered2)[3]<-paste(j,"_sd",sep = "")
+colnames(gibushon_civil_filtered_gap2)[3]<-paste(j,"_sd",sep = "")
 
-gibushon_civil_filtered2<-as.data.frame(gibushon_civil_filtered2)
+gibushon_civil_filtered_gap2<-as.data.frame(gibushon_civil_filtered_gap2)
 
-for (i in 1:(nrow(gibushon_civil_filtered2)-2)){
-  gibushon_civil_filtered3 <- gibushon_civil_filtered2
-  gibushon_civil_filtered3 <- gibushon_civil_filtered3[i:nrow(gibushon_civil_filtered2),]
-  gibushon_civil_filtered2[i,3]<-sd(gibushon_civil_filtered3[,2], na.rm = T)
+for (i in 1:(nrow(gibushon_civil_filtered_gap2)-2)){
+  gibushon_civil_filtered_gap3 <- gibushon_civil_filtered_gap2
+  gibushon_civil_filtered_gap3 <- gibushon_civil_filtered_gap3[i:nrow(gibushon_civil_filtered_gap2),]
+  gibushon_civil_filtered_gap2[i,3]<-sd(gibushon_civil_filtered_gap3[,2], na.rm = T)
   }  
 
 library(dplyr)
-gibushon_civil_filtered4 = gibushon_civil_filtered2%>%
+gibushon_civil_filtered_gap4 = gibushon_civil_filtered_gap2%>%
   select(paste("date.",j,"_diff",sep = ""),paste(j,"_sd",sep = ""))
 
-gibushon_civil_filtered4 = gibushon_civil_filtered4 %>% 
-  group_by(gibushon_civil_filtered4[,1]) %>% mutate_each(funs(mean)) %>% distinct
+gibushon_civil_filtered_gap4 = gibushon_civil_filtered_gap4 %>% 
+  group_by(gibushon_civil_filtered_gap4[,1]) %>% mutate_each(funs(mean)) %>% distinct
 
-gibushon_civil_filtered4<-gibushon_civil_filtered4[-c(3)]
+gibushon_civil_filtered_gap4<-gibushon_civil_filtered_gap4[-c(3)]
 
-gibushon_civil_filtered4[,2] <- scale(gibushon_civil_filtered4[,2])
+gibushon_civil_filtered_gap4[,2] <- scale(gibushon_civil_filtered_gap4[,2])
 
-class(gibushon_civil_filtered4)
+class(gibushon_civil_filtered_gap4)
 
-gibushon_civil_filtered4 <- as.data.frame(gibushon_civil_filtered4)
+gibushon_civil_filtered_gap4 <- as.data.frame(gibushon_civil_filtered_gap4)
 
 ouitliers3<-function(x) ifelse(!is.na(x) & abs(x)<5, x, NA)
 
-gibushon_civil_filtered4 = gibushon_civil_filtered4%>%
-mutate_at(vars(2:ncol(gibushon_civil_filtered4)), funs(ouitliers3))
+gibushon_civil_filtered_gap4 = gibushon_civil_filtered_gap4%>%
+mutate_at(vars(2:ncol(gibushon_civil_filtered_gap4)), funs(ouitliers3))
 
-gibushon_civil_filtered4 = gibushon_civil_filtered4 %>%
-  filter(!is.na(gibushon_civil_filtered4[,2]))
+gibushon_civil_filtered_gap4 = gibushon_civil_filtered_gap4 %>%
+  filter(!is.na(gibushon_civil_filtered_gap4[,2]))
 
-# gibushon_civil_filtered4 = gibushon_civil_filtered4 %>%
-#   filter(gibushon_civil_filtered4[,1]>360 & gibushon_civil_filtered4[,1]<2000)
+# gibushon_civil_filtered_gap4 = gibushon_civil_filtered_gap4 %>%
+#   filter(gibushon_civil_filtered_gap4[,1]>360 & gibushon_civil_filtered_gap4[,1]<2000)
 
-# if (min(gibushon_civil_filtered4[,2],na.rm = T)<0){
-# for (i in 1:nrow(gibushon_civil_filtered4)){
-#   gibushon_civil_filtered4[i,][,2] <-  gibushon_civil_filtered4[i,][,2]+abs(min(gibushon_civil_filtered4[,2],na.rm = T))
+# if (min(gibushon_civil_filtered_gap4[,2],na.rm = T)<0){
+# for (i in 1:nrow(gibushon_civil_filtered_gap4)){
+#   gibushon_civil_filtered_gap4[i,][,2] <-  gibushon_civil_filtered_gap4[i,][,2]+abs(min(gibushon_civil_filtered_gap4[,2],na.rm = T))
 # }
 # }
 
 # https://medium.com/analytics-vidhya/a-guide-to-data-transformation-9e5fa9ae1ca3
-# gibushon_civil_filtered4[,2] <- log(gibushon_civil_filtered4[,2])
-# gibushon_civil_filtered4[,2] <- 1/(gibushon_civil_filtered4[,2])
+# gibushon_civil_filtered_gap4[,2] <- log(gibushon_civil_filtered_gap4[,2])
+# gibushon_civil_filtered_gap4[,2] <- 1/(gibushon_civil_filtered_gap4[,2])
 
-# gibushon_civil_filtered4$delete <- NA
-# if(nrow(gibushon_civil_filtered4)>500){
-# for (i in 2:nrow(gibushon_civil_filtered4)) {
-#   if((gibushon_civil_filtered4[i,][,1]-gibushon_civil_filtered4[(i-1),][,1])<2 &
-#      !is.na(gibushon_civil_filtered4[i,][,2])){
-#     gibushon_civil_filtered4[i,][,2]<- mean(gibushon_civil_filtered4[(i-1),][,2],gibushon_civil_filtered4[i,][,2])
-#     gibushon_civil_filtered4[(i-1),]$delete <- 1
+# gibushon_civil_filtered_gap4$delete <- NA
+# if(nrow(gibushon_civil_filtered_gap4)>500){
+# for (i in 2:nrow(gibushon_civil_filtered_gap4)) {
+#   if((gibushon_civil_filtered_gap4[i,][,1]-gibushon_civil_filtered_gap4[(i-1),][,1])<2 &
+#      !is.na(gibushon_civil_filtered_gap4[i,][,2])){
+#     gibushon_civil_filtered_gap4[i,][,2]<- mean(gibushon_civil_filtered_gap4[(i-1),][,2],gibushon_civil_filtered_gap4[i,][,2])
+#     gibushon_civil_filtered_gap4[(i-1),]$delete <- 1
 #   }
 # }
 # }
 
-# gibushon_civil_filtered4 = gibushon_civil_filtered4 %>%
+# gibushon_civil_filtered_gap4 = gibushon_civil_filtered_gap4 %>%
 #   filter(delete!=1)
 
-class(gibushon_civil_filtered4)
+class(gibushon_civil_filtered_gap4)
 
-# gibushon_civil_filtered4 <- as.data.frame(gibushon_civil_filtered4)
+# gibushon_civil_filtered_gap4 <- as.data.frame(gibushon_civil_filtered_gap4)
 
-plot(gibushon_civil_filtered4[,2] ~ gibushon_civil_filtered4[,1], gibushon_civil_filtered4,
+plot(gibushon_civil_filtered_gap4[,2] ~ gibushon_civil_filtered_gap4[,1], gibushon_civil_filtered_gap4,
      ylab = paste(j,"_sd","_scaled",sep = ""), xlab = paste("date.",j,"_diff",sep = ""))
 
 # find the point that the SD begins to increase steadily after the lowest SD value
 
-for (i in 1:nrow(gibushon_civil_filtered4)) {
-  # if (gibushon_civil_filtered4[i+1,][,2] > gibushon_civil_filtered4[i,][,2] &
-      # gibushon_civil_filtered4[i+2,][,2] > gibushon_civil_filtered4[i+1,][,2] &
-      # gibushon_civil_filtered4[i+3,][,2] > gibushon_civil_filtered4[i+2,][,2] &
-      # gibushon_civil_filtered4[i+4,][,2] > gibushon_civil_filtered4[i+3,][,2]){
-  if ((nrow(gibushon_civil_filtered4)-i)>2 & 
-      gibushon_civil_filtered4[i,][,2] > min(gibushon_civil_filtered4[,2],na.rm = T) &
-      gibushon_civil_filtered4[i+1,][,2] > gibushon_civil_filtered4[i,][,2] &
-      # gibushon_civil_filtered4[i+2,][,2] > gibushon_civil_filtered4[i+1,][,2] &
-      # gibushon_civil_filtered4[i+3,][,2] > gibushon_civil_filtered4[i+2,][,2]) {
-      gibushon_civil_filtered4[i+2,][,2] > gibushon_civil_filtered4[i+1,][,2]){
-    diff_increase <- gibushon_civil_filtered4[i,][,1]
-    print(paste(colnames(gibushon_civil_filtered4)[1],":",sep = ""))
+for (i in 1:nrow(gibushon_civil_filtered_gap4)) {
+  # if (gibushon_civil_filtered_gap4[i+1,][,2] > gibushon_civil_filtered_gap4[i,][,2] &
+      # gibushon_civil_filtered_gap4[i+2,][,2] > gibushon_civil_filtered_gap4[i+1,][,2] &
+      # gibushon_civil_filtered_gap4[i+3,][,2] > gibushon_civil_filtered_gap4[i+2,][,2] &
+      # gibushon_civil_filtered_gap4[i+4,][,2] > gibushon_civil_filtered_gap4[i+3,][,2]){
+  if ((nrow(gibushon_civil_filtered_gap4)-i)>2 & 
+      gibushon_civil_filtered_gap4[i,][,2] > min(gibushon_civil_filtered_gap4[,2],na.rm = T) &
+      gibushon_civil_filtered_gap4[i+1,][,2] > gibushon_civil_filtered_gap4[i,][,2] &
+      # gibushon_civil_filtered_gap4[i+2,][,2] > gibushon_civil_filtered_gap4[i+1,][,2] &
+      # gibushon_civil_filtered_gap4[i+3,][,2] > gibushon_civil_filtered_gap4[i+2,][,2]) {
+      gibushon_civil_filtered_gap4[i+2,][,2] > gibushon_civil_filtered_gap4[i+1,][,2]){
+    diff_increase <- gibushon_civil_filtered_gap4[i,][,1]
+    print(paste(colnames(gibushon_civil_filtered_gap4)[1],":",sep = ""))
     print(diff_increase)
     break
   }
@@ -1909,14 +1909,14 @@ for (i in 1:nrow(gibushon_civil_filtered4)) {
 
 # find the point that the SD begins to decrease steadily after the highest SD value
 
-for (i in (which.max(gibushon_civil_filtered4[,2])+1):nrow(gibushon_civil_filtered4)) {
-  if ((nrow(gibushon_civil_filtered4)-i)>2 & 
-         gibushon_civil_filtered4[i,][,2] < max(gibushon_civil_filtered4[,2],na.rm = T) &
-         gibushon_civil_filtered4[i+1,][,2] < gibushon_civil_filtered4[i,][,2] &
-         # gibushon_civil_filtered4[i+2,][,2] < gibushon_civil_filtered4[i+1,][,2] &
-         # gibushon_civil_filtered4[i+3,][,2] < gibushon_civil_filtered4[i+2,][,2]) {
-         gibushon_civil_filtered4[i+2,][,2] < gibushon_civil_filtered4[i+1,][,2]) {
-       diff_decrease <- gibushon_civil_filtered4[(i-1),][,1]
+for (i in (which.max(gibushon_civil_filtered_gap4[,2])+1):nrow(gibushon_civil_filtered_gap4)) {
+  if ((nrow(gibushon_civil_filtered_gap4)-i)>2 & 
+         gibushon_civil_filtered_gap4[i,][,2] < max(gibushon_civil_filtered_gap4[,2],na.rm = T) &
+         gibushon_civil_filtered_gap4[i+1,][,2] < gibushon_civil_filtered_gap4[i,][,2] &
+         # gibushon_civil_filtered_gap4[i+2,][,2] < gibushon_civil_filtered_gap4[i+1,][,2] &
+         # gibushon_civil_filtered_gap4[i+3,][,2] < gibushon_civil_filtered_gap4[i+2,][,2]) {
+         gibushon_civil_filtered_gap4[i+2,][,2] < gibushon_civil_filtered_gap4[i+1,][,2]) {
+       diff_decrease <- gibushon_civil_filtered_gap4[(i-1),][,1]
        print(diff_decrease)
       break
  } 
@@ -2500,9 +2500,8 @@ library(perturbR)  # colldiag
 library(regtools)  # pairwise
 library(stats)  # prediction
 
-
-
-reg_tkufatitam <- lm(tkufatitam ~ FinalGradeg_zscore
+reg_tkufatitam <- lm(tkufatitam ~ MazavClali_zscore
+                     + SocioFinalGrade_zscore
                      + EichutGrade_zscore,
                      data=gibushon_final_filtered)
 summary(reg_tkufatitam)
